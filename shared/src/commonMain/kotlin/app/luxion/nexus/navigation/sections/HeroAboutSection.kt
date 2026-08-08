@@ -16,33 +16,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import app.luxion.nexus.i18n.Language
+import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.theme.PortfolioSpacing
 
 // Hero/About: introduction and personal summary — the first thing any visitor sees.
 object HeroAboutSection {
-    const val title = "Hero / About"
+    private const val AVATAR_INITIALS = "CF"
 
     // internal so app.luxion.nexus.cv can assemble CvContent from this, the single source
     // of truth for the hero copy — see openspec/changes/add-dynamic-cv-export/design.md.
-    internal const val NAME = "Ciro Feliu"
-    internal const val ROLE = "Senior Android Developer & Mobile Systems Architect"
-    private const val AVATAR_INITIALS = "CF"
-    internal const val BIO = "I design and build mobile systems that stay maintainable as they " +
-        "grow, with a focus on Android architecture, Kotlin Multiplatform, and the tooling " +
-        "that keeps a codebase easy to work in years after it ships. This portfolio itself " +
-        "is a Compose Multiplatform build, shared across web, Android, desktop, and iOS."
+    internal data class HeroAboutContent(val name: String, val role: String, val bio: String)
+
+    internal val content = mapOf(
+        Language.English to HeroAboutContent(
+            name = "Ciro Feliu",
+            role = "Senior Android Developer & Mobile Systems Architect",
+            bio = "I design and build mobile systems that stay maintainable as they " +
+                "grow, with a focus on Android architecture, Kotlin Multiplatform, and the tooling " +
+                "that keeps a codebase easy to work in years after it ships. This portfolio itself " +
+                "is a Compose Multiplatform build, shared across web, Android, desktop, and iOS.",
+        ),
+        Language.Spanish to HeroAboutContent(
+            name = "Ciro Feliu",
+            role = "Desarrollador Android Senior y Arquitecto de Sistemas Móviles",
+            bio = "Diseño y construyo sistemas móviles que se mantienen fáciles de mantener a " +
+                "medida que crecen, centrado en arquitectura Android, Kotlin Multiplatform y las " +
+                "herramientas que hacen que un código siga siendo cómodo de tocar años después de " +
+                "publicarse. Este mismo portfolio es una build de Compose Multiplatform, compartida " +
+                "entre web, Android, escritorio e iOS.",
+        ),
+    )
 
     @Composable
     fun Content() {
+        val content = content.getValue(LocalAppLanguage.current)
         Column(
             modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.medium),
         ) {
             Avatar(AVATAR_INITIALS)
-            Text(text = NAME, style = MaterialTheme.typography.displayLarge, textAlign = TextAlign.Center)
-            Text(text = ROLE, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
-            Text(text = BIO, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+            Text(text = content.name, style = MaterialTheme.typography.displayLarge, textAlign = TextAlign.Center)
+            Text(text = content.role, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
+            Text(text = content.bio, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
         }
     }
 
