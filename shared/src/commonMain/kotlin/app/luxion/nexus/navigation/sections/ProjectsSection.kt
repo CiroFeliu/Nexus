@@ -1,5 +1,6 @@
 package app.luxion.nexus.navigation.sections
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,18 +9,23 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -101,6 +107,14 @@ object ProjectsSection {
                 "at S2 Grupo. Details are covered by an NDA and can't be shared publicly.",
             techStack = emptyList(),
             unavailableNote = "Confidential — under NDA",
+        ),
+        Project(
+            company = "S2 Grupo",
+            name = "Secure Development Awareness",
+            description = "Took part in S2 Grupo's secure-development awareness initiative, " +
+                "promoting secure coding practices across engineering teams.",
+            techStack = listOf("Secure Development", "Cybersecurity"),
+            link = "https://s2grupo.es/en/soluciones/security-software/",
         ),
         Project(
             company = "Rudo",
@@ -242,7 +256,9 @@ object ProjectsSection {
                         shape = MaterialTheme.shapes.medium,
                         colors = ButtonDefaults.buttonColors(),
                     ) {
-                        Text(text = "View project ↗")
+                        Text(text = "View project")
+                        Spacer(modifier = Modifier.width(PortfolioSpacing.extraSmall))
+                        ExternalLinkIcon(color = LocalContentColor.current)
                     }
                 } else {
                     Text(
@@ -252,6 +268,34 @@ object ProjectsSection {
                     )
                 }
             }
+        }
+    }
+
+    // A hand-drawn "external link" arrow, used instead of a Unicode glyph (↗) — some target
+    // fonts don't ship that glyph and render a tofu box instead. A vector shape renders
+    // identically on every platform without pulling in a material-icons dependency.
+    @Composable
+    private fun ExternalLinkIcon(color: Color, modifier: Modifier = Modifier) {
+        Canvas(modifier = modifier.size(14.dp)) {
+            val strokeWidth = size.minDimension * 0.14f
+            val inset = size.minDimension * 0.15f
+            val tail = Offset(inset, size.height - inset)
+            val head = Offset(size.width - inset, inset)
+            drawLine(color = color, start = tail, end = head, strokeWidth = strokeWidth, cap = StrokeCap.Round)
+            drawLine(
+                color = color,
+                start = head,
+                end = head.copy(y = head.y + size.height * 0.4f),
+                strokeWidth = strokeWidth,
+                cap = StrokeCap.Round,
+            )
+            drawLine(
+                color = color,
+                start = head,
+                end = head.copy(x = head.x - size.width * 0.4f),
+                strokeWidth = strokeWidth,
+                cap = StrokeCap.Round,
+            )
         }
     }
 
