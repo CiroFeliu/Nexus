@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ciro Feliu">
+    <circle cx="32" cy="32" r="32" fill="#D7E3FF"/>
+    <text x="32" y="43" font-family="Arial, sans-serif" font-size="28" font-weight="700"
+          fill="#001A41" text-anchor="middle">CF</text>
+</svg>
