@@ -24,9 +24,11 @@ import app.luxion.nexus.theme.PortfolioSpacing
 object HeroAboutSection {
     private const val AVATAR_INITIALS = "CF"
 
-    private data class HeroAboutContent(val name: String, val role: String, val bio: String)
+    // internal so app.luxion.nexus.cv can assemble CvContent from this, the single source
+    // of truth for the hero copy — see openspec/changes/add-dynamic-cv-export/design.md.
+    internal data class HeroAboutContent(val name: String, val role: String, val bio: String)
 
-    private val content = mapOf(
+    internal val content = mapOf(
         Language.English to HeroAboutContent(
             name = "Ciro Feliu",
             role = "Senior Android Developer & Mobile Systems Architect",

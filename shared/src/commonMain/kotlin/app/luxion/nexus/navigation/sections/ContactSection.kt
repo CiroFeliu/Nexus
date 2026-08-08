@@ -10,6 +10,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import app.luxion.nexus.cv.buildCvContent
+import app.luxion.nexus.cv.exportCvToPdf
 import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.openUrl
@@ -22,10 +24,13 @@ import app.luxion.nexus.theme.PortfolioSpacing
 // table (renders tofu boxes), and wiring up an icon library is outside this file's scope.
 object ContactSection {
     private val title = mapOf(Language.English to "Contact", Language.Spanish to "Contacto")
+    private val downloadCvLabel = mapOf(Language.English to "Download CV", Language.Spanish to "Descargar CV")
 
-    private data class ContactLink(val label: Map<Language, String>, val url: String)
+    // internal so app.luxion.nexus.cv can assemble CvContent from this, the single source
+    // of truth for contact links — see openspec/changes/add-dynamic-cv-export/design.md.
+    internal data class ContactLink(val label: Map<Language, String>, val url: String)
 
-    private val links = listOf(
+    internal val links = listOf(
         ContactLink(mapOf(Language.English to "Email", Language.Spanish to "Correo"), "mailto:ricardociro97@gmail.com"),
         ContactLink(
             mapOf(Language.English to "LinkedIn", Language.Spanish to "LinkedIn"),
@@ -47,6 +52,9 @@ object ContactSection {
                     OutlinedButton(onClick = { openUrl(link.url) }) {
                         Text(link.label.getValue(language), style = MaterialTheme.typography.labelLarge)
                     }
+                }
+                OutlinedButton(onClick = { exportCvToPdf(buildCvContent(language)) }) {
+                    Text(downloadCvLabel.getValue(language), style = MaterialTheme.typography.labelLarge)
                 }
             }
         }

@@ -17,11 +17,14 @@ import app.luxion.nexus.theme.PortfolioSpacing
 // One labeled group of skills, e.g. "Languages" -> ["Kotlin", "Swift", ...]. The skills
 // themselves are tool/technology names and stay identical across languages; only the
 // category label is translated.
-private data class SkillCategory(val label: Map<Language, String>, val skills: List<String>)
+//
+// internal so app.luxion.nexus.cv can assemble CvContent from this, the single source of
+// truth for the skill list — see openspec/changes/add-dynamic-cv-export/design.md.
+internal data class SkillCategory(val label: Map<Language, String>, val skills: List<String>)
 
 // Ciro's skill set, grouped for quick scanning. Data-as-code so updating it later is a
 // one-file edit; keep entries short (a tool/technology name, not a sentence).
-private val skillCategories = listOf(
+internal val skillCategories = listOf(
     SkillCategory(
         label = mapOf(Language.English to "Languages", Language.Spanish to "Lenguajes"),
         skills = listOf("Kotlin", "Swift", "Java"),

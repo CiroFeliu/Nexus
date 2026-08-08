@@ -53,7 +53,10 @@ object ProjectsSection {
     // Name and description, the fields that differ by language. `name` is a product/brand name
     // and is usually identical in both, but stays part of the map so a card is a single-file,
     // single-entry edit in both languages at once.
-    private data class ProjectContent(
+    //
+    // internal so app.luxion.nexus.cv can assemble CvContent from this — see
+    // openspec/changes/add-dynamic-cv-export/design.md.
+    internal data class ProjectContent(
         val name: String,
         val description: String,
         // Null unless this project needs a non-default reason why there's nothing public to
@@ -61,7 +64,9 @@ object ProjectsSection {
         val unavailableNote: String? = null,
     )
 
-    private data class Project(
+    // internal so app.luxion.nexus.cv can assemble CvContent from this, the single source
+    // of truth for project history — see openspec/changes/add-dynamic-cv-export/design.md.
+    internal data class Project(
         val company: String,
         val content: Map<Language, ProjectContent>,
         val techStack: List<String>,
@@ -72,7 +77,7 @@ object ProjectsSection {
 
     // Real project history across three roles; sourced directly from the linked pages, not
     // invented. Most of Ciro's S2 Grupo work stays fully classified and is excluded entirely.
-    private val projects = listOf(
+    internal val projects = listOf(
         Project(
             company = "Personal",
             content = mapOf(

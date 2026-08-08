@@ -43,9 +43,11 @@ object ExperienceSection {
 
 // Role title and description, the two fields that differ by language. Company and date range
 // are proper nouns/dates and stay the same across languages.
-private data class ExperienceContent(val role: String, val description: String)
+internal data class ExperienceContent(val role: String, val description: String)
 
-private data class ExperienceEntry(
+// internal so app.luxion.nexus.cv can assemble CvContent from this, the single source of
+// truth for the timeline — see openspec/changes/add-dynamic-cv-export/design.md.
+internal data class ExperienceEntry(
     val content: Map<Language, ExperienceContent>,
     val company: String,
     val dateRange: String,
@@ -53,7 +55,7 @@ private data class ExperienceEntry(
 
 // Role history, most-recent-first. This is the only place that needs editing to update
 // the timeline.
-private val entries = listOf(
+internal val entries = listOf(
     ExperienceEntry(
         content = mapOf(
             Language.English to ExperienceContent(
