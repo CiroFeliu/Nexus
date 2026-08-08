@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Exposes shared/src/androidMain's `cache/cv/` dir (where CvExport.android.kt writes the
+     generated PDF) as a content:// URI for the share-sheet intent. -->
+<paths>
+    <cache-path name="cv_exports" path="cv/" />
+</paths>

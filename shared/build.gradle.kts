@@ -55,6 +55,8 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
+            // For FileProvider, used to share the generated CV PDF (CvExport.android.kt).
+            implementation(libs.androidx.core.ktx)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -80,6 +82,11 @@ kotlin {
         }
         wasmJsMain.dependencies {
             implementation(libs.wrappers.browser)
+        }
+        jvmMain.dependencies {
+            // Text-based (not rasterized) PDF writing for the desktop CV export
+            // (CvExport.jvm.kt) — see design.md's Open Questions for why PDFBox.
+            implementation(libs.pdfbox)
         }
     }
 }

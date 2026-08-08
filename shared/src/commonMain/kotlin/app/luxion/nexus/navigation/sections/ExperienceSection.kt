@@ -19,65 +19,111 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import app.luxion.nexus.i18n.Language
+import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.theme.PortfolioSpacing
 
 // Experience/Timeline: Ciro's work history, rendered as a vertical timeline ordered
 // most-recent-first.
 object ExperienceSection {
-    const val title = "Experience"
+    private val title = mapOf(Language.English to "Experience", Language.Spanish to "Experiencia")
 
     @Composable
     fun Content() {
+        val language = LocalAppLanguage.current
         Column(modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large)) {
-            Text(text = title, style = MaterialTheme.typography.headlineMedium)
+            Text(text = title.getValue(language), style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(PortfolioSpacing.large))
             entries.forEachIndexed { index, entry ->
-                TimelineEntry(entry = entry, isLast = index == entries.lastIndex)
+                TimelineEntry(entry = entry, language = language, isLast = index == entries.lastIndex)
             }
         }
     }
 }
 
-private data class ExperienceEntry(
-    val role: String,
+// Role title and description, the two fields that differ by language. Company and date range
+// are proper nouns/dates and stay the same across languages.
+internal data class ExperienceContent(val role: String, val description: String)
+
+// internal so app.luxion.nexus.cv can assemble CvContent from this, the single source of
+// truth for the timeline — see openspec/changes/add-dynamic-cv-export/design.md.
+internal data class ExperienceEntry(
+    val content: Map<Language, ExperienceContent>,
     val company: String,
     val dateRange: String,
-    val description: String,
 )
 
 // Role history, most-recent-first. This is the only place that needs editing to update
 // the timeline.
-private val entries = listOf(
+internal val entries = listOf(
     ExperienceEntry(
-        role = "Senior Mobile Developer",
+        content = mapOf(
+            Language.English to ExperienceContent(
+                role = "Senior Mobile Developer",
+                description = "Owns mobile development at FERMAX, coordinating the mobile team.",
+            ),
+            Language.Spanish to ExperienceContent(
+                role = "Desarrollador Móvil Senior",
+                description = "Responsable del desarrollo móvil en FERMAX, coordinando al equipo móvil.",
+            ),
+        ),
         company = "FERMAX",
         dateRange = "Feb 2025 — Present",
-        description = "Owns mobile development at FERMAX, coordinating the mobile team.",
     ),
     ExperienceEntry(
-        role = "Mobile Systems Architect",
+        content = mapOf(
+            Language.English to ExperienceContent(
+                role = "Mobile Systems Architect",
+                description = "Delivers mobile projects for external clients on a freelance basis, " +
+                    "alongside full-time work.",
+            ),
+            Language.Spanish to ExperienceContent(
+                role = "Arquitecto de Sistemas Móviles",
+                description = "Desarrolla proyectos móviles para clientes externos en modalidad " +
+                    "freelance, compaginándolo con su empleo a tiempo completo.",
+            ),
+        ),
         company = "Freelance",
         dateRange = "Aug 2024 — Present",
-        description = "Delivers mobile projects for external clients on a freelance basis, alongside full-time work.",
     ),
     ExperienceEntry(
-        role = "Senior Mobile Developer",
+        content = mapOf(
+            Language.English to ExperienceContent(
+                role = "Senior Mobile Developer",
+                description = "Joined as an Android developer and became the company's go-to mobile expert.",
+            ),
+            Language.Spanish to ExperienceContent(
+                role = "Desarrollador Móvil Senior",
+                description = "Se incorporó como desarrollador Android y se convirtió en el referente " +
+                    "móvil de la empresa.",
+            ),
+        ),
         company = "S2 Grupo",
         dateRange = "Dec 2021 — Feb 2025",
-        description = "Joined as an Android developer and became the company's go-to mobile expert.",
     ),
     ExperienceEntry(
-        role = "Android Developer",
+        content = mapOf(
+            Language.English to ExperienceContent(
+                role = "Android Developer",
+                description = "Started as an Android developer at this consultancy, later becoming " +
+                    "Android tech lead.",
+            ),
+            Language.Spanish to ExperienceContent(
+                role = "Desarrollador Android",
+                description = "Comenzó como desarrollador Android en esta consultora y más tarde se " +
+                    "convirtió en tech lead de Android.",
+            ),
+        ),
         company = "rudo apps",
         dateRange = "Jul 2019 — Dec 2021",
-        description = "Started as an Android developer at this consultancy, later becoming Android tech lead.",
     ),
 )
 
 // One timeline row: a dot + connector line (omitted for the last entry) alongside the
 // entry's role, company, dates, and description.
 @Composable
-private fun TimelineEntry(entry: ExperienceEntry, isLast: Boolean) {
+private fun TimelineEntry(entry: ExperienceEntry, language: Language, isLast: Boolean) {
+    val content = entry.content.getValue(language)
     Row(modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -100,7 +146,7 @@ private fun TimelineEntry(entry: ExperienceEntry, isLast: Boolean) {
         }
         Spacer(modifier = Modifier.width(PortfolioSpacing.medium))
         Column(modifier = Modifier.padding(bottom = PortfolioSpacing.large)) {
-            Text(text = entry.role, style = MaterialTheme.typography.titleLarge)
+            Text(text = content.role, style = MaterialTheme.typography.titleLarge)
             Text(
                 text = entry.company,
                 style = MaterialTheme.typography.titleMedium,
@@ -112,7 +158,7 @@ private fun TimelineEntry(entry: ExperienceEntry, isLast: Boolean) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Spacer(modifier = Modifier.height(PortfolioSpacing.small))
-            Text(text = entry.description, style = MaterialTheme.typography.bodyMedium)
+            Text(text = content.description, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
