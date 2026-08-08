@@ -20,12 +20,13 @@ private data class SkillCategory(val label: String, val skills: List<String>)
 private val skillCategories = listOf(
     SkillCategory(
         label = "Languages",
-        skills = listOf("Kotlin", "Swift", "Java", "TypeScript"),
+        skills = listOf("Kotlin", "Swift", "Java"),
     ),
     SkillCategory(
         label = "Mobile / Android",
         skills = listOf(
             "Jetpack Compose",
+            "Compose Multiplatform",
             "Android SDK",
             "Coroutines & Flow",
             "Kotlin Multiplatform",
@@ -37,6 +38,7 @@ private val skillCategories = listOf(
         skills = listOf(
             "MVVM",
             "Clean Architecture",
+            "Hexagonal Architecture",
             "Modularization",
             "Dependency Injection",
             "Design Systems",
@@ -44,7 +46,7 @@ private val skillCategories = listOf(
     ),
     SkillCategory(
         label = "Tools & Platforms",
-        skills = listOf("Gradle", "Git", "CI/CD", "Firebase", "Docker"),
+        skills = listOf("Gradle", "Git", "CI/CD", "Firebase", "Docker", "Agent Orchestration", "OpenSpec"),
     ),
 )
 
