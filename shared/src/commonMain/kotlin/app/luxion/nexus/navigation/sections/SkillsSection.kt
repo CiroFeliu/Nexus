@@ -10,20 +10,24 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import app.luxion.nexus.i18n.Language
+import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.theme.PortfolioSpacing
 
-// One labeled group of skills, e.g. "Languages" -> ["Kotlin", "Swift", ...].
-private data class SkillCategory(val label: String, val skills: List<String>)
+// One labeled group of skills, e.g. "Languages" -> ["Kotlin", "Swift", ...]. The skills
+// themselves are tool/technology names and stay identical across languages; only the
+// category label is translated.
+private data class SkillCategory(val label: Map<Language, String>, val skills: List<String>)
 
 // Ciro's skill set, grouped for quick scanning. Data-as-code so updating it later is a
 // one-file edit; keep entries short (a tool/technology name, not a sentence).
 private val skillCategories = listOf(
     SkillCategory(
-        label = "Languages",
+        label = mapOf(Language.English to "Languages", Language.Spanish to "Lenguajes"),
         skills = listOf("Kotlin", "Swift", "Java"),
     ),
     SkillCategory(
-        label = "Mobile / Android",
+        label = mapOf(Language.English to "Mobile / Android", Language.Spanish to "Móvil / Android"),
         skills = listOf(
             "Jetpack Compose",
             "Compose Multiplatform",
@@ -34,7 +38,7 @@ private val skillCategories = listOf(
         ),
     ),
     SkillCategory(
-        label = "Architecture & Patterns",
+        label = mapOf(Language.English to "Architecture & Patterns", Language.Spanish to "Arquitectura y Patrones"),
         skills = listOf(
             "MVVM",
             "Clean Architecture",
@@ -45,7 +49,7 @@ private val skillCategories = listOf(
         ),
     ),
     SkillCategory(
-        label = "Tools & Platforms",
+        label = mapOf(Language.English to "Tools & Platforms", Language.Spanish to "Herramientas y Plataformas"),
         skills = listOf("Gradle", "Git", "CI/CD", "Firebase", "Docker", "Agent Orchestration", "OpenSpec"),
     ),
 )
@@ -53,17 +57,18 @@ private val skillCategories = listOf(
 // Skills & Stack: technologies, tools, and areas of expertise, grouped by category so a
 // recruiter or engineer can scan Ciro's mobile-systems-architecture depth quickly.
 object SkillsSection {
-    const val title = "Skills & Stack"
+    private val title = mapOf(Language.English to "Skills & Stack", Language.Spanish to "Habilidades y Tecnologías")
 
     @Composable
     fun Content() {
+        val language = LocalAppLanguage.current
         Column(
             modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large),
             verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.large),
         ) {
-            Text(text = title, style = MaterialTheme.typography.headlineMedium)
+            Text(text = title.getValue(language), style = MaterialTheme.typography.headlineMedium)
             skillCategories.forEach { category ->
-                SkillCategoryRow(category)
+                SkillCategoryRow(category, language)
             }
         }
     }
@@ -72,9 +77,9 @@ object SkillsSection {
 // One category label followed by its skills as chips that wrap onto additional lines
 // instead of overflowing on narrow viewports.
 @Composable
-private fun SkillCategoryRow(category: SkillCategory) {
+private fun SkillCategoryRow(category: SkillCategory, language: Language) {
     Column(verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.small)) {
-        Text(text = category.label, style = MaterialTheme.typography.titleMedium)
+        Text(text = category.label.getValue(language), style = MaterialTheme.typography.titleMedium)
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
             verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
