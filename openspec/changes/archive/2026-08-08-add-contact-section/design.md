@@ -14,8 +14,9 @@ Contact is the portfolio's final call-to-action. Since deployment/self-hosting i
 
 ## Decisions
 
-- **Data-as-code**: contact links defined as a small constant list (`ContactLink(label, url, icon)`) inside `ContactSection.kt`.
+- **Data-as-code**: contact links defined as a small constant list (`ContactLink(label, url)`) inside `ContactSection.kt`.
 - **`mailto:` link for email**, opened through the same `openUrl` function used for HTTP(S) links, so there's one call path for all outbound contact actions.
+- **Text-only labels, no icon glyphs**: emoji icons were tried first but render as tofu boxes — the default Skia font on wasm/desktop has no emoji table. Wiring up an icon library (e.g. `material-icons-extended`) is a `build.gradle.kts` change, outside this file-scoped change's impact. Revisit if a shared icon dependency is ever added for another section.
 
 ## Risks / Trade-offs
 
