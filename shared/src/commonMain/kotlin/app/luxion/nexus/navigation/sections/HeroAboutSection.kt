@@ -22,10 +22,12 @@ import app.luxion.nexus.theme.PortfolioSpacing
 object HeroAboutSection {
     const val title = "Hero / About"
 
-    private const val NAME = "Ciro Feliu"
-    private const val ROLE = "Senior Android Developer & Mobile Systems Architect"
+    // internal so app.luxion.nexus.cv can assemble CvContent from this, the single source
+    // of truth for the hero copy — see openspec/changes/add-dynamic-cv-export/design.md.
+    internal const val NAME = "Ciro Feliu"
+    internal const val ROLE = "Senior Android Developer & Mobile Systems Architect"
     private const val AVATAR_INITIALS = "CF"
-    private const val BIO = "I design and build mobile systems that stay maintainable as they " +
+    internal const val BIO = "I design and build mobile systems that stay maintainable as they " +
         "grow, with a focus on Android architecture, Kotlin Multiplatform, and the tooling " +
         "that keeps a codebase easy to work in years after it ships. This portfolio itself " +
         "is a Compose Multiplatform build, shared across web, Android, desktop, and iOS."

@@ -38,7 +38,9 @@ object ProjectsSection {
     private const val subtitle = "A selection of apps and platforms I've built or contributed to, " +
         "from personal work to production products used by thousands of people."
 
-    private data class Project(
+    // internal so app.luxion.nexus.cv can assemble CvContent from this, the single source
+    // of truth for project history — see openspec/changes/add-dynamic-cv-export/design.md.
+    internal data class Project(
         val company: String,
         val name: String,
         val description: String,
@@ -51,7 +53,7 @@ object ProjectsSection {
 
     // Real project history across three roles; sourced directly from the linked pages, not
     // invented. Most of Ciro's S2 Grupo work stays fully classified and is excluded entirely.
-    private val projects = listOf(
+    internal val projects = listOf(
         Project(
             company = "Personal",
             name = "Nexus",

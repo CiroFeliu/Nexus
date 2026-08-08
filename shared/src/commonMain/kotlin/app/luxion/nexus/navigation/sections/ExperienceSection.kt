@@ -38,7 +38,9 @@ object ExperienceSection {
     }
 }
 
-private data class ExperienceEntry(
+// internal so app.luxion.nexus.cv can assemble CvContent from this, the single source of
+// truth for the timeline — see openspec/changes/add-dynamic-cv-export/design.md.
+internal data class ExperienceEntry(
     val role: String,
     val company: String,
     val dateRange: String,
@@ -47,7 +49,7 @@ private data class ExperienceEntry(
 
 // Role history, most-recent-first. This is the only place that needs editing to update
 // the timeline.
-private val entries = listOf(
+internal val entries = listOf(
     ExperienceEntry(
         role = "Senior Mobile Developer",
         company = "FERMAX",
