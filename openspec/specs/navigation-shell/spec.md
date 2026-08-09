@@ -36,8 +36,9 @@ The system SHALL expose the navigation shell as a single composable entry point 
 - **THEN** all four render the same shell and section order
 
 ### Requirement: Shell hosts the language-switcher control
-The system SHALL render the manual language-override control from `PortfolioShell`, visible regardless of scroll position, without introducing a section-anchor navigation system.
+The system SHALL render the manual language-override control and the section-navigation control together from `PortfolioShell`, both visible regardless of scroll position.
 
 #### Scenario: Control visible at any scroll position
 - **WHEN** a visitor scrolls to any point on the single-page portfolio
-- **THEN** the language-switcher control remains visible and usable
+- **THEN** the language-switcher control and the section-navigation control both remain visible and usable
+
