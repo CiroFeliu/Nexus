@@ -17,3 +17,14 @@ Each project card SHALL provide a link that opens the project's repository or li
 - **WHEN** a user activates a project's repo/demo link on any of the four targets
 - **THEN** the corresponding URL opens in the platform's default browser or handler
 
+### Requirement: Projects content is available in English and Spanish
+The Projects section SHALL render each project card's title and description in the active language (English or Spanish), sourced from the shared `Language`-keyed content, with no hardcoded single-language text.
+
+#### Scenario: Active language is Spanish
+- **WHEN** the active language is Spanish
+- **THEN** each project card's title and description render in Spanish
+
+#### Scenario: Active language is English
+- **WHEN** the active language is English
+- **THEN** each project card's title and description render in English
+
