@@ -18,6 +18,7 @@ fun PortfolioShell(onLanguageSelected: (Language) -> Unit) {
             PortfolioSection.entries.forEach { section ->
                 section.content()
             }
+            PortfolioFooter.Content()
         }
     }
 }

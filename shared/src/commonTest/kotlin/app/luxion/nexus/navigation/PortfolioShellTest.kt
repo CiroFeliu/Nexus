@@ -39,6 +39,17 @@ class PortfolioShellTest {
     }
 
     @Test
+    fun rendersFooterOnceAfterAllSections() = runComposeUiTest {
+        setContent {
+            PortfolioTheme {
+                PortfolioShell(onLanguageSelected = {})
+            }
+        }
+
+        onNodeWithText("© 2026 Ciro Feliu. All rights reserved.").assertExists()
+    }
+
+    @Test
     fun switchingLanguageRerendersSectionsInTheNewLanguage() = runComposeUiTest {
         setContent {
             PortfolioTheme {
