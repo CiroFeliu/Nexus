@@ -9,10 +9,15 @@ import kotlin.test.Test
 @OptIn(ExperimentalTestApi::class)
 class ExperienceSectionTest {
 
-    // Mirrors the companies declared in `ExperienceSection`'s private `entries` list. Company
-    // names aren't translated, unlike role titles and descriptions, so they're stable anchors
-    // for each timeline entry.
-    private val expectedCompanies = listOf("FERMAX", "Freelance", "S2 Grupo", "rudo apps")
+    // `title` is private and language-keyed now, so this hardcodes the known default-language
+    // (English) copy rather than reading it back.
+    private val titleEnglish = "Experience"
+
+    // Read from the package-internal `entries` list (visible to tests via the friend module
+    // relationship) instead of duplicating the company names, so this stays correct as roles
+    // change. Company names aren't translated, unlike role titles and descriptions, so they're
+    // stable anchors for each timeline entry regardless of language.
+    private val expectedCompanies = entries.map { it.company }
 
     @Test
     fun rendersTitleAndEveryTimelineEntry() = runComposeUiTest {
@@ -22,7 +27,7 @@ class ExperienceSectionTest {
             }
         }
 
-        onNodeWithText(ExperienceSection.title).assertExists()
+        onNodeWithText(titleEnglish).assertExists()
         expectedCompanies.forEach { company ->
             onNodeWithText(company).assertExists()
         }

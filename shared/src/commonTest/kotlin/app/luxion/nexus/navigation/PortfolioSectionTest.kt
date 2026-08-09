@@ -1,16 +1,14 @@
 package app.luxion.nexus.navigation
 
-import app.luxion.nexus.navigation.sections.ContactSection
-import app.luxion.nexus.navigation.sections.ExperienceSection
-import app.luxion.nexus.navigation.sections.HeroAboutSection
-import app.luxion.nexus.navigation.sections.ProjectsSection
-import app.luxion.nexus.navigation.sections.SkillsSection
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class PortfolioSectionTest {
 
+    // `PortfolioSection` only carries each entry's composable content now — titles moved into
+    // per-section, language-keyed maps with `add-i18n-support`, so declaration order is the
+    // one property still worth asserting here; per-section content is covered by each
+    // section's own test.
     @Test
     fun entriesAreDeclaredInDisplayOrder() {
         assertEquals(
@@ -23,21 +21,5 @@ class PortfolioSectionTest {
             ),
             PortfolioSection.entries.toList(),
         )
-    }
-
-    @Test
-    fun everyEntryHasANonEmptyTitle() {
-        PortfolioSection.entries.forEach { section ->
-            assertTrue(section.title.isNotBlank(), "${section.name} has a blank title")
-        }
-    }
-
-    @Test
-    fun eachEntryTitleMatchesItsSectionObject() {
-        assertEquals(HeroAboutSection.title, PortfolioSection.HeroAbout.title)
-        assertEquals(SkillsSection.title, PortfolioSection.Skills.title)
-        assertEquals(ExperienceSection.title, PortfolioSection.Experience.title)
-        assertEquals(ProjectsSection.title, PortfolioSection.Projects.title)
-        assertEquals(ContactSection.title, PortfolioSection.Contact.title)
     }
 }
