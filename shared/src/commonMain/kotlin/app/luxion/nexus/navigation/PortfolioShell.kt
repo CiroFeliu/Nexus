@@ -27,6 +27,7 @@ fun PortfolioShell(onLanguageSelected: (Language) -> Unit) {
                     section.content()
                 }
             }
+            PortfolioFooter.Content()
         }
     }
 }

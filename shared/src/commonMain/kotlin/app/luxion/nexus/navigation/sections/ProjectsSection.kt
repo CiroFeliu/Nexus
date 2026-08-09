@@ -15,12 +15,17 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -48,6 +53,8 @@ object ProjectsSection {
         Language.English to "Not publicly available",
         Language.Spanish to "No disponible públicamente",
     )
+    private val featuredLabel = mapOf(Language.English to "Featured", Language.Spanish to "Destacados")
+    private val allFilterLabel = mapOf(Language.English to "All", Language.Spanish to "Todos")
 
     internal data class ProjectContent(
         val name: String,
@@ -60,7 +67,10 @@ object ProjectsSection {
         val content: Map<Language, ProjectContent>,
         val techStack: List<String>,
         val link: String? = null,
+        val featured: Boolean = false,
     )
+
+    private val excludedFilterTags = setOf("Android", "iOS")
 
     internal val projects = listOf(
         Project(
@@ -79,6 +89,7 @@ object ProjectsSection {
             ),
             techStack = listOf("Kotlin Multiplatform", "Compose Multiplatform"),
             link = "https://github.com/CiroFeliu/Nexus",
+            featured = true,
         ),
         Project(
             company = "Personal",
@@ -98,6 +109,7 @@ object ProjectsSection {
             ),
             techStack = listOf("Kotlin Multiplatform", "Desktop"),
             link = "https://github.com/LuxionServer/ShogunAi",
+            featured = true,
         ),
         Project(
             company = "Fermax",
@@ -116,6 +128,7 @@ object ProjectsSection {
             ),
             techStack = listOf("Android", "iOS"),
             link = "https://fermax.com/duoxme/es",
+            featured = true,
         ),
         Project(
             company = "Fermax",
@@ -223,6 +236,7 @@ object ProjectsSection {
             ),
             techStack = listOf("AI", "SaaS"),
             link = "https://www.revieve.com/",
+            featured = true,
         ),
         Project(
             company = "Rudo",
@@ -274,6 +288,7 @@ object ProjectsSection {
             ),
             techStack = listOf("Android", "iOS"),
             link = "https://rudo.es/portfolio/hospital-clinica-benidorm/",
+            featured = true,
         ),
         Project(
             company = "Rudo",
@@ -346,12 +361,21 @@ object ProjectsSection {
                 ),
             ),
             techStack = listOf("Hardware", "FPV"),
+            featured = true,
         ),
     )
+
+    internal val filterOptions: List<String> =
+        (projects.map { it.company } + projects.flatMap { it.techStack }.filterNot { it in excludedFilterTags })
+            .distinct()
+
+    internal fun matchesFilter(project: Project, filter: String?): Boolean =
+        filter == null || project.company == filter || filter in project.techStack
 
     @Composable
     fun Content() {
         val language = LocalAppLanguage.current
+        var selectedFilter by remember { mutableStateOf<String?>(null) }
         Column(
             modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -371,13 +395,50 @@ object ProjectsSection {
                 modifier = Modifier.widthIn(max = 640.dp),
             )
             Spacer(modifier = Modifier.height(PortfolioSpacing.extraLarge))
+            Text(
+                text = featuredLabel.getValue(language),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(PortfolioSpacing.medium))
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                 FlowRow(
                     modifier = Modifier.widthIn(max = 1120.dp),
                     horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.large, Alignment.CenterHorizontally),
                     verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.large),
                 ) {
-                    projects.forEach { project -> ProjectCard(project, language) }
+                    projects.filter { it.featured }.forEach { project -> ProjectCard(project, language) }
+                }
+            }
+            Spacer(modifier = Modifier.height(PortfolioSpacing.sectionGap))
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+                FlowRow(
+                    modifier = Modifier.widthIn(max = 1120.dp),
+                    horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.small, Alignment.CenterHorizontally),
+                    verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
+                ) {
+                    FilterChip(
+                        selected = selectedFilter == null,
+                        onClick = { selectedFilter = null },
+                        label = { Text(text = allFilterLabel.getValue(language)) },
+                    )
+                    filterOptions.forEach { option ->
+                        FilterChip(
+                            selected = selectedFilter == option,
+                            onClick = { selectedFilter = if (selectedFilter == option) null else option },
+                            label = { Text(text = option) },
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(PortfolioSpacing.extraLarge))
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+                FlowRow(
+                    modifier = Modifier.widthIn(max = 1120.dp),
+                    horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.large, Alignment.CenterHorizontally),
+                    verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.large),
+                ) {
+                    projects.filter { matchesFilter(it, selectedFilter) }.forEach { project -> ProjectCard(project, language) }
                 }
             }
         }
