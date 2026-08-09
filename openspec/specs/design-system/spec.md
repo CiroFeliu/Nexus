@@ -1,5 +1,8 @@
-## Requirements
+# design-system Specification
 
+## Purpose
+Defines the shared Material3 theme (colors, typography, shapes) that every portfolio composable and target consumes, so visual tone stays consistent and adapts to system dark mode without per-screen overrides.
+## Requirements
 ### Requirement: Shared Material3 theme
 The system SHALL provide a single Material3 `MaterialTheme` wrapper in `:shared` (`commonMain`) that supplies color scheme, typography, and shape tokens to every composable in the portfolio, so no screen defines its own colors or text styles.
 
@@ -24,3 +27,11 @@ The system SHALL render the same color scheme, typography scale, and shape/spaci
 #### Scenario: Same theme values on every target
 - **WHEN** the app is built and run on any of the four targets
 - **THEN** the resolved `MaterialTheme.colorScheme`, `MaterialTheme.typography`, and shape tokens are identical across targets
+
+### Requirement: Consecutive sections use alternating background tokens
+The system SHALL render consecutive portfolio sections with alternating `MaterialTheme.colorScheme` background/surface tokens, so adjacent sections are visually distinguishable without introducing new colors outside the shared theme.
+
+#### Scenario: Two adjacent sections render
+- **WHEN** the portfolio shell renders any two consecutive `PortfolioSection` entries
+- **THEN** they use different `colorScheme` tokens (e.g. `background` then `surface`) from the shared theme, and both remain correctly readable in light and dark mode
+
