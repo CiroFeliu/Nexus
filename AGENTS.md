@@ -6,6 +6,12 @@ Style and process guidelines for AI agents working in this repository. **This is
 
 Nexus is Ciro Feliu's personal portfolio (Senior Android Developer / Mobile Systems Architect), built as a Kotlin Multiplatform + Compose Multiplatform SPA (package `app.luxion.nexus`). All four targets are in scope for v1 — `:webApp` (Kotlin/Wasm with a JS fallback), `:androidApp`, `:iosApp`, and `:desktopApp` — sharing UI/content/logic from `:shared` so the portfolio behaves consistently everywhere. Deployment (self-hosted, Docker, custom domain) is deliberately out of scope until the site itself is further along.
 
+`:webApp` is the priority target within v1 — it's the primary deliverable (what recruiters/visitors see); `:androidApp`, `:iosApp`, and `:desktopApp` exist to demonstrate multiplatform reach. When work isn't otherwise scoped, prioritize `:webApp` + `:shared`. Design tone is clean/technical/structured/modern.
+
+Ciro is deeply fluent in Kotlin/Compose on native Android; Nexus is his first Compose Multiplatform *Web* project. Skip basic Kotlin/Android/Compose explanations — focus added detail on Web-specific concerns (Wasm vs JS tradeoffs, browser rendering quirks, SEO/SPA routing), which are newer ground for him.
+
+Project-specific conventions belong in this file, not in an AI agent's personal/auto memory — keep this file as the single source so any agent or teammate picks up the same context regardless of machine.
+
 ## Code style
 
 - All code is written in English: identifiers, comments, and commit messages.
@@ -41,3 +47,4 @@ Rules:
 ## Git
 
 - Commit messages are always in English.
+- Feature-branch PRs target `develop`, not `master`. `master` is reserved (releases).

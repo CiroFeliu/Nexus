@@ -41,4 +41,3 @@ The system SHALL render the manual language-override control from `PortfolioShel
 #### Scenario: Control visible at any scroll position
 - **WHEN** a visitor scrolls to any point on the single-page portfolio
 - **THEN** the language-switcher control remains visible and usable
-

@@ -27,4 +27,3 @@ The Experience/Timeline section SHALL render each entry's role title and descrip
 #### Scenario: Active language is English
 - **WHEN** the active language is English
 - **THEN** each timeline entry's role title and description render in English
-

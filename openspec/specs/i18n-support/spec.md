@@ -38,4 +38,3 @@ The system SHALL persist a manually-selected language across app restarts/sessio
 #### Scenario: No manual override yet made
 - **WHEN** a visitor has never manually selected a language
 - **THEN** the system locale (falling back to English) determines the active language on each visit
-

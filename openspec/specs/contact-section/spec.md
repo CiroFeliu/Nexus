@@ -31,4 +31,3 @@ The Contact section SHALL render any user-facing labels (e.g. link labels) in th
 #### Scenario: Active language is English
 - **WHEN** the active language is English
 - **THEN** the Contact section's labels render in English
-

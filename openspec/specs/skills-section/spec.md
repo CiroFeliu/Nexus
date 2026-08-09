@@ -27,4 +27,3 @@ The Skills & Stack section SHALL render its category labels in the active langua
 #### Scenario: Active language is English
 - **WHEN** the active language is English
 - **THEN** the Skills & Stack section's category labels render in English
-
