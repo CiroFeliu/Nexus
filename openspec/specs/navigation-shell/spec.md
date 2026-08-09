@@ -1,5 +1,8 @@
-## Requirements
+# navigation-shell Specification
 
+## Purpose
+TBD - created by archiving change add-portfolio-foundation. Update Purpose after archive.
+## Requirements
 ### Requirement: Portfolio sections are declared as a shared model
 The system SHALL define the portfolio's sections (Hero/About, Skills & Stack, Experience/Timeline, Projects, Contact) as a single ordered list/sealed model in `:shared`, so section order and identity are defined once and consumed by both the shell and each section's content.
 
@@ -31,3 +34,11 @@ The system SHALL expose the navigation shell as a single composable entry point 
 #### Scenario: Same entry point across targets
 - **WHEN** `webApp`, `androidApp`, `desktopApp`, or `iosApp` invoke the shared `App()` composable
 - **THEN** all four render the same shell and section order
+
+### Requirement: Shell hosts the language-switcher control
+The system SHALL render the manual language-override control from `PortfolioShell`, visible regardless of scroll position, without introducing a section-anchor navigation system.
+
+#### Scenario: Control visible at any scroll position
+- **WHEN** a visitor scrolls to any point on the single-page portfolio
+- **THEN** the language-switcher control remains visible and usable
+
