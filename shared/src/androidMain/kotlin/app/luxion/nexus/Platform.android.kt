@@ -11,8 +11,6 @@ class AndroidPlatform : Platform {
 
 actual fun getPlatform(): Platform = AndroidPlatform()
 
-// Holds the application context so `openUrl` can start an Activity outside a Composable
-// scope. Set once from `MainActivity.onCreate` before the first frame is composed.
 object AndroidAppContext {
     lateinit var context: Context
 }

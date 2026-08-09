@@ -5,8 +5,6 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
-// A clean, technical palette built around a single accent blue, used for links,
-// calls to action, and emphasis across every section.
 private val PrimaryLight = Color(0xFF2F6FED)
 private val OnPrimaryLight = Color(0xFFFFFFFF)
 private val PrimaryContainerLight = Color(0xFFD7E3FF)
@@ -48,7 +46,6 @@ val PortfolioLightColorScheme: ColorScheme = lightColorScheme(
     onError = OnErrorLight,
 )
 
-// Dark palette mirrors the light one on a low-glare, near-black surface.
 private val PrimaryDark = Color(0xFFAAC7FF)
 private val OnPrimaryDark = Color(0xFF002E69)
 private val PrimaryContainerDark = Color(0xFF184292)

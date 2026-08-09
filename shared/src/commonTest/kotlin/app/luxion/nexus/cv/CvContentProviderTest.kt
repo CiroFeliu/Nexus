@@ -11,9 +11,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
-// `buildCvContent` is plain Kotlin logic (no composables, no platform APIs), unlike
-// `CvExport`'s per-platform `actual`s — which stay untested, consistent with this change's
-// original non-goal of not testing platform actuals that call real platform APIs.
 class CvContentProviderTest {
 
     @Test
@@ -42,8 +39,6 @@ class CvContentProviderTest {
         val english = buildCvContent(Language.English)
         val spanish = buildCvContent(Language.Spanish)
 
-        // The person's name and company names aren't translated, unlike role/bio/description —
-        // same "stable anchors over exact copy" split the section composable tests use.
         assertEquals(english.name, spanish.name)
         assertEquals(english.experience.map { it.company }, spanish.experience.map { it.company })
         assertNotEquals(english.role, spanish.role)

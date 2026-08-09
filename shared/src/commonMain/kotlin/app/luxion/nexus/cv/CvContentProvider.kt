@@ -8,10 +8,6 @@ import app.luxion.nexus.navigation.sections.ProjectsSection
 import app.luxion.nexus.navigation.sections.entries
 import app.luxion.nexus.navigation.sections.skillCategories
 
-// Builds the CV content model from the same section data the portfolio renders, resolved to
-// a single language. This is the only place that maps portfolio content into CV shape — see
-// openspec/changes/add-dynamic-cv-export/design.md for why no content is duplicated into a
-// separate file.
 fun buildCvContent(language: Language): CvContent {
     val hero = HeroAboutSection.content.getValue(language)
     return CvContent(

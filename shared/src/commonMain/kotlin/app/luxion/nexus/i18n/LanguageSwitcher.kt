@@ -12,9 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import app.luxion.nexus.theme.PortfolioSpacing
 
-// A small, persistent language toggle — not a navigation bar. Mounted outside the portfolio's
-// scrollable content so it stays reachable regardless of scroll position, the same way a
-// dark-mode toggle would.
 @Composable
 fun LanguageSwitcher(onLanguageSelected: (Language) -> Unit, modifier: Modifier = Modifier) {
     val active = LocalAppLanguage.current

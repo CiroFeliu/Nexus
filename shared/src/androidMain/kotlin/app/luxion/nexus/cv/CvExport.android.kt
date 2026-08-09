@@ -9,13 +9,10 @@ import app.luxion.nexus.AndroidAppContext
 import java.io.File
 import java.io.FileOutputStream
 
-private const val PAGE_WIDTH_PX = 595 // A4 at 72dpi
+private const val PAGE_WIDTH_PX = 595
 private const val PAGE_HEIGHT_PX = 842
 private const val MARGIN_PX = 48f
 
-// Android export uses the SDK's built-in PdfDocument (no external dependency): each CV
-// section is drawn as selectable text onto a Canvas, paginated into A4-sized pages, then
-// shared via a content:// URI (FileProvider) so the user can hand it to any app they pick.
 actual fun exportCvToPdf(content: CvContent) {
     val context = AndroidAppContext.context
     val document = PdfDocument()
@@ -41,8 +38,6 @@ actual fun exportCvToPdf(content: CvContent) {
     context.startActivity(chooser)
 }
 
-// Draws CV content across as many A4 pages as needed, tracking the current page/canvas/
-// vertical offset and starting a new page whenever the next line would overflow the margin.
 private class CvPageWriter(private val document: PdfDocument) {
     private val titlePaint = Paint().apply { textSize = 20f; isFakeBoldText = true }
     private val headingPaint = Paint().apply { textSize = 15f; isFakeBoldText = true }
@@ -125,8 +120,6 @@ private class CvPageWriter(private val document: PdfDocument) {
     }
 }
 
-// Greedy word-wrap: appends words to the current line while they fit `maxWidth` per
-// `paint`'s font metrics, wrapping to a new line otherwise.
 private fun wrapText(text: String, paint: Paint, maxWidth: Float): List<String> {
     val words = text.split(" ")
     val lines = mutableListOf<String>()

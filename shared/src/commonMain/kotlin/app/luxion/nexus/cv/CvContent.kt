@@ -1,7 +1,5 @@
 package app.luxion.nexus.cv
 
-// Plain data model for the exportable CV — see [buildCvContent] for how this is assembled
-// from the same content the portfolio sections render, so the two can never drift apart.
 data class CvContent(
     val name: String,
     val role: String,

@@ -1,10 +1,5 @@
 package app.luxion.nexus.cv
 
-// A standalone HTML document rendering of [CvContent], loaded into a hidden iframe by the web
-// actuals and printed there via that iframe's own `window.print()`. Printing happens in the
-// iframe's own browsing context — never in the main document — so it can't disturb the
-// portfolio's own canvas/layout, and the iframe's plain (non-`overflow: hidden`) body lets
-// multi-page content paginate normally instead of being clipped to one viewport.
 internal fun CvContent.toPrintDocument(): String = buildString {
     append("<!DOCTYPE html><html><head><meta charset=\"utf-8\">")
     append("<title>").append(name.escapeHtml()).append(" - CV</title>")

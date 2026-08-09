@@ -14,16 +14,8 @@ import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.theme.PortfolioSpacing
 
-// One labeled group of skills, e.g. "Languages" -> ["Kotlin", "Swift", ...]. The skills
-// themselves are tool/technology names and stay identical across languages; only the
-// category label is translated.
-//
-// internal so app.luxion.nexus.cv can assemble CvContent from this, the single source of
-// truth for the skill list — see openspec/changes/add-dynamic-cv-export/design.md.
 internal data class SkillCategory(val label: Map<Language, String>, val skills: List<String>)
 
-// Ciro's skill set, grouped for quick scanning. Data-as-code so updating it later is a
-// one-file edit; keep entries short (a tool/technology name, not a sentence).
 internal val skillCategories = listOf(
     SkillCategory(
         label = mapOf(Language.English to "Languages", Language.Spanish to "Lenguajes"),
@@ -57,8 +49,6 @@ internal val skillCategories = listOf(
     ),
 )
 
-// Skills & Stack: technologies, tools, and areas of expertise, grouped by category so a
-// recruiter or engineer can scan Ciro's mobile-systems-architecture depth quickly.
 object SkillsSection {
     private val title = mapOf(Language.English to "Skills & Stack", Language.Spanish to "Habilidades y Tecnologías")
 
@@ -77,8 +67,6 @@ object SkillsSection {
     }
 }
 
-// One category label followed by its skills as chips that wrap onto additional lines
-// instead of overflowing on narrow viewports.
 @Composable
 private fun SkillCategoryRow(category: SkillCategory, language: Language) {
     Column(verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.small)) {
@@ -94,7 +82,6 @@ private fun SkillCategoryRow(category: SkillCategory, language: Language) {
     }
 }
 
-// A single skill rendered as a themed, rounded tag.
 @Composable
 private fun SkillChip(skill: String) {
     Surface(

@@ -17,9 +17,6 @@ import kotlin.test.Test
 @OptIn(ExperimentalTestApi::class)
 class PortfolioShellTest {
 
-    // Each section's title is now a private, per-language map on its own object, so these
-    // hardcode the known default-language (English) copy rather than reading it back — the
-    // name is included too, even though it's untranslated, since it's HeroAbout's anchor.
     private val sectionAnchorsEnglish = listOf(
         "Ciro Feliu",
         "Skills & Stack",
@@ -41,9 +38,6 @@ class PortfolioShellTest {
         }
     }
 
-    // `PortfolioShell` only forwards `onLanguageSelected` — the language itself lives in
-    // `LocalAppLanguage`, owned by `App` in production. This mirrors that wiring locally so the
-    // test can drive `LanguageSwitcher` and observe the shell's sections actually re-render.
     @Test
     fun switchingLanguageRerendersSectionsInTheNewLanguage() = runComposeUiTest {
         setContent {
