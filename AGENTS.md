@@ -33,6 +33,8 @@ Rules:
 - Non-trivial changes are planned with OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`) before being implemented. This lets multiple agents pick up independent changes in parallel without stepping on each other.
 - Keep each OpenSpec change scoped to one independently-shippable slice (one portfolio section, one cross-cutting concern like theming or navigation) so changes stay parallelizable and reviewable on their own.
 - If you're going to add an architecture explanation or a decision, it goes in the change's `design.md`, not in this file.
+- Use the `openspec` CLI (`openspec archive`, `openspec validate`, `openspec list`) for all OpenSpec operations — never hand-edit `openspec/specs/` or manually move folders under `openspec/changes/` to replicate what the CLI does. The CLI enforces rules (e.g. every spec needs a `## Purpose` section) that a manual merge can silently violate.
+- Sync with `develop` before archiving a change, and don't archive a change you don't own — archiving directly on `develop` outside a PR risks a second branch racing to archive the same change independently.
 
 ## Commands
 
