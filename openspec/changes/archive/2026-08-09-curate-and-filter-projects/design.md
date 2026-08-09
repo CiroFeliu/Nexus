@@ -16,7 +16,7 @@
 
 ## Decisions
 
-- **Data model**: add `featured: Boolean = false` to `Project`. Default `false` keeps all 11 non-featured entries unchanged; the 4-5 curated ones get `featured = true`. Simpler than a parallel `featuredProjects` list that could drift out of sync with `projects`.
+- **Data model**: add `featured: Boolean = false` to `Project`. Default `false` keeps the remaining 10 entries unchanged; the 6 curated ones get `featured = true`. Simpler than a parallel `featuredProjects` list that could drift out of sync with `projects`.
 - **Filter option derivation**: compute filter chips from the data itself rather than hand-maintaining an allowlist — `(projects.map { it.company } + projects.flatMap { it.techStack }.filterNot { it in EXCLUDED_FILTER_TAGS }).distinct()`, where `EXCLUDED_FILTER_TAGS = setOf("Android", "iOS")`. This way, adding a future project with a new differentiating tag automatically gets a filter chip without a second edit; `Android`/`iOS` stay visible as informational `TechTag`s on cards, just never offered as filter chips.
 - **Filter semantics**: single active filter (`remember { mutableStateOf<String?>(null) }`), `null` = "All"/"Todos". A project matches when `project.company == selected || selected in project.techStack`.
 - **Featured section**: always renders the `featured == true` projects, unaffected by the filter state — it's a fixed curation, not a filtered view. Rendered above the filter row and full grid, with a distinct "Featured"/"Destacados" label. Reuses the existing `ProjectCard` composable (no new card variant) to avoid duplicating card layout — the section is set apart by its label and position, not a different visual style, keeping this change additive rather than a card redesign.
@@ -25,9 +25,9 @@
 
 ## Risks / Trade-offs
 
-- [Risk] The 5th featured slot (currently Mhia) links to a PDF report, not a product — weaker "click to see it" experience than the other four featured picks. → Mitigation: flagged as an open decision below; can be swapped for HCB Paciente or Zenith without any structural change (just moving the `featured = true` flag).
+- [Risk] Zenith (one of the 6 featured picks) has no `link` at all, only an `unavailableNote` — weaker "click to see it" experience than the other five featured picks, which all link out. → Accepted: Zenith's hardware build is a deliberate diversity signal (non-software work) in the featured set, and the card already handles the no-link case via `unavailableNote`.
 - [Risk] Derived filter chips mean the exact set of chips shown depends on current data — if all differentiating-tag projects get removed later, chips could shrink unexpectedly. → Mitigation: acceptable given the alternative (hand-maintained list) drifts silently instead; a shrinking chip list is a visible, honest reflection of the data.
 
 ## Open Questions
 
-- Final 5th featured project: confirm Mhia vs. HCB Paciente vs. Zenith before/during apply.
+- (resolved) Final featured set: Mhia was dropped (its only link is a PDF report, not a product page); both alternatives considered — HCB Paciente and Zenith — were kept instead, bringing the featured set to 6: Nexus, ShogunAi, DuoxMe, Revieve, HCB Paciente, Zenith.

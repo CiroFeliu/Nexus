@@ -4,7 +4,7 @@ The Projects section is a single uniform grid of 16 cards with no way to narrow 
 
 ## What Changes
 
-- Add a "Featured" subsection above the full projects grid, highlighting the 4-5 most compelling projects for someone screening the portfolio: **Nexus, Revieve, DuoxMe, ShogunAi**, and a 5th slot currently proposed as **Mhia** (open decision — alternatives considered were HCB Paciente and Zenith; Mhia's current link points to a PDF report rather than a product page, which may argue for swapping it — final pick to confirm during apply).
+- Add a "Featured" subsection above the full projects grid, highlighting the most compelling projects for someone screening the portfolio: **Nexus, Revieve, DuoxMe, ShogunAi, HCB Paciente, and Zenith** (6 total — Mhia was dropped from consideration since its only link is a PDF report rather than a product page; both alternatives considered, HCB Paciente and Zenith, were kept instead).
 - Add a filter control above the full grid using `company` (Fermax / S2 Grupo / Rudo / Personal) and the differentiating `techStack` tags (`AI`, `SaaS`, `Cybersecurity`, `Secure Development`, `Kotlin Multiplatform`, `Compose Multiplatform`, `Desktop`, `Hardware`, `FPV`) — **excluding** `Android`/`iOS` as filter options since they cover 8-9 of 16 projects and don't meaningfully narrow the grid (they remain visible as informational tags on each card, just not clickable filters).
 - Selecting a filter narrows the full grid to matching projects; an "All"/"Todos" option resets it. The Featured subsection is unaffected by the filter — it's a fixed curated set, not filtered.
 
