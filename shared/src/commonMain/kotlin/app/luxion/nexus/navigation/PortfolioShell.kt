@@ -12,8 +12,6 @@ import app.luxion.nexus.i18n.LanguageSwitcher
 
 @Composable
 fun PortfolioShell(onLanguageSelected: (Language) -> Unit) {
-    // The switcher sits outside the scrollable content below, so it stays visible regardless
-    // of scroll position instead of scrolling away with the sections.
     Column(modifier = Modifier.fillMaxSize()) {
         LanguageSwitcher(onLanguageSelected = onLanguageSelected)
         Column(modifier = Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {

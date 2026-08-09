@@ -17,15 +17,10 @@ import platform.UIKit.UIGraphicsPDFRendererContext
 import platform.UIKit.drawAtPoint
 import platform.UIKit.sizeWithAttributes
 
-private const val PAGE_WIDTH = 595.0 // A4 at 72dpi
+private const val PAGE_WIDTH = 595.0
 private const val PAGE_HEIGHT = 842.0
 private const val MARGIN = 48.0
 
-// iOS export uses UIKit's UIGraphicsPDFRenderer (no external dependency): each CV section
-// is drawn as text into a PDF graphics context, paginated into A4-sized pages, then handed
-// to a share sheet so the user can save it to Files or send it on. See tasks.md item 4.1 —
-// this is the target with the least precedent for Kotlin/Native <-> UIKit interop of the
-// four, so treat this file as the spike result: re-verify against a real simulator run.
 @OptIn(ExperimentalForeignApi::class)
 actual fun exportCvToPdf(content: CvContent) {
     val pageRect = CGRectMake(0.0, 0.0, PAGE_WIDTH, PAGE_HEIGHT)
@@ -44,8 +39,6 @@ actual fun exportCvToPdf(content: CvContent) {
     rootViewController?.presentViewController(activityController, animated = true, completion = null)
 }
 
-// Draws CV content across as many A4 pages as needed, tracking the current vertical offset
-// and starting a new PDF page whenever the next line would overflow the margin.
 @OptIn(ExperimentalForeignApi::class)
 private class CvPageWriter(private val context: UIGraphicsPDFRendererContext) {
     private val titleFont = UIFont.boldSystemFontOfSize(20.0)
@@ -106,8 +99,6 @@ private class CvPageWriter(private val context: UIGraphicsPDFRendererContext) {
     private fun drawLine(text: String, font: UIFont, gapAfter: Double) {
         val lineHeight = font.lineHeight + gapAfter
         newPageIfNeeded(lineHeight)
-        // `as NSString` triggers a "cast can never succeed" compiler warning — a known
-        // false-positive for Kotlin/Native's toll-free String<->NSString bridge, not a bug.
         (text as NSString).drawAtPoint(CGPointMake(MARGIN, y), withAttributes = fontAttributes(font))
         y += lineHeight
     }
@@ -121,8 +112,6 @@ private class CvPageWriter(private val context: UIGraphicsPDFRendererContext) {
     }
 }
 
-// Greedy word-wrap: appends words to the current line while they fit `maxWidth` per
-// `font`'s metrics, wrapping to a new line otherwise.
 @OptIn(ExperimentalForeignApi::class)
 private fun wrapText(text: String, font: UIFont, maxWidth: Double): List<String> {
     val words = text.split(" ")

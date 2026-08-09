@@ -5,8 +5,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// The type scale used across every portfolio section: bold display/headline styles for
-// section titles, and plain body/label styles for copy — no per-screen text styling.
 val PortfolioTypography: Typography = Typography(
     displayLarge = TextStyle(
         fontWeight = FontWeight.Bold,

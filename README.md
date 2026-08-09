@@ -12,6 +12,26 @@ This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM
     Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
     folder is the appropriate location.
 
+### Testing
+
+`:shared` has a `commonTest` source set covering the section registry, the shell, and every
+section's `Content()` composable. Run it with:
+
+```bash
+./gradlew test
+```
+
+Conventions, mirroring the `commonMain` layout under
+[`shared/src/commonTest/kotlin`](./shared/src/commonTest/kotlin):
+
+- One test file per production file (`PortfolioSectionTest.kt`, `PortfolioShellTest.kt`, one
+  per section under `navigation/sections/`).
+- Plain logic (e.g. the section registry) uses `kotlin.test`; composables use Compose
+  Multiplatform's `runComposeUiTest` for smoke tests — renders without throwing, expected
+  structural content is present.
+- Assertions favor structure and stable anchors (names, product/company names, node counts)
+  over exact copy, since section text is expected to become i18n-keyed.
+
 ### Running the apps
 
 Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:

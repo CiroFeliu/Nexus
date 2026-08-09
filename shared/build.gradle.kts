@@ -55,7 +55,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
-            // For FileProvider, used to share the generated CV PDF (CvExport.android.kt).
             implementation(libs.androidx.core.ktx)
         }
         commonMain.dependencies {
@@ -70,6 +69,10 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.compose.uiTest)
+        }
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
         }
         jsMain.dependencies {
             implementation(libs.wrappers.browser)
@@ -78,8 +81,6 @@ kotlin {
             implementation(libs.wrappers.browser)
         }
         jvmMain.dependencies {
-            // Text-based (not rasterized) PDF writing for the desktop CV export
-            // (CvExport.jvm.kt) — see design.md's Open Questions for why PDFBox.
             implementation(libs.pdfbox)
         }
     }
@@ -87,4 +88,10 @@ kotlin {
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
+tasks.register("test") {
+    group = "verification"
+    description = "Runs :shared's JVM test suite."
+    dependsOn("jvmTest")
 }

@@ -34,7 +34,6 @@ import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.openUrl
 import app.luxion.nexus.theme.PortfolioSpacing
 
-// Projects: a card showcase of featured work, each linking out to its repo/demo/product page.
 object ProjectsSection {
     private val title = mapOf(Language.English to "Projects", Language.Spanish to "Proyectos")
     private val subtitle = mapOf(
@@ -50,33 +49,19 @@ object ProjectsSection {
         Language.Spanish to "No disponible públicamente",
     )
 
-    // Name and description, the fields that differ by language. `name` is a product/brand name
-    // and is usually identical in both, but stays part of the map so a card is a single-file,
-    // single-entry edit in both languages at once.
-    //
-    // internal so app.luxion.nexus.cv can assemble CvContent from this — see
-    // openspec/changes/add-dynamic-cv-export/design.md.
     internal data class ProjectContent(
         val name: String,
         val description: String,
-        // Null unless this project needs a non-default reason why there's nothing public to
-        // link to (NDA, or no published repo yet).
         val unavailableNote: String? = null,
     )
 
-    // internal so app.luxion.nexus.cv can assemble CvContent from this, the single source
-    // of truth for project history — see openspec/changes/add-dynamic-cv-export/design.md.
     internal data class Project(
         val company: String,
         val content: Map<Language, ProjectContent>,
         val techStack: List<String>,
-        // Null when there's nothing public to link to — the card falls back to showing the
-        // unavailable note instead of a link button.
         val link: String? = null,
     )
 
-    // Real project history across three roles; sourced directly from the linked pages, not
-    // invented. Most of Ciro's S2 Grupo work stays fully classified and is excluded entirely.
     internal val projects = listOf(
         Project(
             company = "Personal",
@@ -454,9 +439,6 @@ object ProjectsSection {
         }
     }
 
-    // A hand-drawn "external link" arrow, used instead of a Unicode glyph (↗) — some target
-    // fonts don't ship that glyph and render a tofu box instead. A vector shape renders
-    // identically on every platform without pulling in a material-icons dependency.
     @Composable
     private fun ExternalLinkIcon(color: Color, modifier: Modifier = Modifier) {
         Canvas(modifier = modifier.size(14.dp)) {

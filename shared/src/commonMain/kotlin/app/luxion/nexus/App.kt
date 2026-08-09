@@ -22,7 +22,6 @@ import app.luxion.nexus.theme.PortfolioTheme
 @Composable
 @Preview
 fun App() {
-    // Startup resolution order: persisted manual override, else system locale, else English.
     var language by remember { mutableStateOf(readPersistedLanguage() ?: Language.fromTag(systemLanguageTag())) }
     CompositionLocalProvider(LocalAppLanguage provides language) {
         PortfolioTheme {

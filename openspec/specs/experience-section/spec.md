@@ -1,5 +1,8 @@
-## Requirements
+# experience-section Specification
 
+## Purpose
+TBD - created by archiving change add-experience-section. Update Purpose after archive.
+## Requirements
 ### Requirement: Experience is shown as a chronological timeline
 The Experience/Timeline section SHALL render Ciro's work history as a vertical timeline, ordered most-recent-first, with each entry showing company, role title, and date range.
 

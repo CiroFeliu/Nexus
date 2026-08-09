@@ -1,5 +1,8 @@
-## Requirements
+# skills-section Specification
 
+## Purpose
+TBD - created by archiving change add-skills-section. Update Purpose after archive.
+## Requirements
 ### Requirement: Skills are grouped by category
 The Skills & Stack section SHALL present skills grouped under labeled categories (e.g., Languages, Mobile/Android, Architecture & Patterns, Tools & Platforms) rather than as a single flat list.
 

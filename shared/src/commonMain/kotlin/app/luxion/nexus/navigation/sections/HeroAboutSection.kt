@@ -20,12 +20,9 @@ import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.theme.PortfolioSpacing
 
-// Hero/About: introduction and personal summary — the first thing any visitor sees.
 object HeroAboutSection {
     private const val AVATAR_INITIALS = "CF"
 
-    // internal so app.luxion.nexus.cv can assemble CvContent from this, the single source
-    // of truth for the hero copy — see openspec/changes/add-dynamic-cv-export/design.md.
     internal data class HeroAboutContent(val name: String, val role: String, val bio: String)
 
     internal val content = mapOf(
@@ -63,8 +60,6 @@ object HeroAboutSection {
         }
     }
 
-    // A simple initials-based placeholder avatar, styled with theme colors, so the section
-    // looks intentional even before a real photo asset is supplied.
     @Composable
     private fun Avatar(initials: String) {
         Box(

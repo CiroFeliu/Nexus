@@ -1,5 +1,8 @@
-## Requirements
+# contact-section Specification
 
+## Purpose
+TBD - created by archiving change add-contact-section. Update Purpose after archive.
+## Requirements
 ### Requirement: Contact section provides direct links
 The Contact section SHALL display direct links to reach Ciro: email, LinkedIn, and GitHub, each opened via the shared `openUrl` capability, and SHALL provide a "Download CV" action that triggers the shared CV export capability.
 

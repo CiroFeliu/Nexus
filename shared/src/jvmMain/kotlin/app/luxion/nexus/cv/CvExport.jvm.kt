@@ -13,9 +13,6 @@ import java.io.File
 
 private const val MARGIN = 48f
 
-// Desktop export uses Apache PDFBox (Apache-2.0) to write text-based (not rasterized, so
-// selectable/searchable) PDF pages, delivered via the OS-native "Save As" dialog. See
-// design.md's Open Questions for why PDFBox over a hand-rolled writer.
 actual fun exportCvToPdf(content: CvContent) {
     val document = PDDocument()
     val writer = CvPageWriter(document)
@@ -31,9 +28,6 @@ actual fun exportCvToPdf(content: CvContent) {
     document.close()
 }
 
-// Frame(null) rather than a reference to the app's own Compose Window: FileDialog only
-// needs an owner for modality, and reaching the actual window would mean threading a
-// reference through the expect/actual boundary for no real benefit here.
 private fun pickSaveFile(content: CvContent): File? {
     val dialog = FileDialog(null as Frame?, "Save CV", FileDialog.SAVE)
     dialog.file = "${content.name.replace(" ", "_")}_CV.pdf"
@@ -44,8 +38,6 @@ private fun pickSaveFile(content: CvContent): File? {
     return File(directory, fileName)
 }
 
-// Draws CV content across as many A4 pages as needed, tracking the current page/content
-// stream/vertical offset and starting a new page whenever the next line would overflow.
 private class CvPageWriter(private val document: PDDocument) {
     private val titleFont = PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD)
     private val headingFont = PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD)
@@ -129,13 +121,8 @@ private class CvPageWriter(private val document: PDDocument) {
     }
 }
 
-// The standard 14 PDF fonts only support WinAnsiEncoding, which doesn't cover every
-// character the portfolio content uses (e.g. the em dash in date ranges) — swap those for
-// plain ASCII equivalents rather than let PDFBox throw on an unsupported glyph.
 private fun String.sanitizeForStandardFont(): String = replace('—', '-').replace('–', '-')
 
-// Greedy word-wrap: appends words to the current line while they fit `maxWidth` per
-// `font`'s metrics at `size`, wrapping to a new line otherwise.
 private fun wrapText(text: String, font: PDFont, size: Float, maxWidth: Float): List<String> {
     val words = text.split(" ")
     val lines = mutableListOf<String>()

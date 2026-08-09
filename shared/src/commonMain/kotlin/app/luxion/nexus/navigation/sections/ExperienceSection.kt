@@ -23,8 +23,6 @@ import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.theme.PortfolioSpacing
 
-// Experience/Timeline: Ciro's work history, rendered as a vertical timeline ordered
-// most-recent-first.
 object ExperienceSection {
     private val title = mapOf(Language.English to "Experience", Language.Spanish to "Experiencia")
 
@@ -41,20 +39,14 @@ object ExperienceSection {
     }
 }
 
-// Role title and description, the two fields that differ by language. Company and date range
-// are proper nouns/dates and stay the same across languages.
 internal data class ExperienceContent(val role: String, val description: String)
 
-// internal so app.luxion.nexus.cv can assemble CvContent from this, the single source of
-// truth for the timeline — see openspec/changes/add-dynamic-cv-export/design.md.
 internal data class ExperienceEntry(
     val content: Map<Language, ExperienceContent>,
     val company: String,
     val dateRange: String,
 )
 
-// Role history, most-recent-first. This is the only place that needs editing to update
-// the timeline.
 internal val entries = listOf(
     ExperienceEntry(
         content = mapOf(
@@ -119,8 +111,6 @@ internal val entries = listOf(
     ),
 )
 
-// One timeline row: a dot + connector line (omitted for the last entry) alongside the
-// entry's role, company, dates, and description.
 @Composable
 private fun TimelineEntry(entry: ExperienceEntry, language: Language, isLast: Boolean) {
     val content = entry.content.getValue(language)

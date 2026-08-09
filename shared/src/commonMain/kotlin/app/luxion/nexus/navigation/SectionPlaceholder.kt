@@ -9,8 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.luxion.nexus.theme.PortfolioSpacing
 
-// Body rendered for any section whose real content hasn't landed yet: its title plus an
-// explicit "TODO" marker, so an unfinished section is obvious in a build or screenshot.
 @Composable
 fun SectionPlaceholder(title: String) {
     Column(modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large)) {

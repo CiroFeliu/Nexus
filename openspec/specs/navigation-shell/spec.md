@@ -1,5 +1,8 @@
-## Requirements
+# navigation-shell Specification
 
+## Purpose
+TBD - created by archiving change add-portfolio-foundation. Update Purpose after archive.
+## Requirements
 ### Requirement: Portfolio sections are declared as a shared model
 The system SHALL define the portfolio's sections (Hero/About, Skills & Stack, Experience/Timeline, Projects, Contact) as a single ordered list/sealed model in `:shared`, so section order and identity are defined once and consumed by both the shell and each section's content.
 
