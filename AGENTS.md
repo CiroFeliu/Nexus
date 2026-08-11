@@ -4,7 +4,7 @@ Style and process guidelines for AI agents working in this repository. **This is
 
 ## Project
 
-Nexus is Ciro Feliu's personal portfolio (Senior Android Developer / Mobile Systems Architect), built as a Kotlin Multiplatform + Compose Multiplatform SPA (package `app.luxion.nexus`). All four targets are in scope for v1 — `:webApp` (Kotlin/Wasm with a JS fallback), `:androidApp`, `:iosApp`, and `:desktopApp` — sharing UI/content/logic from `:shared` so the portfolio behaves consistently everywhere. Deployment (self-hosted, Docker, custom domain) is deliberately out of scope until the site itself is further along.
+Nexus is Ciro Feliu's personal portfolio (Senior Android Developer / Mobile Systems Architect), built as a Kotlin Multiplatform + Compose Multiplatform SPA (package `app.luxion.nexus`). All four targets are in scope for v1 — `:webApp` (Kotlin/Wasm only for v1; a JS fallback for browsers without WasmGC is deferred to a later change), `:androidApp`, `:iosApp`, and `:desktopApp` — sharing UI/content/logic from `:shared` so the portfolio behaves consistently everywhere. Deployment is self-hosted on Ciro's own server under `cirofeliu.es` (not GitHub Pages), auto-published on push to `master` via GitHub Actions; the concrete infra (Cloudflare zone, reverse proxy, deploy key) isn't built yet and needs an OpenSpec proposal before implementation.
 
 `:webApp` is the priority target within v1 — it's the primary deliverable (what recruiters/visitors see); `:androidApp`, `:iosApp`, and `:desktopApp` exist to demonstrate multiplatform reach. When work isn't otherwise scoped, prioritize `:webApp` + `:shared`. Design tone is clean/technical/structured/modern.
 
