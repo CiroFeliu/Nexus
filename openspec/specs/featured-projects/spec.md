@@ -1,7 +1,7 @@
 # featured-projects Specification
 
 ## Purpose
-TBD - created by archiving change curate-and-filter-projects. Update Purpose after archive.
+Give a time-constrained visitor an immediate signal of which projects matter most: a curated "Featured" subsection above the full projects grid, always showing the same hand-picked projects regardless of any filter applied to the grid below it. Content is bilingual (English/Spanish), reusing the same `Language`-keyed data as the full grid.
 ## Requirements
 ### Requirement: A curated Featured subsection highlights top projects
 The Projects section SHALL render a "Featured" subsection above the full projects grid, containing exactly the projects marked as featured in the shared project data.

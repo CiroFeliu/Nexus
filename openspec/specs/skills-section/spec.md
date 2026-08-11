@@ -1,7 +1,7 @@
 # skills-section Specification
 
 ## Purpose
-TBD - created by archiving change add-skills-section. Update Purpose after archive.
+Let a recruiter or engineer quickly scan Ciro's technical depth: skills grouped under labeled categories (Languages, Mobile/Android, Architecture & Patterns, Tools & Platforms) rather than a single flat list, reflowing to stay readable from phone-sized to desktop viewports. Category labels are bilingual (English/Spanish), sourced from the shared `Language`-keyed content.
 ## Requirements
 ### Requirement: Skills are grouped by category
 The Skills & Stack section SHALL present skills grouped under labeled categories (e.g., Languages, Mobile/Android, Architecture & Patterns, Tools & Platforms) rather than as a single flat list.

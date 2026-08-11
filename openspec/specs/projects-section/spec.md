@@ -1,7 +1,7 @@
 # projects-section Specification
 
 ## Purpose
-TBD - created by archiving change add-projects-section. Update Purpose after archive.
+Give a visitor concrete evidence of Ciro's work: his featured projects rendered as cards, each with a title, short description, tech tags, and a link that opens the project's repo or live demo via the shared `openUrl` capability. Content is bilingual (English/Spanish), sourced from the shared `Language`-keyed content model.
 ## Requirements
 ### Requirement: Projects render as a card showcase
 The Projects section SHALL render Ciro's featured projects as cards, each showing a title, short description, and tech tags.

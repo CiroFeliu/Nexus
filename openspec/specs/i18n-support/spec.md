@@ -1,7 +1,7 @@
 # i18n-support Specification
 
 ## Purpose
-TBD - created by archiving change add-i18n-support. Update Purpose after archive.
+Let the portfolio greet each visitor in their own language automatically — English or Spanish, resolved from system locale on first load, defaulting to English otherwise — while still letting them switch manually via a control visible regardless of scroll position. A manual override persists across sessions on every target, replacing the original English-only hardcoded copy.
 ## Requirements
 ### Requirement: Supported languages
 The system SHALL support English and Spanish as portfolio content languages, modeled as a shared `Language` type in `:shared`.

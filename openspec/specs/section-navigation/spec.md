@@ -1,7 +1,7 @@
 # section-navigation Specification
 
 ## Purpose
-TBD - created by archiving change add-section-navigation. Update Purpose after archive.
+Let a visitor jump directly to any portfolio section instead of scrolling past everything else: a sticky navigation control, visible regardless of scroll position, with one link per declared section that scrolls to it on activation and highlights whichever section is currently in view. Rendered as a single shared composable so it behaves identically across all four targets.
 ## Requirements
 ### Requirement: Sticky navigation links to every portfolio section
 The system SHALL render a sticky navigation control, visible regardless of scroll position, containing one link per declared `PortfolioSection`.

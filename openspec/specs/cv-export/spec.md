@@ -1,3 +1,9 @@
+# cv-export Specification
+
+## Purpose
+
+Let a visitor leave the portfolio with a portable, offline artifact (e.g. to pass along internally to a hiring manager) without that artifact drifting from the live portfolio content. The CV is generated on demand from the same shared content model the portfolio sections already render, then delivered through each platform's native download/share/save mechanism.
+
 ## Requirements
 
 ### Requirement: CV content is derived from shared portfolio content

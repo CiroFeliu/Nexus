@@ -1,7 +1,7 @@
 # shared-test-coverage Specification
 
 ## Purpose
-TBD - created by archiving change add-shared-test-coverage. Update Purpose after archive.
+Give `:shared` automated regression coverage — the section registry, `PortfolioShell` composition, and each section's `Content()` composable — runnable via the project's documented `./gradlew test` command with no extra setup, so cross-cutting changes (i18n, CV export, etc.) landing in parallel don't silently break shared rendering logic.
 ## Requirements
 ### Requirement: Section registry is tested
 The system SHALL include a test verifying `PortfolioSection.entries` contains exactly the declared sections, in the declared order, each with a non-empty title.

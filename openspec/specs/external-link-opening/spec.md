@@ -1,3 +1,9 @@
+# external-link-opening Specification
+
+## Purpose
+
+Give every section a single, shared way to open an external URL (repo/demo links, social/contact links) in the platform's default browser/handler, implemented once per platform via `expect`/`actual` instead of being redefined by each section that needs it.
+
 ## Requirements
 
 ### Requirement: Shared URL-opening capability

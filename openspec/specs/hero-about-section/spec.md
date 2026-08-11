@@ -1,7 +1,7 @@
 # hero-about-section Specification
 
 ## Purpose
-TBD - created by archiving change add-hero-about-section. Update Purpose after archive.
+Give a visitor a real first impression: Ciro's name, role title, short bio, and avatar, rendered with `PortfolioTheme` colors and typography instead of the wizard-scaffold placeholder it replaces. Content is bilingual (English/Spanish), and the avatar degrades gracefully to an initials placeholder until a photo asset is supplied.
 ## Requirements
 ### Requirement: Hero/About displays identity and role
 The Hero/About section SHALL display Ciro's name, role title, and a short bio, using only `PortfolioTheme` colors and typography.

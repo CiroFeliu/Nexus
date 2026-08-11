@@ -1,7 +1,7 @@
 # project-filtering Specification
 
 ## Purpose
-TBD - created by archiving change curate-and-filter-projects. Update Purpose after archive.
+Let a visitor narrow the full projects grid by company or by a differentiating tech tag, via a row of filter chips, so a recruiter can quickly find the projects relevant to them instead of scanning all of them. Tags too common to meaningfully narrow the grid (currently `Android`, `iOS`) are excluded from the chip row while still shown on individual cards; filter-control labels are bilingual (English/Spanish).
 ## Requirements
 ### Requirement: Filter chips narrow the full projects grid
 The Projects section SHALL render a row of filter chips, one per distinct company and one per distinct differentiating tech tag present in the project data, excluding tags too common to narrow the grid meaningfully.

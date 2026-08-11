@@ -1,7 +1,7 @@
 # experience-section Specification
 
 ## Purpose
-TBD - created by archiving change add-experience-section. Update Purpose after archive.
+Give a visitor a chronological view of Ciro's career progression: a most-recent-first timeline of roles, each with company, title, date range, and a short description. Content is bilingual (English/Spanish), sourced from the shared `Language`-keyed content model.
 ## Requirements
 ### Requirement: Experience is shown as a chronological timeline
 The Experience/Timeline section SHALL render Ciro's work history as a vertical timeline, ordered most-recent-first, with each entry showing company, role title, and date range.

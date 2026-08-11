@@ -1,7 +1,7 @@
 # web-seo-metadata Specification
 
 ## Purpose
-TBD - created by archiving change add-web-seo-metadata. Update Purpose after archive.
+Make `:webApp` findable and shareable: a real `<title>`/`<meta description>` naming Ciro and his role instead of the generic wizard placeholder, Open Graph tags so link previews (LinkedIn, Slack, etc.) render correctly, and a project-specific favicon instead of the browser default.
 ## Requirements
 ### Requirement: Web app declares a real title and description
 The system SHALL serve `index.html` with a `<title>` naming Ciro Feliu and his role, and a `<meta name="description">` summarizing the portfolio, instead of the generic placeholder title.

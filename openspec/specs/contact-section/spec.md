@@ -1,7 +1,7 @@
 # contact-section Specification
 
 ## Purpose
-TBD - created by archiving change add-contact-section. Update Purpose after archive.
+Give a visitor direct, frictionless ways to reach Ciro — email, LinkedIn, GitHub, and a "Download CV" action — closing out the portfolio's single-page flow without a contact form or backend. Content is bilingual (English/Spanish) and styled exclusively through `PortfolioTheme`, matching the rest of the shared UI.
 ## Requirements
 ### Requirement: Contact section provides direct links
 The Contact section SHALL display direct links to reach Ciro: email, LinkedIn, and GitHub, each opened via the shared `openUrl` capability, and SHALL provide a "Download CV" action that triggers the shared CV export capability.
