@@ -1,16 +1,14 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
+Nexus is [Ciro Feliu's](https://github.com/CiroFeliu) personal portfolio (Senior Android Developer / Mobile Systems Architect), built as a Kotlin Multiplatform + Compose Multiplatform single-page app (package `app.luxion.nexus`). One shared UI drives four targets so the portfolio behaves consistently everywhere:
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+- **[`:webApp`](./webApp)** — the primary target: Kotlin/Wasm, with a JS fallback for browsers without WasmGC. Will be self-hosted at `cirofeliu.es`, auto-published on push to `master`.
+- **[`:androidApp`](./androidApp)**, **[`:iosApp`](./iosApp)**, **[`:desktopApp`](./desktopApp)** — demonstrate the same portfolio's multiplatform reach.
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## Project layout
+
+- [`/shared`](./shared/src) contains all portfolio UI, theming, and content, shared across every target.
+  - [`commonMain`](./shared/src/commonMain/kotlin) holds the Compose UI and section content common to all targets.
+  - Other source sets (`androidMain`, `iosMain`, `jvmMain`, `jsMain`, `wasmJsMain`) hold only `expect`/`actual` platform glue (e.g. CV export, opening a URL).
+- Each platform module (`webApp`, `androidApp`, `iosApp`, `desktopApp`) wires up its own entry point and renders `:shared`'s UI — no portfolio content lives there.
 
 ### Testing
 
@@ -36,20 +34,19 @@ Conventions, mirroring the `commonMain` layout under
 
 Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
 
+- Web app:
+  - Wasm target (faster, modern browsers): `./gradlew :webApp:wasmJsBrowserDevelopmentRun`
+  - JS target (slower, supports older browsers): `./gradlew :webApp:jsBrowserDevelopmentRun`
 - Android app: `./gradlew :androidApp:assembleDebug`
 - Desktop app:
   - Hot reload: `./gradlew :desktopApp:hotRun --auto`
   - Standard run: `./gradlew :desktopApp:run`
-- Web app:
-  - Wasm target (faster, modern browsers): `./gradlew :webApp:wasmJsBrowserDevelopmentRun`
-  - JS target (slower, supports older browsers): `./gradlew :webApp:jsBrowserDevelopmentRun`
 - iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
 
----
+## Contributing
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+Code style and process guidelines for anyone (human or AI agent) working in this repo live in [`AGENTS.md`](./AGENTS.md). Non-trivial changes go through an [OpenSpec](https://github.com/Fission-AI/OpenSpec) proposal under [`openspec/changes/`](./openspec/changes) before implementation.
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+## License
+
+[MIT](./LICENSE)
