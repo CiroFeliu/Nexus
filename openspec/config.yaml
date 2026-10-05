@@ -1,0 +1,19 @@
+schema: spec-driven
+
+context: |
+  Nexus: Ciro Feliu's personal portfolio (Senior Android Developer / Mobile Systems Architect).
+  Stack: Kotlin Multiplatform + Compose Multiplatform, package app.luxion.nexus.
+  Targets in scope for v1: :webApp (Wasm + JS), :androidApp, :iosApp, :desktopApp, all sharing UI/content from :shared.
+  Design tone: clean, technical, structured, modern; native Dark Mode support via MaterialTheme.
+  Deployment (self-hosted, Docker, custom domain) is out of scope for now.
+  See AGENTS.md for code style and workflow conventions.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
