@@ -34,7 +34,7 @@
 
 - [x] 5.1 Merge this change's branch to `master` and watch the workflow run end to end
 - [x] 5.2 Verify `https://cirofeliu.es` serves the current build, with valid TLS and the expected security headers
-- [ ] 5.3 Push a trivial follow-up commit to `master` and confirm the site updates automatically with no manual step
+- [x] 5.3 Push a trivial follow-up commit to `master` and confirm the site updates automatically with no manual step
 
 ## 6. Docs
 
