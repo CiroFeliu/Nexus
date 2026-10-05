@@ -1,0 +1,58 @@
+name: Deploy web app
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-webapp
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Test
+        run: ./gradlew test
+
+      - name: Build Wasm distribution
+        run: ./gradlew :webApp:wasmJsBrowserDistribution
+
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.NEXUS_DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.NEXUS_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Publish to server
+        env:
+          DEPLOY_HOST: ${{ secrets.NEXUS_DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.NEXUS_DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.NEXUS_DEPLOY_USER }}
+        run: |
+          rsync -rlz --delete --checksum \
+            -e "ssh -i ~/.ssh/deploy_key -p $DEPLOY_PORT -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+            webApp/build/dist/wasmJs/productionExecutable/ \
+            "$DEPLOY_USER@$DEPLOY_HOST:"
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
