@@ -1,6 +1,6 @@
 Nexus is [Ciro Feliu's](https://github.com/CiroFeliu) personal portfolio (Senior Android Developer / Mobile Systems Architect), built as a Kotlin Multiplatform + Compose Multiplatform single-page app (package `app.luxion.nexus`). One shared UI drives four targets so the portfolio behaves consistently everywhere:
 
-- **[`:webApp`](./webApp)** — the primary target: Kotlin/Wasm, with a JS fallback for browsers without WasmGC. Will be self-hosted at `cirofeliu.es`, auto-published on push to `master`.
+- **[`:webApp`](./webApp)** — the primary target: Kotlin/Wasm, with a JS fallback for browsers without WasmGC. Live at [cirofeliu.es](https://cirofeliu.es), auto-published on push to `master`.
 - **[`:androidApp`](./androidApp)**, **[`:iosApp`](./iosApp)**, **[`:desktopApp`](./desktopApp)** — demonstrate the same portfolio's multiplatform reach.
 
 ## Project layout
@@ -42,6 +42,24 @@ Use the run configurations provided by the run widget in your IDE's toolbar. You
   - Hot reload: `./gradlew :desktopApp:hotRun --auto`
   - Standard run: `./gradlew :desktopApp:run`
 - iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+
+## Deployment
+
+Merging to `master` publishes the web app automatically via [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml):
+
+1. `./gradlew test` — a failing test stops the run before anything is published.
+2. `./gradlew :webApp:wasmJsBrowserDistribution`
+3. `rsync --delete` of `webApp/build/dist/wasmJs/productionExecutable/` (source maps excluded) to the server.
+
+The workflow can also be triggered manually from the Actions tab (`workflow_dispatch`). It needs these repository secrets:
+
+| Secret | Purpose |
+|---|---|
+| `NEXUS_DEPLOY_SSH_KEY` | Private half of the deploy-only SSH key |
+| `NEXUS_DEPLOY_KNOWN_HOSTS` | Pinned server host keys (strict host key checking) |
+| `NEXUS_DEPLOY_HOST` / `NEXUS_DEPLOY_PORT` / `NEXUS_DEPLOY_USER` | SSH connection details |
+
+The deploy key can only write into the site directory on the server (`rrsync -wo`); it cannot open a shell, read files, or forward ports. To roll back, revert the offending commit on `master` — the workflow redeploys the previous build.
 
 ## Contributing
 
