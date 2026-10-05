@@ -48,7 +48,7 @@ jobs:
           DEPLOY_PORT: ${{ secrets.NEXUS_DEPLOY_PORT }}
           DEPLOY_USER: ${{ secrets.NEXUS_DEPLOY_USER }}
         run: |
-          rsync -rlz --delete --checksum \
+          rsync -rlz --delete --delete-excluded --checksum --exclude '*.map' \
             -e "ssh -i ~/.ssh/deploy_key -p $DEPLOY_PORT -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
             webApp/build/dist/wasmJs/productionExecutable/ \
             "$DEPLOY_USER@$DEPLOY_HOST:"

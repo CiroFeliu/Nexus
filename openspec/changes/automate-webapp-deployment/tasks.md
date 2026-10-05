@@ -12,7 +12,7 @@
 - [x] 2.3 `docker compose up -d` and verify Caddy starts cleanly
 - [x] 2.4 Restrict 80/443 in UFW to Cloudflare's published IP ranges only (not `allow from any`) — the server's other DNS-only records already expose its real IP, so this is the actual boundary protecting `cirofeliu.es`
 - [x] 2.5 Verify `https://cirofeliu.es` and `https://www.cirofeliu.es` resolve, redirect correctly, and present a valid TLS handshake, before wiring up CI
-- [ ] 2.6 Verify a direct request to the server's IP on 80/443 (bypassing Cloudflare) is dropped, confirming the UFW allow-list actually works
+- [x] 2.6 Verify a direct request to the server's IP on 80/443 (bypassing Cloudflare) is dropped, confirming the UFW allow-list actually works
 
 ## 3. Deploy credential
 
@@ -32,11 +32,11 @@
 
 ## 5. Validation
 
-- [ ] 5.1 Merge this change's branch to `master` and watch the workflow run end to end
-- [ ] 5.2 Verify `https://cirofeliu.es` serves the current build, with valid TLS and the expected security headers
+- [x] 5.1 Merge this change's branch to `master` and watch the workflow run end to end
+- [x] 5.2 Verify `https://cirofeliu.es` serves the current build, with valid TLS and the expected security headers
 - [ ] 5.3 Push a trivial follow-up commit to `master` and confirm the site updates automatically with no manual step
 
 ## 6. Docs
 
-- [ ] 6.1 Confirm `AGENTS.md`'s Project section deployment note matches the final shipped setup
-- [ ] 6.2 Document the new deploy-only SSH key's existence and scope in `~/AGENTS.md` (private, not this repo), alongside the read-only exploration key, so future sessions know both exist and what each is for
+- [x] 6.1 Confirm `AGENTS.md`'s Project section deployment note matches the final shipped setup
+- [x] 6.2 Document the new deploy-only SSH key's existence and scope in `~/AGENTS.md` (private, not this repo), alongside the read-only exploration key, so future sessions know both exist and what each is for
