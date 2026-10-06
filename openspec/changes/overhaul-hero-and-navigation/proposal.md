@@ -24,4 +24,5 @@ Today's first viewport (two stacked nav bars, centered 96dp circular avatar, cen
 - `navigation/PortfolioShell.kt` (bar overlays content instead of sitting above it; scroll-to-section callback for the hero), `SectionNavigation.kt`, `i18n/LanguageSwitcher.kt`
 - `navigation/sections/HeroAboutSection.kt`
 - New grain overlay composable in the theme package
-- Depends on `refine-design-foundation`, `polish-portfolio-copy`; animations via `add-motion-layer`
+- Builds on the archived foundation, copy and web-shell changes; animations via `add-motion-layer`
+- Uses the current portrait asset (`hero_photo.jpg`, 576x576); a higher-resolution photo can replace it later without code changes

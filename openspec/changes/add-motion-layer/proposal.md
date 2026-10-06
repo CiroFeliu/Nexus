@@ -23,5 +23,5 @@ Variant **overhaul** (`feature/improve-design-overhaul`) sets `MOTION_INTENSITY 
 
 - New `theme/motion/` helpers (reveal, spotlight, parallax modifiers) in `commonMain`
 - `HeroAboutSection.kt`, `ProjectsSection.kt`, section headers, `PortfolioTopBar`
-- Depends on `refine-design-foundation` (motion tokens, `LocalReducedMotion`) and `overhaul-hero-and-navigation` / `overhaul-section-layouts`
+- Uses the archived foundation's motion tokens, `motionSpec()` and `LocalReducedMotion`; depends on `overhaul-hero-and-navigation` / `overhaul-section-layouts`
 - No new dependencies

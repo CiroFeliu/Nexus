@@ -7,8 +7,8 @@
 ## 2. Projects
 
 - [ ] 2.1 Pure bento span function (item count + width class to spans) with unit tests (cell count equals item count)
-- [ ] 2.2 Bento `Layout` for featured projects with `ProjectVisual` (image or designed fallback)
-- [ ] 2.3 Request project images from Ciro and add the ones supplied as WebP sized for display
+- [ ] 2.2 Bento `Layout` for featured projects with `ProjectVisual` (optional image slot, `null` for now)
+- [ ] 2.3 Designed placeholder visual per tile (alternating tints, large name, mono company, subtle drawn texture)
 - [ ] 2.4 Index list for non-featured projects with filter chips derived from that list and an empty state
 - [ ] 2.5 Replace the `Canvas` link icon and filled buttons with links/icon buttons
 - [ ] 2.6 Update `ProjectsSection` tests

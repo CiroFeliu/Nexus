@@ -9,10 +9,10 @@
 ## 2. Hero
 
 - [ ] 2.1 Asymmetric 7/5 grid at expanded+, 6/6 at medium, stacked at compact
-- [ ] 2.2 `heroDisplay` style and two-line name layout; role in mono; bio <= 20 words (Ciro approves EN/ES)
+- [ ] 2.2 `heroDisplay` style and two-line name layout; role in mono; bio from the drafted 20-word copy in `design.md` (Ciro reviews)
 - [ ] 2.3 Primary "Download CV" + secondary "Contact" scrolling to Contact, without coupling the section file to the shell
 - [ ] 2.4 4:5 portrait with reserved space, downward offset overlapping the next section on medium+
-- [ ] 2.5 Request a higher-resolution portrait from Ciro (~720x900); keep current asset as fallback
+- [ ] 2.5 Use the current `hero_photo.jpg` with the portrait column capped so the crop stays sharp enough
 - [ ] 2.6 Grain overlay outside the scroll container
 - [ ] 2.7 Verify first-viewport fit at 1280x720 and 1920x1080 in EN and ES
 

@@ -4,6 +4,10 @@
 
 This is the **overhaul** variant; the **evolve** variant lives on `feature/improve-design-evolve`. Section ids, order and nav labels stay unchanged.
 
+## Foundation available
+
+Built on the archived `refine-design-foundation`, `polish-portfolio-copy` and `improve-web-shell` changes. Use their pieces instead of re-creating them: `PortfolioContentContainer`, `LocalWidthClass`/`WidthClass`, `PortfolioLayout`, `PortfolioMotion` + `motionSpec()`, `LocalReducedMotion`, `Modifier.interactive(...)`, `LocalPortfolioMonoTypography`, `PortfolioShapeRoles`, and the shell's `notifyAppReady()`/`applyDocumentLanguage()` bridge.
+
 ## Goals / Non-Goals
 
 **Goals:**
@@ -24,7 +28,7 @@ This is the **overhaul** variant; the **evolve** variant lives on `feature/impro
 - **Hero height.** `BoxWithConstraints`: `heightIn(min = maxHeight * 0.85f)` on medium+, content vertically centered; never a fixed dp height. Verified at 1280x720 and 1920x1080.
 - **Hero type.** Name: a dedicated `heroDisplay` style (Geist 600, ~96sp at large, ~72sp expanded, ~48sp compact, tracking -0.04em, line height 1.0) split into first/last name lines by layout, not by `\n` in content. Role: Geist Mono `labelLarge` in `primary`. Bio: `bodyLarge`, `readableTextWidth`.
 - **Grain.** A small noise `ImageBitmap` generated once at startup (deterministic seed) and tiled with `drawWithCache` in a full-window overlay *outside* the scroll container, alpha ~0.04 light / ~0.06 dark, transparent to pointer input. It is static, so it stays on under reduced motion.
-- **Photo treatment.** `shapes.large`, `ContentScale.Crop`, reserved 4:5 space; optional duotone is out of scope (keep the real photo honest).
+- **Photo treatment.** `shapes.large`, `ContentScale.Crop`, reserved 4:5 space; optional duotone is out of scope (keep the real photo honest). The current 576x576 asset is used for now; at large widths the portrait column is capped (~360dp) so the upscale stays acceptable.
 
 ## Risks / Trade-offs
 
@@ -32,7 +36,12 @@ This is the **overhaul** variant; the **evolve** variant lives on `feature/impro
 - [Risk] Full-window grain overlay costs a draw per frame. → Cached tile, drawn once per frame without allocations; verify 60fps scroll on web.
 - [Risk] Very large display type in Spanish may wrap to 3 lines on medium widths. → Name is the only display text and is language-independent.
 
+## Copy
+
+- **Hero bio (draft, Ciro reviews on the branch):**
+  - EN: "I design and build mobile systems that stay maintainable as they grow, from Android architecture to Kotlin Multiplatform."
+  - ES: "Diseño y construyo sistemas móviles que siguen siendo fáciles de mantener al crecer, de la arquitectura Android a Kotlin Multiplatform."
+
 ## Open Questions
 
-- A higher-resolution portrait (current asset is 576x576, square; the 4:5 crop at ~360dp wide on 2x screens wants ~720x900).
-- Final 20-word bio (EN/ES).
+- None blocking. A higher-resolution portrait (~720x900) would improve sharpness on 2x screens and can be swapped in later.

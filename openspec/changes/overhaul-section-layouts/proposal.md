@@ -24,6 +24,6 @@ Variant **overhaul** (`feature/improve-design-overhaul`, dials 7/6/3). The secti
 ## Impact
 
 - `navigation/PortfolioShell.kt`, every file in `navigation/sections/`, `navigation/PortfolioFooter.kt`
-- New drawables (icons, brand marks) and, if supplied by Ciro, project images in `composeResources/drawable/` (WebP, sized for display)
+- New drawables (icons, brand marks); project visuals start as designed placeholders (no project images yet), with an optional image slot per project for later
 - Tests: projects split/filter scope/empty state, bento cell count equals featured count, section smoke tests
-- Depends on `refine-design-foundation`, `polish-portfolio-copy`, `overhaul-hero-and-navigation`; motion in `add-motion-layer`
+- Builds on the archived foundation, copy and web-shell changes and on `overhaul-hero-and-navigation`; motion in `add-motion-layer`
