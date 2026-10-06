@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -52,7 +51,7 @@ object HeroAboutSection {
     fun Content(photo: Painter? = null) {
         val content = content.getValue(LocalAppLanguage.current)
         Column(
-            modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.medium),
         ) {

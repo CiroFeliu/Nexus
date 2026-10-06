@@ -1,6 +1,7 @@
 package app.luxion.nexus.navigation.sections
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,9 @@ import androidx.compose.ui.unit.dp
 import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.openUrl
+import app.luxion.nexus.theme.PortfolioShapeRoles
 import app.luxion.nexus.theme.PortfolioSpacing
+import app.luxion.nexus.theme.interactive
 
 object ProjectsSection {
     private val title = mapOf(Language.English to "Projects", Language.Spanish to "Proyectos")
@@ -377,7 +380,7 @@ object ProjectsSection {
         val language = LocalAppLanguage.current
         var selectedFilter by remember { mutableStateOf<String?>(null) }
         Column(
-            modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -417,16 +420,16 @@ object ProjectsSection {
                     horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.small, Alignment.CenterHorizontally),
                     verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
                 ) {
-                    FilterChip(
+                    ProjectFilterChip(
+                        label = allFilterLabel.getValue(language),
                         selected = selectedFilter == null,
                         onClick = { selectedFilter = null },
-                        label = { Text(text = allFilterLabel.getValue(language)) },
                     )
                     filterOptions.forEach { option ->
-                        FilterChip(
+                        ProjectFilterChip(
+                            label = option,
                             selected = selectedFilter == option,
                             onClick = { selectedFilter = if (selectedFilter == option) null else option },
-                            label = { Text(text = option) },
                         )
                     }
                 }
@@ -479,9 +482,11 @@ object ProjectsSection {
                 Spacer(modifier = Modifier.height(PortfolioSpacing.medium))
                 val link = project.link
                 if (link != null) {
+                    val interactionSource = remember { MutableInteractionSource() }
                     Button(
                         onClick = { openUrl(link) },
-                        modifier = Modifier.fillMaxWidth(),
+                        interactionSource = interactionSource,
+                        modifier = Modifier.fillMaxWidth().interactive(interactionSource),
                         shape = MaterialTheme.shapes.medium,
                         colors = ButtonDefaults.buttonColors(),
                     ) {
@@ -498,6 +503,18 @@ object ProjectsSection {
                 }
             }
         }
+    }
+
+    @Composable
+    private fun ProjectFilterChip(label: String, selected: Boolean, onClick: () -> Unit) {
+        val interactionSource = remember { MutableInteractionSource() }
+        FilterChip(
+            selected = selected,
+            onClick = onClick,
+            label = { Text(text = label) },
+            interactionSource = interactionSource,
+            modifier = Modifier.interactive(interactionSource),
+        )
     }
 
     @Composable
@@ -528,7 +545,7 @@ object ProjectsSection {
     @Composable
     private fun TechTag(text: String) {
         Surface(
-            shape = MaterialTheme.shapes.extraLarge,
+            shape = PortfolioShapeRoles.tag,
             color = MaterialTheme.colorScheme.secondaryContainer,
         ) {
             Text(

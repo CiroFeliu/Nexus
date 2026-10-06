@@ -56,7 +56,7 @@ object SkillsSection {
     fun Content() {
         val language = LocalAppLanguage.current
         Column(
-            modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.large),
         ) {
             Text(text = title.getValue(language), style = MaterialTheme.typography.headlineMedium)

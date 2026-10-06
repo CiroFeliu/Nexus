@@ -3,7 +3,7 @@ package app.luxion.nexus.navigation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
+import app.luxion.nexus.theme.PortfolioContentContainer
 import app.luxion.nexus.theme.PortfolioSpacing
 
 object PortfolioFooter {
@@ -27,23 +28,25 @@ object PortfolioFooter {
     @Composable
     fun Content() {
         val language = LocalAppLanguage.current
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.extraSmall),
-        ) {
-            Text(
-                text = copyrightLine.getValue(language),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
-            Text(
-                text = buildNote.getValue(language),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
+        PortfolioContentContainer(verticalPadding = PaddingValues(vertical = PortfolioSpacing.large)) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.extraSmall),
+            ) {
+                Text(
+                    text = copyrightLine.getValue(language),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                )
+                Text(
+                    text = buildNote.getValue(language),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
 }

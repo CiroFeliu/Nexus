@@ -1,15 +1,16 @@
 package app.luxion.nexus.navigation.sections
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import app.luxion.nexus.cv.buildCvContent
 import app.luxion.nexus.cv.exportCvToPdf
@@ -17,6 +18,7 @@ import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.openUrl
 import app.luxion.nexus.theme.PortfolioSpacing
+import app.luxion.nexus.theme.interactive
 
 object ContactSection {
     private const val EMAIL_ADDRESS = "ricardociro97@gmail.com"
@@ -43,7 +45,7 @@ object ContactSection {
     fun Content() {
         val language = LocalAppLanguage.current
         Column(
-            modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.medium),
         ) {
             Text(text = title.getValue(language), style = MaterialTheme.typography.headlineMedium)
@@ -52,15 +54,26 @@ object ContactSection {
             }
             Row(horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.medium)) {
                 links.forEach { link ->
-                    OutlinedButton(onClick = { openUrl(link.url) }) {
-                        Text(link.label.getValue(language), style = MaterialTheme.typography.labelLarge)
-                    }
+                    ContactAction(label = link.label.getValue(language), onClick = { openUrl(link.url) })
                 }
-                OutlinedButton(onClick = { exportCvToPdf(buildCvContent(language)) }) {
-                    Text(downloadCvLabel.getValue(language), style = MaterialTheme.typography.labelLarge)
-                }
+                ContactAction(
+                    label = downloadCvLabel.getValue(language),
+                    onClick = { exportCvToPdf(buildCvContent(language)) },
+                )
             }
             Text(text = closingStatement.getValue(language), style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+
+    @Composable
+    private fun ContactAction(label: String, onClick: () -> Unit) {
+        val interactionSource = remember { MutableInteractionSource() }
+        OutlinedButton(
+            onClick = onClick,
+            interactionSource = interactionSource,
+            modifier = Modifier.interactive(interactionSource),
+        ) {
+            Text(label, style = MaterialTheme.typography.labelLarge)
         }
     }
 }

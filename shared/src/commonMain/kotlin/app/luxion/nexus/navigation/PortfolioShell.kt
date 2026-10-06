@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LanguageSwitcher
+import app.luxion.nexus.theme.PortfolioContentContainer
+import app.luxion.nexus.theme.ProvideWidthClass
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,34 +38,38 @@ fun PortfolioShell(onLanguageSelected: (Language) -> Unit) {
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        SectionNavigation(
-            activeSection = deriveActiveSection(scrollState.value, sectionOffsets),
-            onSectionSelected = { section ->
-                coroutineScope.launch {
-                    sectionOffsets[section]?.let { offset -> scrollState.animateScrollTo(offset) }
-                }
-            },
-        )
-        LanguageSwitcher(onLanguageSelected = onLanguageSelected)
-        Column(modifier = Modifier.weight(1f).fillMaxWidth().verticalScroll(scrollState)) {
-            PortfolioSection.entries.forEachIndexed { index, section ->
-                val sectionColor = if (index % 2 == 0) {
-                    MaterialTheme.colorScheme.background
-                } else {
-                    MaterialTheme.colorScheme.surface
-                }
-                Box(
-                    modifier = Modifier.onSizeChanged { size ->
-                        sectionHeights[section] = size.height
-                    },
-                ) {
-                    Surface(modifier = Modifier.fillMaxWidth(), color = sectionColor) {
-                        section.content()
+    ProvideWidthClass(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            SectionNavigation(
+                activeSection = deriveActiveSection(scrollState.value, sectionOffsets),
+                onSectionSelected = { section ->
+                    coroutineScope.launch {
+                        sectionOffsets[section]?.let { offset -> scrollState.animateScrollTo(offset) }
+                    }
+                },
+            )
+            LanguageSwitcher(onLanguageSelected = onLanguageSelected)
+            Column(modifier = Modifier.weight(1f).fillMaxWidth().verticalScroll(scrollState)) {
+                PortfolioSection.entries.forEachIndexed { index, section ->
+                    val sectionColor = if (index % 2 == 0) {
+                        MaterialTheme.colorScheme.background
+                    } else {
+                        MaterialTheme.colorScheme.surface
+                    }
+                    Box(
+                        modifier = Modifier.onSizeChanged { size ->
+                            sectionHeights[section] = size.height
+                        },
+                    ) {
+                        Surface(modifier = Modifier.fillMaxWidth(), color = sectionColor) {
+                            PortfolioContentContainer {
+                                section.content()
+                            }
+                        }
                     }
                 }
+                PortfolioFooter.Content()
             }
-            PortfolioFooter.Content()
         }
     }
 }

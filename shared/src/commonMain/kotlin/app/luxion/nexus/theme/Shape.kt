@@ -12,6 +12,12 @@ val PortfolioShapes: Shapes = Shapes(
     extraLarge = RoundedCornerShape(28.dp),
 )
 
+object PortfolioShapeRoles {
+    val interactive get() = PortfolioShapes.small
+    val tag get() = PortfolioShapes.extraSmall
+    val container get() = PortfolioShapes.large
+}
+
 object PortfolioSpacing {
     val extraSmall = 4.dp
     val small = 8.dp

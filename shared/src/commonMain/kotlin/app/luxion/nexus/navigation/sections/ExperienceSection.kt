@@ -29,7 +29,7 @@ object ExperienceSection {
     @Composable
     fun Content() {
         val language = LocalAppLanguage.current
-        Column(modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.large)) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Text(text = title.getValue(language), style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(PortfolioSpacing.large))
             entries.forEachIndexed { index, entry ->

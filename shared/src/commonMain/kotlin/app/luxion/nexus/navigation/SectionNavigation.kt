@@ -1,15 +1,18 @@
 package app.luxion.nexus.navigation
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.theme.PortfolioSpacing
+import app.luxion.nexus.theme.interactive
 
 @Composable
 fun SectionNavigation(
@@ -23,7 +26,12 @@ fun SectionNavigation(
     ) {
         PortfolioSection.entries.forEach { section ->
             val isActive = section == activeSection
-            TextButton(onClick = { onSectionSelected(section) }) {
+            val interactionSource = remember { MutableInteractionSource() }
+            TextButton(
+                onClick = { onSectionSelected(section) },
+                interactionSource = interactionSource,
+                modifier = Modifier.interactive(interactionSource),
+            ) {
                 Text(
                     text = section.label.getValue(language),
                     style = MaterialTheme.typography.labelLarge,
