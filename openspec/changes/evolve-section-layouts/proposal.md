@@ -30,4 +30,4 @@ Variant **evolve** (`feature/improve-design-evolve`, dials 5/4/4). After the sha
 - `navigation/sections/ProjectsSection.kt`, `ExperienceSection.kt`, `SkillsSection.kt`, `ContactSection.kt`, `navigation/PortfolioFooter.kt`, `navigation/PortfolioShell.kt` (container + rhythm tokens)
 - New vector drawables in `composeResources/drawable/` (open-in-new, copy, GitHub mark, LinkedIn mark)
 - Tests: `ProjectsSection` filter logic (non-featured scope, empty state), section smoke tests
-- Depends on `refine-design-foundation`, `polish-portfolio-copy`
+- Builds on the archived foundation and copy changes

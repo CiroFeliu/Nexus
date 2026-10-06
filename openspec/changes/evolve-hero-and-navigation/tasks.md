@@ -10,7 +10,7 @@
 
 - [ ] 2.1 Split layout at medium+ (text column + 4:5 portrait), stacked left-aligned layout at compact
 - [ ] 2.2 Replace the circular 96dp avatar with the shaped portrait; keep the initials fallback with the same shape
-- [ ] 2.3 Shorten the bio to <= 20 words in EN and ES (Ciro approves)
+- [ ] 2.3 Replace the hero bio with the drafted 20-word copy in `design.md` (Ciro reviews)
 - [ ] 2.4 Add primary "Download CV" and secondary "Contact" (scrolls to Contact) actions; pass the scroll callback without coupling the section file to the shell
 - [ ] 2.5 One-time staggered entry animation respecting reduced motion
 - [ ] 2.6 Verify the hero fits 1280x720 in both languages (headline <= 2 lines, CTAs visible, labels on one line)

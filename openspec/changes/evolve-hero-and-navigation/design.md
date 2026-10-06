@@ -4,6 +4,10 @@
 
 This is the **evolve** variant; the **overhaul** variant lives on `feature/improve-design-overhaul` and must not share files with this change beyond the common foundation.
 
+## Foundation available
+
+Built on the archived `refine-design-foundation`, `polish-portfolio-copy` and `improve-web-shell` changes. Use their pieces instead of re-creating them: `PortfolioContentContainer`, `LocalWidthClass`/`WidthClass`, `PortfolioLayout`, `PortfolioMotion` + `motionSpec()`, `LocalReducedMotion`, `Modifier.interactive(...)`, `LocalPortfolioMonoTypography`, `PortfolioShapeRoles`, and the shell's `notifyAppReady()`/`applyDocumentLanguage()` bridge.
+
 ## Goals / Non-Goals
 
 **Goals:**
@@ -32,6 +36,12 @@ This is the **evolve** variant; the **overhaul** variant lives on `feature/impro
 - [Risk] Compact menu adds a component not present today. → Standard M3 `DropdownMenu`, covered by a UI test opening it and selecting a section.
 - [Trade-off] Cutting the bio to 20 words loses detail; the experience and projects sections carry it.
 
+## Copy
+
+- **Hero bio (draft, Ciro reviews on the branch):**
+  - EN: "I design and build mobile systems that stay maintainable as they grow, from Android architecture to Kotlin Multiplatform."
+  - ES: "Diseño y construyo sistemas móviles que siguen siendo fáciles de mantener al crecer, de la arquitectura Android a Kotlin Multiplatform."
+
 ## Open Questions
 
-- Final 20-word bio in English and Spanish (Ciro).
+- None blocking.

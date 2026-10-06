@@ -27,5 +27,6 @@ Dials for this variant: `DESIGN_VARIANCE 5 / MOTION_INTENSITY 4 / VISUAL_DENSITY
 
 - `navigation/SectionNavigation.kt`, `i18n/LanguageSwitcher.kt`, `navigation/PortfolioShell.kt` (one bar instead of two, scroll-to-section callback shared with the hero)
 - `navigation/sections/HeroAboutSection.kt`
-- Depends on `refine-design-foundation` (tokens, interactive modifier, reduced motion) and `polish-portfolio-copy`
+- Builds on the archived foundation (tokens, interactive modifier, reduced motion) and copy changes
+- Uses the current portrait asset (`hero_photo.jpg`)
 - Tests: `SectionNavigationTest`, `PortfolioShellTest`, hero smoke test updated for the new structure

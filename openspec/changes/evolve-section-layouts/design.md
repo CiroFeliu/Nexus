@@ -2,6 +2,10 @@
 
 Sections are isolated files under `navigation/sections/`, rendered in order by `PortfolioShell`, which wraps each in a `Surface` alternating `background`/`surface`. `ProjectsSection` owns the project data, `filterOptions` and `matchesFilter`, already unit tested. This is the **evolve** variant; it changes layout and component styling only, never section order, ids or labels.
 
+## Foundation available
+
+Built on the archived `refine-design-foundation`, `polish-portfolio-copy` and `improve-web-shell` changes. Use their pieces instead of re-creating them: `PortfolioContentContainer`, `LocalWidthClass`/`WidthClass`, `PortfolioLayout`, `PortfolioMotion` + `motionSpec()`, `LocalReducedMotion`, `Modifier.interactive(...)`, `LocalPortfolioMonoTypography`, `PortfolioShapeRoles`, and the shell's `notifyAppReady()`/`applyDocumentLanguage()` bridge.
+
 ## Goals / Non-Goals
 
 **Goals:**
