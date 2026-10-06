@@ -10,7 +10,7 @@ import kotlin.test.Test
 @OptIn(ExperimentalTestApi::class)
 class SkillsSectionTest {
 
-    private val titleEnglish = "Skills & Stack"
+    private val titleEnglish = "Skills & stack"
 
     private val expectedCategoryLabels = skillCategories.map { it.label.getValue(Language.English) }
 

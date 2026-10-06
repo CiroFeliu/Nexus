@@ -21,6 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
+import app.luxion.nexus.i18n.YearMonth
+import app.luxion.nexus.i18n.formatDateRange
 import app.luxion.nexus.theme.PortfolioSpacing
 
 object ExperienceSection {
@@ -44,70 +46,75 @@ internal data class ExperienceContent(val role: String, val description: String)
 internal data class ExperienceEntry(
     val content: Map<Language, ExperienceContent>,
     val company: String,
-    val dateRange: String,
-)
+    val start: YearMonth,
+    val end: YearMonth? = null,
+) {
+    fun dateRange(language: Language): String = formatDateRange(start, end, language)
+}
 
 internal val entries = listOf(
     ExperienceEntry(
         content = mapOf(
             Language.English to ExperienceContent(
                 role = "Senior Mobile Developer",
-                description = "Owns mobile development at FERMAX, coordinating the mobile team.",
+                description = "I own mobile development at FERMAX and coordinate the mobile team.",
             ),
             Language.Spanish to ExperienceContent(
                 role = "Desarrollador Móvil Senior",
-                description = "Responsable del desarrollo móvil en FERMAX, coordinando al equipo móvil.",
+                description = "Soy responsable del desarrollo móvil en FERMAX y coordino al equipo móvil.",
             ),
         ),
         company = "FERMAX",
-        dateRange = "Feb 2025 — Present",
+        start = YearMonth(2025, 2),
     ),
     ExperienceEntry(
         content = mapOf(
             Language.English to ExperienceContent(
                 role = "Mobile Systems Architect",
-                description = "Delivers mobile projects for external clients on a freelance basis, " +
-                    "alongside full-time work.",
+                description = "I deliver mobile projects for external clients on a freelance basis, " +
+                    "alongside my full-time role.",
             ),
             Language.Spanish to ExperienceContent(
                 role = "Arquitecto de Sistemas Móviles",
-                description = "Desarrolla proyectos móviles para clientes externos en modalidad " +
-                    "freelance, compaginándolo con su empleo a tiempo completo.",
+                description = "Desarrollo proyectos móviles para clientes externos como freelance, " +
+                    "compaginándolo con mi empleo a tiempo completo.",
             ),
         ),
         company = "Freelance",
-        dateRange = "Aug 2024 — Present",
+        start = YearMonth(2024, 8),
     ),
     ExperienceEntry(
         content = mapOf(
             Language.English to ExperienceContent(
                 role = "Senior Mobile Developer",
-                description = "Joined as an Android developer and became the company's go-to mobile expert.",
+                description = "I joined as an Android developer and became the company's go-to mobile expert.",
             ),
             Language.Spanish to ExperienceContent(
                 role = "Desarrollador Móvil Senior",
-                description = "Se incorporó como desarrollador Android y se convirtió en el referente " +
-                    "móvil de la empresa.",
+                description = "Entré como desarrollador Android y acabé siendo el referente móvil " +
+                    "de la empresa.",
             ),
         ),
         company = "S2 Grupo",
-        dateRange = "Dec 2021 — Feb 2025",
+        start = YearMonth(2021, 12),
+        end = YearMonth(2025, 2),
     ),
     ExperienceEntry(
         content = mapOf(
             Language.English to ExperienceContent(
                 role = "Android Developer",
-                description = "Started as an Android developer at this consultancy, later becoming " +
-                    "Android tech lead.",
+                description = "I started as an Android developer at this consultancy and later became " +
+                    "its Android tech lead.",
             ),
             Language.Spanish to ExperienceContent(
                 role = "Desarrollador Android",
-                description = "Comenzó como desarrollador Android en esta consultora y más tarde se " +
-                    "convirtió en tech lead de Android.",
+                description = "Empecé como desarrollador Android en esta consultora y más tarde pasé a " +
+                    "ser tech lead de Android.",
             ),
         ),
         company = "rudo apps",
-        dateRange = "Jul 2019 — Dec 2021",
+        start = YearMonth(2019, 7),
+        end = YearMonth(2021, 12),
     ),
 )
 
@@ -143,7 +150,7 @@ private fun TimelineEntry(entry: ExperienceEntry, language: Language, isLast: Bo
                 color = MaterialTheme.colorScheme.primary,
             )
             Text(
-                text = entry.dateRange,
+                text = entry.dateRange(language),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

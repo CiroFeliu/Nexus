@@ -20,7 +20,7 @@ class PortfolioShellTest {
 
     private val sectionAnchorsEnglish = listOf(
         "Ciro Feliu",
-        "Skills & Stack",
+        "Skills & stack",
         "Experience",
         "Projects",
         "Contact",
@@ -61,8 +61,8 @@ class PortfolioShellTest {
             }
         }
 
-        onNodeWithText("Skills & Stack").assertExists()
+        onNodeWithText("Skills & stack").assertExists()
         onNodeWithText("ES").performClick()
-        onNodeWithText("Habilidades y Tecnologías").assertExists()
+        onNodeWithText("Habilidades y tecnologías").assertExists()
     }
 }

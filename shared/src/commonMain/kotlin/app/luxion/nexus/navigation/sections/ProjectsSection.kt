@@ -81,13 +81,13 @@ object ProjectsSection {
             content = mapOf(
                 Language.English to ProjectContent(
                     name = "Nexus",
-                    description = "This portfolio itself: a Kotlin Multiplatform + Compose " +
-                        "Multiplatform app sharing one UI across Web, Android, iOS, and Desktop.",
+                    description = "This portfolio itself, built with Kotlin Multiplatform and " +
+                        "Compose Multiplatform.",
                 ),
                 Language.Spanish to ProjectContent(
                     name = "Nexus",
-                    description = "Este mismo portfolio: una app de Kotlin Multiplatform + Compose " +
-                        "Multiplatform que comparte una única UI entre Web, Android, iOS y escritorio.",
+                    description = "Este mismo portfolio, construido con Kotlin Multiplatform y " +
+                        "Compose Multiplatform.",
                 ),
             ),
             techStack = listOf("Kotlin Multiplatform", "Compose Multiplatform"),
@@ -171,16 +171,16 @@ object ProjectsSection {
             content = mapOf(
                 Language.English to ProjectContent(
                     name = "Internal Tools",
-                    description = "Contributed to an internal developer-tooling project at S2 Grupo. " +
-                        "Details are covered by an NDA and can't be shared publicly.",
-                    unavailableNote = "Confidential — under NDA",
+                    description = "I contributed to an internal developer-tooling project at S2 Grupo. " +
+                        "The details are covered by an NDA and can't be shared publicly.",
+                    unavailableNote = "Confidential, under NDA",
                 ),
                 Language.Spanish to ProjectContent(
                     name = "Internal Tools",
-                    description = "Colaboró en un proyecto interno de herramientas para desarrolladores " +
+                    description = "Colaboré en un proyecto interno de herramientas para desarrolladores " +
                         "en S2 Grupo. Los detalles están cubiertos por un acuerdo de confidencialidad " +
-                        "y no pueden compartirse públicamente.",
-                    unavailableNote = "Confidencial — bajo NDA",
+                        "y no puedo compartirlos públicamente.",
+                    unavailableNote = "Confidencial, bajo NDA",
                 ),
             ),
             techStack = emptyList(),
@@ -190,16 +190,16 @@ object ProjectsSection {
             content = mapOf(
                 Language.English to ProjectContent(
                     name = "Device Communications",
-                    description = "Contributed to a project building native communications between " +
-                        "devices at S2 Grupo. Details are covered by an NDA and can't be shared publicly.",
-                    unavailableNote = "Confidential — under NDA",
+                    description = "I contributed to a project building native communications between " +
+                        "devices at S2 Grupo. The details are covered by an NDA and can't be shared publicly.",
+                    unavailableNote = "Confidential, under NDA",
                 ),
                 Language.Spanish to ProjectContent(
                     name = "Device Communications",
-                    description = "Colaboró en un proyecto de comunicaciones nativas entre dispositivos " +
+                    description = "Colaboré en un proyecto de comunicaciones nativas entre dispositivos " +
                         "en S2 Grupo. Los detalles están cubiertos por un acuerdo de confidencialidad " +
-                        "y no pueden compartirse públicamente.",
-                    unavailableNote = "Confidencial — bajo NDA",
+                        "y no puedo compartirlos públicamente.",
+                    unavailableNote = "Confidencial, bajo NDA",
                 ),
             ),
             techStack = emptyList(),
@@ -209,12 +209,12 @@ object ProjectsSection {
             content = mapOf(
                 Language.English to ProjectContent(
                     name = "Secure Development Awareness",
-                    description = "Took part in S2 Grupo's secure-development awareness initiative, " +
+                    description = "I took part in S2 Grupo's secure-development awareness initiative, " +
                         "promoting secure coding practices across engineering teams.",
                 ),
                 Language.Spanish to ProjectContent(
                     name = "Secure Development Awareness",
-                    description = "Participó en la iniciativa de concienciación en desarrollo seguro " +
+                    description = "Participé en la iniciativa de concienciación en desarrollo seguro " +
                         "de S2 Grupo, promoviendo prácticas de programación segura entre los equipos " +
                         "de ingeniería.",
                 ),
@@ -332,12 +332,12 @@ object ProjectsSection {
             content = mapOf(
                 Language.English to ProjectContent(
                     name = "Extra Promotions",
-                    description = "A project built during my time at Rudo, a mobile app agency " +
+                    description = "A project I built during my time at Rudo, a mobile app agency " +
                         "specializing in native Android and iOS development.",
                 ),
                 Language.Spanish to ProjectContent(
                     name = "Extra Promotions",
-                    description = "Un proyecto desarrollado durante su etapa en Rudo, una agencia de " +
+                    description = "Un proyecto que desarrollé durante mi etapa en Rudo, una agencia de " +
                         "apps móviles especializada en desarrollo nativo Android e iOS.",
                 ),
             ),
@@ -352,15 +352,15 @@ object ProjectsSection {
                     description = "A hardware side project outside my usual software work: built a " +
                         "Digital FPV racing drone from scratch, from the frame build to the " +
                         "electronics and flight-controller setup.",
-                    unavailableNote = "Personal hardware build — no public repo",
+                    unavailableNote = "Personal hardware build, no public repo",
                 ),
                 Language.Spanish to ProjectContent(
                     name = "Zenith",
-                    description = "Un proyecto personal de hardware fuera de su trabajo habitual de " +
-                        "software: construyó un dron de carreras FPV digital desde cero, desde el " +
+                    description = "Un proyecto personal de hardware fuera de mi trabajo habitual de " +
+                        "software: construí un dron de carreras FPV digital desde cero, desde el " +
                         "montaje del chasis hasta la electrónica y la configuración del controlador " +
                         "de vuelo.",
-                    unavailableNote = "Proyecto personal de hardware — sin repositorio público",
+                    unavailableNote = "Proyecto personal de hardware, sin repositorio público",
                 ),
             ),
             techStack = listOf("Hardware", "FPV"),

@@ -22,7 +22,7 @@ fun buildCvContent(language: Language): CvContent {
             CvContent.ExperienceEntry(
                 role = content.role,
                 company = it.company,
-                dateRange = it.dateRange,
+                dateRange = it.dateRange(language),
                 description = content.description,
             )
         },

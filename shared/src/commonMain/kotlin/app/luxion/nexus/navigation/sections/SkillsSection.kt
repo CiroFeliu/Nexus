@@ -33,7 +33,7 @@ internal val skillCategories = listOf(
         ),
     ),
     SkillCategory(
-        label = mapOf(Language.English to "Architecture & Patterns", Language.Spanish to "Arquitectura y Patrones"),
+        label = mapOf(Language.English to "Architecture & patterns", Language.Spanish to "Arquitectura y patrones"),
         skills = listOf(
             "MVVM",
             "Clean Architecture",
@@ -44,13 +44,13 @@ internal val skillCategories = listOf(
         ),
     ),
     SkillCategory(
-        label = mapOf(Language.English to "Tools & Platforms", Language.Spanish to "Herramientas y Plataformas"),
+        label = mapOf(Language.English to "Tools & platforms", Language.Spanish to "Herramientas y plataformas"),
         skills = listOf("Gradle", "Git", "CI/CD", "Firebase", "Docker", "Agent Orchestration", "OpenSpec"),
     ),
 )
 
 object SkillsSection {
-    private val title = mapOf(Language.English to "Skills & Stack", Language.Spanish to "Habilidades y Tecnologías")
+    private val title = mapOf(Language.English to "Skills & stack", Language.Spanish to "Habilidades y tecnologías")
 
     @Composable
     fun Content() {

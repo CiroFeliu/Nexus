@@ -5,10 +5,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.luxion.nexus.i18n.Language
@@ -17,14 +19,22 @@ import app.luxion.nexus.i18n.persistLanguage
 import app.luxion.nexus.i18n.readPersistedLanguage
 import app.luxion.nexus.i18n.systemLanguageTag
 import app.luxion.nexus.navigation.PortfolioShell
+import app.luxion.nexus.navigation.sections.HeroAboutSection
 import app.luxion.nexus.theme.PortfolioTheme
 
 @Composable
 @Preview
 fun App() {
     var language by remember { mutableStateOf(readPersistedLanguage() ?: Language.fromTag(systemLanguageTag())) }
+    LaunchedEffect(language) {
+        applyDocumentLanguage(language, documentTitle(language))
+    }
     CompositionLocalProvider(LocalAppLanguage provides language) {
         PortfolioTheme {
+            LaunchedEffect(Unit) {
+                withFrameNanos { }
+                notifyAppReady()
+            }
             Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                 PortfolioShell(
                     onLanguageSelected = { selected ->
@@ -35,4 +45,9 @@ fun App() {
             }
         }
     }
+}
+
+internal fun documentTitle(language: Language): String {
+    val hero = HeroAboutSection.content.getValue(language)
+    return "${hero.name} · ${hero.role}"
 }

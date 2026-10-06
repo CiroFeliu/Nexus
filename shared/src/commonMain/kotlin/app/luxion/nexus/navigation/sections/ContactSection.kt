@@ -26,8 +26,8 @@ object ContactSection {
     private val title = mapOf(Language.English to "Contact", Language.Spanish to "Contacto")
     private val downloadCvLabel = mapOf(Language.English to "Download CV", Language.Spanish to "Descargar CV")
     private val closingStatement = mapOf(
-        Language.English to "Always happy to talk shop — feel free to reach out.",
-        Language.Spanish to "Siempre con ganas de hablar de tecnología — no dudes en escribirme.",
+        Language.English to "Always happy to talk shop. Feel free to reach out.",
+        Language.Spanish to "Siempre con ganas de hablar de tecnología. Escríbeme cuando quieras.",
     )
 
     internal data class ContactLink(val label: Map<Language, String>, val url: String)

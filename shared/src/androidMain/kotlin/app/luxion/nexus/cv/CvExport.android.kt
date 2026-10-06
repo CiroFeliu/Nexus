@@ -63,14 +63,14 @@ private class CvPageWriter(private val document: PdfDocument) {
 
         drawLine("Experience", headingPaint, gapAfter = 8f)
         content.experience.forEach { entry ->
-            drawLine("${entry.role} — ${entry.company}", subheadingPaint, gapAfter = 2f)
+            drawLine("${entry.role}, ${entry.company}", subheadingPaint, gapAfter = 2f)
             drawLine(entry.dateRange, metaPaint, gapAfter = 2f)
             drawWrapped(entry.description, bodyPaint, gapAfter = 10f)
         }
 
         drawLine("Projects", headingPaint, gapAfter = 8f)
         content.projects.forEach { project ->
-            drawLine("${project.name} — ${project.company}", subheadingPaint, gapAfter = 2f)
+            drawLine("${project.name}, ${project.company}", subheadingPaint, gapAfter = 2f)
             drawWrapped(project.description, bodyPaint, gapAfter = 2f)
             val note = project.link ?: project.unavailableNote
             if (note != null) drawLine(note, metaPaint, gapAfter = 2f)

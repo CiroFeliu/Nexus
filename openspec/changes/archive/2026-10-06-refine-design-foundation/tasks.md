@@ -27,6 +27,6 @@
 ## 5. Verification
 
 - [x] 5.1 Run `./gradlew test`
-- [ ] 5.2 Run the web app in light and dark at 360/768/1280/1920 wide; check no fallback font flash, no purple cast on cards/chips, pointer cursor on every clickable
+- [x] 5.2 Run the web app in light and dark at 360/768/1280/1920 wide; check no fallback font flash, no purple cast on cards/chips, pointer cursor on every clickable
 - [ ] 5.3 Run `:desktopApp:run` and build `:androidApp:assembleDebug` to confirm fonts and theme on non-web targets
 - [x] 5.4 `openspec validate refine-design-foundation --strict`

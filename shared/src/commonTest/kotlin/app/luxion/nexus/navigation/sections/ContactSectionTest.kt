@@ -14,8 +14,8 @@ class ContactSectionTest {
 
     private val titleEnglish = "Contact"
     private val emailAddress = "ricardociro97@gmail.com"
-    private val closingStatementEnglish = "Always happy to talk shop — feel free to reach out."
-    private val closingStatementSpanish = "Siempre con ganas de hablar de tecnología — no dudes en escribirme."
+    private val closingStatementEnglish = "Always happy to talk shop. Feel free to reach out."
+    private val closingStatementSpanish = "Siempre con ganas de hablar de tecnología. Escríbeme cuando quieras."
 
     private val expectedLinkLabels = ContactSection.links.map { it.label.getValue(Language.English) }
 

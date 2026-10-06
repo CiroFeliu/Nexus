@@ -33,8 +33,7 @@ object HeroAboutSection {
             role = "Senior Android Developer & Mobile Systems Architect",
             bio = "I design and build mobile systems that stay maintainable as they " +
                 "grow, with a focus on Android architecture, Kotlin Multiplatform, and the tooling " +
-                "that keeps a codebase easy to work in years after it ships. This portfolio itself " +
-                "is a Compose Multiplatform build, shared across web, Android, desktop, and iOS.",
+                "that keeps a codebase easy to work in years after it ships.",
         ),
         Language.Spanish to HeroAboutContent(
             name = "Ciro Feliu",
@@ -42,8 +41,7 @@ object HeroAboutSection {
             bio = "Diseño y construyo sistemas móviles que se mantienen fáciles de mantener a " +
                 "medida que crecen, centrado en arquitectura Android, Kotlin Multiplatform y las " +
                 "herramientas que hacen que un código siga siendo cómodo de tocar años después de " +
-                "publicarse. Este mismo portfolio es una build de Compose Multiplatform, compartida " +
-                "entre web, Android, escritorio e iOS.",
+                "publicarse.",
         ),
     )
 
