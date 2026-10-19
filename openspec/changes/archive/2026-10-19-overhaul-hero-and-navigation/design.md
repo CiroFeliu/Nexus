@@ -45,3 +45,11 @@ Built on the archived `refine-design-foundation`, `polish-portfolio-copy` and `i
 ## Open Questions
 
 - None blocking. A higher-resolution portrait (~720x900) would improve sharpness on 2x screens and can be swapped in later.
+
+## Implementation notes
+
+- **Name lines.** On Skia a single-line `Text` never shrinks below its font's natural height, so two stacked `Text`s ignore the 1.0 line height. The name is one `Text` whose two lines are joined by layout (`split(' ').joinToString("\n")`), with semantics cleared to the plain name; per-line stagger became one name step.
+- **Section host.** `PortfolioSection.content` receives a `SectionHost` (`navigateTo`, `scrollOffset`) so the hero can scroll to Contact and drive parallax without importing the shell.
+- **Compact menu back action.** Uses `androidx.compose.ui.backhandler.BackHandler` from the new `org.jetbrains.compose.ui:ui-backhandler` dependency (published for every target). It is deprecated in favour of `NavigationEventHandler`; migrating needs the navigationevent-compose artifact and is left as a follow-up.
+- **Focus ring.** `Modifier.interactive` now shows the ring only for focus that did not come from a press, since Compose web focuses clickables on mouse press.
+- **Hero top padding.** Bar height plus `PortfolioSpacing.large`, so the role line does not sit flush under the bar on compact widths.

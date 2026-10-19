@@ -38,6 +38,7 @@ object PortfolioLayout {
     val compactMaxWidth = 600.dp
     val mediumMaxWidth = 840.dp
     val expandedMaxWidth = 1200.dp
+    val topBarHeight = 64.dp
 
     fun horizontalGutter(widthClass: WidthClass): Dp = when (widthClass) {
         WidthClass.Compact -> 16.dp
@@ -46,19 +47,24 @@ object PortfolioLayout {
     }
 
     fun sectionVerticalPadding(widthClass: WidthClass): Dp = when (widthClass) {
-        WidthClass.Compact -> 48.dp
-        WidthClass.Medium -> 64.dp
-        WidthClass.Expanded -> 88.dp
-        WidthClass.Large -> 104.dp
+        WidthClass.Compact -> 72.dp
+        WidthClass.Medium -> 96.dp
+        WidthClass.Expanded -> 120.dp
+        WidthClass.Large -> 144.dp
     }
 }
 
 val LocalWidthClass = staticCompositionLocalOf { WidthClass.Expanded }
 
+val LocalViewportHeight = staticCompositionLocalOf { Dp.Unspecified }
+
 @Composable
 fun ProvideWidthClass(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
     BoxWithConstraints(modifier = modifier) {
-        CompositionLocalProvider(LocalWidthClass provides WidthClass.fromWidth(maxWidth)) {
+        CompositionLocalProvider(
+            LocalWidthClass provides WidthClass.fromWidth(maxWidth),
+            LocalViewportHeight provides maxHeight,
+        ) {
             content()
         }
     }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import nexus.shared.generated.resources.Res
@@ -140,6 +141,7 @@ data class PortfolioMonoTypography(
     val date: TextStyle,
     val tag: TextStyle,
     val label: TextStyle,
+    val item: TextStyle,
 )
 
 fun portfolioMonoTypography(mono: FontFamily): PortfolioMonoTypography = PortfolioMonoTypography(
@@ -163,6 +165,35 @@ fun portfolioMonoTypography(mono: FontFamily): PortfolioMonoTypography = Portfol
         lineHeight = 18.sp,
         letterSpacing = 0.01.em,
     ),
+    item = TextStyle(
+        fontFamily = mono,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 26.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None,
+        ),
+    ),
 )
+
+fun heroDisplayStyle(base: TextStyle, widthClass: WidthClass): TextStyle {
+    val size = when (widthClass) {
+        WidthClass.Compact -> 48.sp
+        WidthClass.Medium -> 64.sp
+        WidthClass.Expanded -> 80.sp
+        WidthClass.Large -> 96.sp
+    }
+    return base.copy(
+        fontWeight = FontWeight.SemiBold,
+        fontSize = size,
+        lineHeight = 1.0.em,
+        letterSpacing = (-0.04).em,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None,
+        ),
+    )
+}
 
 val LocalPortfolioMonoTypography = staticCompositionLocalOf { portfolioMonoTypography(FontFamily.Monospace) }

@@ -1,29 +1,33 @@
 package app.luxion.nexus.navigation.sections
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.i18n.YearMonth
 import app.luxion.nexus.i18n.formatDateRange
+import app.luxion.nexus.theme.LocalPortfolioMonoTypography
+import app.luxion.nexus.theme.LocalWidthClass
+import app.luxion.nexus.theme.PortfolioLayout
 import app.luxion.nexus.theme.PortfolioSpacing
+import app.luxion.nexus.theme.WidthClass
+import app.luxion.nexus.theme.motion.reveal
 
 object ExperienceSection {
     private val title = mapOf(Language.English to "Experience", Language.Spanish to "Experiencia")
@@ -31,11 +35,21 @@ object ExperienceSection {
     @Composable
     fun Content() {
         val language = LocalAppLanguage.current
+        val isCompact = LocalWidthClass.current == WidthClass.Compact
         Column(modifier = Modifier.fillMaxWidth()) {
-            Text(text = title.getValue(language), style = MaterialTheme.typography.headlineMedium)
-            Spacer(modifier = Modifier.height(PortfolioSpacing.large))
-            entries.forEachIndexed { index, entry ->
-                TimelineEntry(entry = entry, language = language, isLast = index == entries.lastIndex)
+            SectionHeadline(text = title.getValue(language))
+            Spacer(modifier = Modifier.height(PortfolioSpacing.sectionGap))
+            Column(
+                modifier = Modifier.fillMaxWidth().reveal(order = 1),
+                verticalArrangement = Arrangement.spacedBy(if (isCompact) PortfolioSpacing.extraLarge else 56.dp),
+            ) {
+                entries.forEach { entry ->
+                    if (isCompact) {
+                        CompactExperienceRow(entry = entry, language = language)
+                    } else {
+                        EditorialExperienceRow(entry = entry, language = language)
+                    }
+                }
             }
         }
     }
@@ -119,43 +133,53 @@ internal val entries = listOf(
 )
 
 @Composable
-private fun TimelineEntry(entry: ExperienceEntry, language: Language, isLast: Boolean) {
-    val content = entry.content.getValue(language)
+private fun EditorialExperienceRow(entry: ExperienceEntry, language: Language) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.extraLarge),
+    ) {
+        Text(
+            text = entry.company,
+            style = MaterialTheme.typography.displaySmall,
+            modifier = Modifier.weight(0.4f),
+        )
+        ExperienceDetails(entry = entry, language = language, modifier = Modifier.weight(0.6f))
+    }
+}
+
+@Composable
+private fun CompactExperienceRow(entry: ExperienceEntry, language: Language) {
     Row(modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.width(PortfolioSpacing.large),
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(PortfolioSpacing.small)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary),
-            )
-            if (!isLast) {
-                Box(
-                    modifier = Modifier
-                        .width(2.dp)
-                        .weight(1f)
-                        .background(MaterialTheme.colorScheme.outline),
-                )
-            }
-        }
-        Spacer(modifier = Modifier.width(PortfolioSpacing.medium))
-        Column(modifier = Modifier.padding(bottom = PortfolioSpacing.large)) {
-            Text(text = content.role, style = MaterialTheme.typography.titleLarge)
-            Text(
-                text = entry.company,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Text(
-                text = entry.dateRange(language),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+        Box(
+            modifier = Modifier
+                .width(1.dp)
+                .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.outlineVariant),
+        )
+        Column(modifier = Modifier.padding(start = PortfolioSpacing.medium)) {
+            Text(text = entry.company, style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(PortfolioSpacing.small))
-            Text(text = content.description, style = MaterialTheme.typography.bodyMedium)
+            ExperienceDetails(entry = entry, language = language)
         }
+    }
+}
+
+@Composable
+private fun ExperienceDetails(entry: ExperienceEntry, language: Language, modifier: Modifier = Modifier) {
+    val content = entry.content.getValue(language)
+    Column(modifier = modifier.widthIn(max = PortfolioLayout.readableTextWidth)) {
+        Text(
+            text = entry.dateRange(language),
+            style = LocalPortfolioMonoTypography.current.date,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.height(PortfolioSpacing.extraSmall))
+        Text(text = content.role, style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = Modifier.height(PortfolioSpacing.small))
+        Text(
+            text = content.description,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }

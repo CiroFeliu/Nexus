@@ -1,26 +1,30 @@
 package app.luxion.nexus.navigation.sections
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,18 +33,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.i18n.LocalAppLanguage
 import app.luxion.nexus.openUrl
+import app.luxion.nexus.theme.LocalPortfolioMonoTypography
+import app.luxion.nexus.theme.LocalWidthClass
+import app.luxion.nexus.theme.PortfolioLayout
 import app.luxion.nexus.theme.PortfolioShapeRoles
 import app.luxion.nexus.theme.PortfolioSpacing
+import app.luxion.nexus.theme.WidthClass
 import app.luxion.nexus.theme.interactive
+import app.luxion.nexus.theme.motion.hoverLift
+import app.luxion.nexus.theme.motion.reveal
+import app.luxion.nexus.theme.motion.spotlightBorder
+import nexus.shared.generated.resources.Res
+import nexus.shared.generated.resources.ic_open_in_new
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 object ProjectsSection {
     private val title = mapOf(Language.English to "Projects", Language.Spanish to "Proyectos")
@@ -51,13 +68,17 @@ object ProjectsSection {
             "colaborado, desde proyectos personales hasta productos en producción usados por miles " +
             "de personas.",
     )
-    private val viewProjectLabel = mapOf(Language.English to "View project", Language.Spanish to "Ver proyecto")
+    private val openProjectLabel = mapOf(Language.English to "Open", Language.Spanish to "Abrir")
     private val defaultUnavailableNote = mapOf(
         Language.English to "Not publicly available",
         Language.Spanish to "No disponible públicamente",
     )
-    private val featuredLabel = mapOf(Language.English to "Featured", Language.Spanish to "Destacados")
+    internal val moreProjectsLabel = mapOf(Language.English to "More projects", Language.Spanish to "Más proyectos")
     private val allFilterLabel = mapOf(Language.English to "All", Language.Spanish to "Todos")
+    internal val emptyFilterMessage = mapOf(
+        Language.English to "No projects match this filter.",
+        Language.Spanish to "Ningún proyecto coincide con este filtro.",
+    )
 
     internal data class ProjectContent(
         val name: String,
@@ -71,29 +92,12 @@ object ProjectsSection {
         val techStack: List<String>,
         val link: String? = null,
         val featured: Boolean = false,
+        val image: DrawableResource? = null,
     )
 
     private val excludedFilterTags = setOf("Android", "iOS")
 
     internal val projects = listOf(
-        Project(
-            company = "Personal",
-            content = mapOf(
-                Language.English to ProjectContent(
-                    name = "Nexus",
-                    description = "This portfolio itself, built with Kotlin Multiplatform and " +
-                        "Compose Multiplatform.",
-                ),
-                Language.Spanish to ProjectContent(
-                    name = "Nexus",
-                    description = "Este mismo portfolio, construido con Kotlin Multiplatform y " +
-                        "Compose Multiplatform.",
-                ),
-            ),
-            techStack = listOf("Kotlin Multiplatform", "Compose Multiplatform"),
-            link = "https://github.com/CiroFeliu/Nexus",
-            featured = true,
-        ),
         Project(
             company = "Personal",
             content = mapOf(
@@ -112,6 +116,24 @@ object ProjectsSection {
             ),
             techStack = listOf("Kotlin Multiplatform", "Desktop"),
             link = "https://github.com/LuxionServer/ShogunAi",
+            featured = true,
+        ),
+        Project(
+            company = "Personal",
+            content = mapOf(
+                Language.English to ProjectContent(
+                    name = "Nexus",
+                    description = "This portfolio itself, built with Kotlin Multiplatform and " +
+                        "Compose Multiplatform.",
+                ),
+                Language.Spanish to ProjectContent(
+                    name = "Nexus",
+                    description = "Este mismo portfolio, construido con Kotlin Multiplatform y " +
+                        "Compose Multiplatform.",
+                ),
+            ),
+            techStack = listOf("Kotlin Multiplatform", "Compose Multiplatform"),
+            link = "https://github.com/CiroFeliu/Nexus",
             featured = true,
         ),
         Project(
@@ -368,139 +390,291 @@ object ProjectsSection {
         ),
     )
 
+    internal val featuredProjects: List<Project> get() = projects.filter { it.featured }
+
+    internal val indexProjects: List<Project> get() = projects.filterNot { it.featured }
+
     internal val filterOptions: List<String> =
-        (projects.map { it.company } + projects.flatMap { it.techStack }.filterNot { it in excludedFilterTags })
+        (indexProjects.map { it.company } + indexProjects.flatMap { it.techStack }.filterNot { it in excludedFilterTags })
             .distinct()
 
     internal fun matchesFilter(project: Project, filter: String?): Boolean =
         filter == null || project.company == filter || filter in project.techStack
 
+    internal fun filteredIndexProjects(filter: String?): List<Project> =
+        indexProjects.filter { matchesFilter(it, filter) }
+
     @Composable
     fun Content() {
         val language = LocalAppLanguage.current
-        var selectedFilter by remember { mutableStateOf<String?>(null) }
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = title.getValue(language),
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(PortfolioSpacing.small))
+        val widthClass = LocalWidthClass.current
+        Column(modifier = Modifier.fillMaxWidth()) {
+            SectionHeadline(text = title.getValue(language))
+            Spacer(modifier = Modifier.height(PortfolioSpacing.large))
             Text(
                 text = subtitle.getValue(language),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.widthIn(max = 640.dp),
+                modifier = Modifier.widthIn(max = PortfolioLayout.readableTextWidth).reveal(order = 1),
             )
-            Spacer(modifier = Modifier.height(PortfolioSpacing.extraLarge))
-            Text(
-                text = featuredLabel.getValue(language),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-            )
-            Spacer(modifier = Modifier.height(PortfolioSpacing.medium))
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
-                FlowRow(
-                    modifier = Modifier.widthIn(max = 1120.dp),
-                    horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.large, Alignment.CenterHorizontally),
-                    verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.large),
-                ) {
-                    projects.filter { it.featured }.forEach { project -> ProjectCard(project, language) }
-                }
-            }
             Spacer(modifier = Modifier.height(PortfolioSpacing.sectionGap))
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
-                FlowRow(
-                    modifier = Modifier.widthIn(max = 1120.dp),
-                    horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.small, Alignment.CenterHorizontally),
-                    verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
-                ) {
-                    ProjectFilterChip(
-                        label = allFilterLabel.getValue(language),
-                        selected = selectedFilter == null,
-                        onClick = { selectedFilter = null },
-                    )
-                    filterOptions.forEach { option ->
-                        ProjectFilterChip(
-                            label = option,
-                            selected = selectedFilter == option,
-                            onClick = { selectedFilter = if (selectedFilter == option) null else option },
-                        )
-                    }
-                }
+            FeaturedBento(language = language, widthClass = widthClass, modifier = Modifier.reveal(order = 2))
+            Spacer(modifier = Modifier.height(PortfolioSpacing.sectionGap))
+            ProjectIndex(language = language, isCompact = widthClass == WidthClass.Compact)
+        }
+    }
+
+    @Composable
+    private fun FeaturedBento(language: Language, widthClass: WidthClass, modifier: Modifier = Modifier) {
+        val featured = featuredProjects
+        val rowHeight = when (widthClass) {
+            WidthClass.Compact -> null
+            WidthClass.Medium -> 280.dp
+            WidthClass.Expanded, WidthClass.Large -> 236.dp
+        }
+        BentoGrid(
+            cells = bentoCells(featured.size, widthClass),
+            columns = bentoColumnCount(widthClass),
+            rowHeight = rowHeight,
+            spacing = PortfolioSpacing.medium,
+            modifier = modifier.fillMaxWidth(),
+        ) {
+            featured.forEachIndexed { index, project ->
+                FeaturedTile(project = project, tintIndex = index, fixedHeight = rowHeight != null, language = language)
             }
-            Spacer(modifier = Modifier.height(PortfolioSpacing.extraLarge))
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
-                FlowRow(
-                    modifier = Modifier.widthIn(max = 1120.dp),
-                    horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.large, Alignment.CenterHorizontally),
-                    verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.large),
-                ) {
-                    projects.filter { matchesFilter(it, selectedFilter) }.forEach { project -> ProjectCard(project, language) }
+        }
+    }
+
+    @Composable
+    private fun FeaturedTile(project: Project, tintIndex: Int, fixedHeight: Boolean, language: Language) {
+        val content = project.content.getValue(language)
+        val shape = PortfolioShapeRoles.container
+        val colors = MaterialTheme.colorScheme
+        val interactionSource = remember { MutableInteractionSource() }
+        val link = project.link
+        val interaction = if (link != null) {
+            Modifier
+                .interactive(interactionSource, focusShape = shape)
+                .clip(shape)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = LocalIndication.current,
+                    role = Role.Button,
+                    onClickLabel = "${openProjectLabel.getValue(language)} ${content.name}",
+                    onClick = { openUrl(link) },
+                )
+        } else {
+            Modifier.clip(shape).hoverable(interactionSource)
+        }
+        Column(
+            modifier = Modifier
+                .hoverLift(interactionSource)
+                .spotlightBorder(shape = shape, color = colors.primary)
+                .then(interaction)
+                .background(colors.surfaceContainerLow)
+                .border(1.dp, colors.outlineVariant, shape),
+        ) {
+            val visualModifier = if (fixedHeight) {
+                Modifier.fillMaxWidth().weight(1f)
+            } else {
+                Modifier.fillMaxWidth().aspectRatio(16f / 10f)
+            }
+            ProjectVisual(project = project, content = content, tintIndex = tintIndex, modifier = visualModifier)
+            TileDetails(project = project, content = content, language = language)
+        }
+    }
+
+    @Composable
+    private fun ColumnScope.TileDetails(project: Project, content: ProjectContent, language: Language) {
+        val mono = LocalPortfolioMonoTypography.current
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(PortfolioSpacing.medium + PortfolioSpacing.extraSmall),
+            verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
+        ) {
+            if (project.image != null) {
+                Text(text = project.company, style = mono.label, color = MaterialTheme.colorScheme.primary)
+                Text(text = content.name, style = MaterialTheme.typography.titleLarge)
+            }
+            Text(
+                text = content.description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+            )
+            val meta = if (project.link == null) {
+                content.unavailableNote ?: defaultUnavailableNote.getValue(language)
+            } else {
+                project.techStack.joinToString(", ")
+            }
+            if (meta.isNotEmpty()) {
+                Text(text = meta, style = mono.tag, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+            }
+        }
+    }
+
+    @Composable
+    private fun ProjectVisual(project: Project, content: ProjectContent, tintIndex: Int, modifier: Modifier = Modifier) {
+        val image = project.image
+        if (image != null) {
+            Image(
+                painter = painterResource(image),
+                contentDescription = content.name,
+                contentScale = ContentScale.Crop,
+                modifier = modifier,
+            )
+            return
+        }
+        val colors = MaterialTheme.colorScheme
+        val (container, onContainer) = when (tintIndex % 3) {
+            0 -> colors.primaryContainer to colors.onPrimaryContainer
+            1 -> colors.tertiaryContainer to colors.onTertiaryContainer
+            else -> colors.surfaceContainerHigh to colors.onSurface
+        }
+        Box(
+            modifier = modifier
+                .background(container)
+                .placeholderTexture(color = onContainer.copy(alpha = 0.08f), hatched = tintIndex % 2 == 1)
+                .padding(PortfolioSpacing.medium + PortfolioSpacing.extraSmall),
+        ) {
+            Text(
+                text = project.company,
+                style = LocalPortfolioMonoTypography.current.label,
+                color = onContainer.copy(alpha = 0.75f),
+                modifier = Modifier.align(Alignment.TopStart),
+            )
+            if (project.link != null) {
+                Icon(
+                    painter = painterResource(Res.drawable.ic_open_in_new),
+                    contentDescription = null,
+                    tint = onContainer,
+                    modifier = Modifier.align(Alignment.TopEnd).size(20.dp),
+                )
+            }
+            Text(
+                text = content.name,
+                style = MaterialTheme.typography.displaySmall,
+                color = onContainer,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.align(Alignment.BottomStart),
+            )
+        }
+    }
+
+    private fun Modifier.placeholderTexture(color: Color, hatched: Boolean): Modifier = drawWithCache {
+        val step = 24.dp.toPx()
+        val stroke = 1.dp.toPx()
+        onDrawBehind {
+            if (hatched) {
+                var start = -size.height
+                while (start < size.width) {
+                    drawLine(color, Offset(start, size.height), Offset(start + size.height, 0f), stroke)
+                    start += step / 2
+                }
+            } else {
+                var x = step
+                while (x < size.width) {
+                    drawLine(color, Offset(x, 0f), Offset(x, size.height), stroke)
+                    x += step
+                }
+                var y = step
+                while (y < size.height) {
+                    drawLine(color, Offset(0f, y), Offset(size.width, y), stroke)
+                    y += step
                 }
             }
         }
     }
 
     @Composable
-    private fun ProjectCard(project: Project, language: Language) {
-        val content = project.content.getValue(language)
-        ElevatedCard(
-            modifier = Modifier.width(320.dp),
-            shape = MaterialTheme.shapes.large,
-        ) {
-            Column(modifier = Modifier.padding(PortfolioSpacing.large)) {
-                Text(
-                    text = project.company.uppercase(),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
+    private fun ProjectIndex(language: Language, isCompact: Boolean) {
+        var selectedFilter by remember { mutableStateOf<String?>(null) }
+        val visibleProjects = filteredIndexProjects(selectedFilter)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(text = moreProjectsLabel.getValue(language), style = MaterialTheme.typography.headlineMedium)
+            Spacer(modifier = Modifier.height(PortfolioSpacing.large))
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
+                verticalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
+            ) {
+                ProjectFilterChip(
+                    label = allFilterLabel.getValue(language),
+                    selected = selectedFilter == null,
+                    onClick = { selectedFilter = null },
                 )
-                Spacer(modifier = Modifier.height(PortfolioSpacing.extraSmall))
-                Text(
-                    text = content.name,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(PortfolioSpacing.small))
-                Text(
-                    text = content.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(PortfolioSpacing.medium))
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.extraSmall)) {
-                    project.techStack.forEach { tech -> TechTag(tech) }
-                }
-                Spacer(modifier = Modifier.height(PortfolioSpacing.large))
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                Spacer(modifier = Modifier.height(PortfolioSpacing.medium))
-                val link = project.link
-                if (link != null) {
-                    val interactionSource = remember { MutableInteractionSource() }
-                    Button(
-                        onClick = { openUrl(link) },
-                        interactionSource = interactionSource,
-                        modifier = Modifier.fillMaxWidth().interactive(interactionSource),
-                        shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.buttonColors(),
-                    ) {
-                        Text(text = viewProjectLabel.getValue(language))
-                        Spacer(modifier = Modifier.width(PortfolioSpacing.extraSmall))
-                        ExternalLinkIcon(color = LocalContentColor.current)
-                    }
-                } else {
-                    Text(
-                        text = content.unavailableNote ?: defaultUnavailableNote.getValue(language),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                filterOptions.forEach { option ->
+                    ProjectFilterChip(
+                        label = option,
+                        selected = selectedFilter == option,
+                        onClick = { selectedFilter = if (selectedFilter == option) null else option },
                     )
                 }
+            }
+            Spacer(modifier = Modifier.height(PortfolioSpacing.large))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            Column(modifier = Modifier.fillMaxWidth().padding(vertical = PortfolioSpacing.small)) {
+                if (visibleProjects.isEmpty()) {
+                    Text(
+                        text = emptyFilterMessage.getValue(language),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = PortfolioSpacing.large),
+                    )
+                } else {
+                    visibleProjects.forEach { project -> IndexRow(project = project, language = language, isCompact = isCompact) }
+                }
+            }
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+        }
+    }
+
+    @Composable
+    private fun IndexRow(project: Project, language: Language, isCompact: Boolean) {
+        val content = project.content.getValue(language)
+        val mono = LocalPortfolioMonoTypography.current
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = PortfolioSpacing.small),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.medium),
+        ) {
+            Column(modifier = Modifier.weight(1.2f)) {
+                Text(text = content.name, style = MaterialTheme.typography.titleMedium)
+                if (isCompact) {
+                    Text(text = project.company, style = mono.tag, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+            if (!isCompact) {
+                Text(
+                    text = project.company,
+                    style = mono.tag,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(0.6f),
+                )
+                Text(
+                    text = project.techStack.joinToString(", "),
+                    style = mono.tag,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(1f),
+                )
+            }
+            val link = project.link
+            if (link != null) {
+                val interactionSource = remember { MutableInteractionSource() }
+                IconButton(
+                    onClick = { openUrl(link) },
+                    interactionSource = interactionSource,
+                    modifier = Modifier.interactive(interactionSource),
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_open_in_new),
+                        contentDescription = "${openProjectLabel.getValue(language)} ${content.name}",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            } else {
+                Spacer(modifier = Modifier.size(48.dp))
             }
         }
     }
@@ -515,48 +689,5 @@ object ProjectsSection {
             interactionSource = interactionSource,
             modifier = Modifier.interactive(interactionSource),
         )
-    }
-
-    @Composable
-    private fun ExternalLinkIcon(color: Color, modifier: Modifier = Modifier) {
-        Canvas(modifier = modifier.size(14.dp)) {
-            val strokeWidth = size.minDimension * 0.14f
-            val inset = size.minDimension * 0.15f
-            val tail = Offset(inset, size.height - inset)
-            val head = Offset(size.width - inset, inset)
-            drawLine(color = color, start = tail, end = head, strokeWidth = strokeWidth, cap = StrokeCap.Round)
-            drawLine(
-                color = color,
-                start = head,
-                end = head.copy(y = head.y + size.height * 0.4f),
-                strokeWidth = strokeWidth,
-                cap = StrokeCap.Round,
-            )
-            drawLine(
-                color = color,
-                start = head,
-                end = head.copy(x = head.x - size.width * 0.4f),
-                strokeWidth = strokeWidth,
-                cap = StrokeCap.Round,
-            )
-        }
-    }
-
-    @Composable
-    private fun TechTag(text: String) {
-        Surface(
-            shape = PortfolioShapeRoles.tag,
-            color = MaterialTheme.colorScheme.secondaryContainer,
-        ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier.padding(
-                    horizontal = PortfolioSpacing.small,
-                    vertical = PortfolioSpacing.extraSmall,
-                ),
-            )
-        }
     }
 }

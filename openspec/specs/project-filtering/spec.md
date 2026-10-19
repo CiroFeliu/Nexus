@@ -2,21 +2,27 @@
 
 ## Purpose
 Let a visitor narrow the full projects grid by company or by a differentiating tech tag, via a row of filter chips, so a recruiter can quickly find the projects relevant to them instead of scanning all of them. Tags too common to meaningfully narrow the grid (currently `Android`, `iOS`) are excluded from the chip row while still shown on individual cards; filter-control labels are bilingual (English/Spanish).
+
 ## Requirements
+
 ### Requirement: Filter chips narrow the full projects grid
-The Projects section SHALL render a row of filter chips, one per distinct company and one per distinct differentiating tech tag present in the project data, excluding tags too common to narrow the grid meaningfully.
+The Projects section SHALL render a row of filter chips for the index list of non-featured projects, one per distinct company and one per distinct differentiating tech tag present in that list, excluding tags too common to narrow it meaningfully.
 
 #### Scenario: Visitor selects a company chip
 - **WHEN** a visitor selects a company filter chip
-- **THEN** the full grid shows only projects whose `company` matches the selected value
+- **THEN** the index list shows only non-featured projects whose `company` matches the selected value
 
 #### Scenario: Visitor selects a tag chip
 - **WHEN** a visitor selects a tag filter chip
-- **THEN** the full grid shows only projects whose tech stack includes the selected tag
+- **THEN** the index list shows only non-featured projects whose tech stack includes the selected tag
 
 #### Scenario: Visitor resets the filter
 - **WHEN** a visitor selects the "All"/"Todos" option (or deselects the active chip)
-- **THEN** the full grid shows every project again
+- **THEN** the index list shows every non-featured project again
+
+#### Scenario: Filter matches nothing
+- **WHEN** the selected filter matches no project in the index list
+- **THEN** the list shows a short message in the active language instead of an empty area
 
 ### Requirement: Overly common tags are excluded from filter chips
 The system SHALL NOT offer a filter chip for a tech tag shared by most of the catalogued projects (currently `Android` and `iOS`), since selecting it would not meaningfully narrow the grid; such tags remain visible as informational tags on individual project cards.
@@ -35,4 +41,3 @@ Any filter-related labels (e.g. the "All"/"Todos" reset option) SHALL render in 
 #### Scenario: Active language is English
 - **WHEN** the active language is English
 - **THEN** the reset option and any other filter-control labels render in English
-

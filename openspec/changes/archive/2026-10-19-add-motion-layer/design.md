@@ -31,3 +31,10 @@ The page is a non-lazy `Column` inside `verticalScroll`, so every section compos
 ## Open Questions
 
 - Whether Compose `onFirstVisible` behaves correctly inside a `verticalScroll` on Wasm (verify before choosing the custom fallback).
+
+## Implementation notes
+
+- **Reveal trigger.** Compose 1.11 ships `onFirstVisible`, but the shell already knows each section's offset and height, so reveal is decided there: `revealableSections()` (pure, unit tested) runs inside a `snapshotFlow` over scroll + viewport height, and flags are hoisted in a `mutableStateMapOf` keyed by section and exposed through `LocalSectionRevealed`. Outside the shell the local defaults to `true`.
+- **Motion spec.** The foundation's `motionSpec()` already returns `snap()` under reduced motion, so no separate `rememberMotionSpec()` was added; reveal progress starts at 1 when reduced motion is on.
+- **Spotlight** only tracks `PointerType.Mouse`, so touch gets the press feedback alone; it is skipped entirely under reduced motion.
+- **Parallax** shifts the portrait at 0.15x scroll, capped at 32dp, so the overlap plus shift stays inside the next section's top padding.

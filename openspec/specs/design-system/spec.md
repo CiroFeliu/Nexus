@@ -31,11 +31,11 @@ The system SHALL render the same color scheme, typography scale, and shape/spaci
 - **THEN** the resolved `MaterialTheme.colorScheme`, `MaterialTheme.typography`, and shape tokens are identical across targets
 
 ### Requirement: Consecutive sections use alternating background tokens
-The system SHALL render consecutive portfolio sections with alternating `MaterialTheme.colorScheme` background/surface tokens, so adjacent sections are visually distinguishable without introducing new colors outside the shared theme.
+The system SHALL render all portfolio sections on the same page background token and SHALL separate consecutive sections with spacing and a theme-colored separator line, instead of alternating background bands, so section boundaries stay clear without the page reading as striped.
 
 #### Scenario: Two adjacent sections render
 - **WHEN** the portfolio shell renders any two consecutive `PortfolioSection` entries
-- **THEN** they use different `colorScheme` tokens (e.g. `background` then `surface`) from the shared theme, and both remain correctly readable in light and dark mode
+- **THEN** both use the page `background` token, a theme-colored separator sits between them, and both remain correctly readable in light and dark mode
 
 ### Requirement: Bundled typeface on every target
 The shared theme SHALL render all text with typefaces bundled in `:shared` compose resources (Geist for UI and display text, Geist Mono for technical labels such as dates and tech tags), so no target falls back to a platform or engine default font.

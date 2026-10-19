@@ -40,3 +40,11 @@ Built on the archived `refine-design-foundation`, `polish-portfolio-copy` and `i
 
 - Real project images (Nexus, ShogunAi, DuoxMe, HCB Paciente, Revieve, Zenith) can replace the placeholders later through the image slot.
 - Keep or drop the core-stack marquee after seeing it.
+
+## Implementation notes
+
+- **Contact headline.** The closing statement is the section's large headline; the separate "Contact" title was dropped (the nav label names the section). The email address is the `mailto:` link (`LinkAnnotation` inside `SelectionContainer`) with a copy button using `LocalClipboardManager`.
+- **Bento rows.** Fixed row unit of 236dp (expanded/large) and 280dp (medium); compact uses natural heights with a 16:10 visual. The span function covers any item count (feature/trio/wide rows at three columns, wide + pairs at two), unit tested for exact coverage.
+- **Placeholder visuals carry the name.** With no image the visual shows company and name, so the details below show description and mono tags (or the unavailable note); with an image the company and name move below it.
+- **Filter options** derive from the index list only, so company/tag chips that only matched featured projects (Personal, AI, Hardware) are gone.
+- **Section padding** grew to 72/96/120/144dp (compact to large) for density 3, and the separator lives inside each measured section so jump offsets stay exact.
