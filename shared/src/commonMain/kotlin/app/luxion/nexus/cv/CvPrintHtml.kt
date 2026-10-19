@@ -33,14 +33,14 @@ private fun CvContent.toPrintHtml(): String = buildString {
 
     appendHeading("Experience", level = 2)
     experience.forEach { entry ->
-        appendHeading("${entry.role} — ${entry.company}", level = 3)
+        appendHeading("${entry.role}, ${entry.company}", level = 3)
         appendParagraph(entry.dateRange, cssClass = "cv-meta")
         appendParagraph(entry.description)
     }
 
     appendHeading("Projects", level = 2)
     projects.forEach { project ->
-        appendHeading("${project.name} — ${project.company}", level = 3)
+        appendHeading("${project.name}, ${project.company}", level = 3)
         appendParagraph(project.description)
         if (project.techStack.isNotEmpty()) {
             appendParagraph(project.techStack.joinToString(", "), cssClass = "cv-meta")

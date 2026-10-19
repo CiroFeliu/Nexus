@@ -66,14 +66,14 @@ private class CvPageWriter(private val context: UIGraphicsPDFRendererContext) {
 
         drawLine("Experience", headingFont, gapAfter = 8.0)
         content.experience.forEach { entry ->
-            drawLine("${entry.role} — ${entry.company}", subheadingFont, gapAfter = 2.0)
+            drawLine("${entry.role}, ${entry.company}", subheadingFont, gapAfter = 2.0)
             drawLine(entry.dateRange, metaFont, gapAfter = 2.0)
             drawWrapped(entry.description, bodyFont, gapAfter = 10.0)
         }
 
         drawLine("Projects", headingFont, gapAfter = 8.0)
         content.projects.forEach { project ->
-            drawLine("${project.name} — ${project.company}", subheadingFont, gapAfter = 2.0)
+            drawLine("${project.name}, ${project.company}", subheadingFont, gapAfter = 2.0)
             drawWrapped(project.description, bodyFont, gapAfter = 2.0)
             val note = project.link ?: project.unavailableNote
             if (note != null) drawLine(note, metaFont, gapAfter = 2.0)

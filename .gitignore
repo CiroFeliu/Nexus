@@ -12,6 +12,4 @@ captures
 node_modules/
 
 # Local tooling cache/state (machine-specific, not project config)
-.tokensave/
 .claude/settings.local.json
-.claude/.headroom_wrap_marker.json

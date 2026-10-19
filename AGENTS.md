@@ -18,7 +18,20 @@ Project-specific conventions belong in this file, not in an AI agent's personal/
 - Composables are `PascalCase`; regular functions and state are `camelCase` — standard Kotlin conventions.
 - Shared UI, theming, and portfolio content/logic live in `:shared` (`commonMain`) so every target renders the same portfolio; platform modules (`webApp`, `androidApp`, `desktopApp`, `iosApp`) only wire up the platform entry point.
 - Support Dark Mode natively through `MaterialTheme` color schemes — never hardcode colors that don't adapt to the active scheme.
-- Never commit personal secrets (contact-form tokens, analytics IDs, API keys) — inject them at build time or via `expect`/`actual` platform config instead.
+
+## Public repository
+
+`CiroFeliu/Nexus` is a **public** GitHub repo. Everything committed — code, OpenSpec artifacts, workflow files, commit messages, PR bodies — is published permanently: force-pushing or rewriting history afterwards does not unpublish it (forks, clones, caches, GitHub's retention of dangling commits). Treat every commit as a public post.
+
+Never commit:
+
+- Secrets of any kind: API keys, contact-form tokens, analytics IDs tied to a private account, passwords, private SSH/TLS keys, certificates' private halves, signing keystores, `.env` files, `local.properties`. Inject them at build time (GitHub Actions secrets, environment variables) or via `expect`/`actual` platform config instead.
+- Operational details of Ciro's server: IPs, SSH hosts/aliases, usernames, filesystem paths on the server, `authorized_keys` entries, firewall rules beyond the high-level summary above, Caddy/Docker config, certificate file names. The repo may describe the deployment architecture at the level already in this file and in the archived `automate-webapp-deployment` design; anything more specific belongs in the server's private docs, not here.
+- Content copied from Ciro's private global `~/AGENTS.md` or any other machine-local file.
+- Personal data beyond what the portfolio intentionally publishes (no private phone numbers, home address, third parties' data).
+- Machine-specific state: absolute paths containing a home directory, `.claude/settings.local.json`, IDE workspace files, logs, build outputs.
+
+Before every commit, review `git diff --staged` for the above, stage explicit paths instead of `git add -A`/`git add .`, and add any new kind of local/generated file to `.gitignore` instead of leaving it to chance. If something sensitive was already committed or pushed, stop and tell Ciro immediately instead of silently amending or force-pushing: a leaked secret must be rotated first, history cleanup is secondary.
 
 ## How to document
 

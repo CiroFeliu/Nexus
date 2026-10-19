@@ -1,6 +1,7 @@
 package app.luxion.nexus.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import app.luxion.nexus.i18n.Language
 import app.luxion.nexus.navigation.sections.ContactSection
 import app.luxion.nexus.navigation.sections.ExperienceSection
@@ -11,10 +12,22 @@ import nexus.shared.generated.resources.Res
 import nexus.shared.generated.resources.hero_photo
 import org.jetbrains.compose.resources.painterResource
 
-enum class PortfolioSection(val label: Map<Language, String>, val content: @Composable () -> Unit) {
+@Immutable
+class SectionHost(
+    val navigateTo: (PortfolioSection) -> Unit,
+    val scrollOffset: () -> Int,
+)
+
+enum class PortfolioSection(val label: Map<Language, String>, val content: @Composable (SectionHost) -> Unit) {
     HeroAbout(
         label = mapOf(Language.English to "About", Language.Spanish to "Sobre mí"),
-        content = { HeroAboutSection.Content(photo = painterResource(Res.drawable.hero_photo)) },
+        content = { host ->
+            HeroAboutSection.Content(
+                photo = painterResource(Res.drawable.hero_photo),
+                onContactClick = { host.navigateTo(Contact) },
+                scrollOffset = host.scrollOffset,
+            )
+        },
     ),
     Skills(
         label = mapOf(Language.English to "Skills", Language.Spanish to "Habilidades"),
