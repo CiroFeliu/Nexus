@@ -62,14 +62,14 @@ private class CvPageWriter(private val document: PDDocument) {
 
         drawLine("Experience", headingFont, 15f, gapAfter = 8f)
         content.experience.forEach { entry ->
-            drawLine("${entry.role} - ${entry.company}", subheadingFont, 12f, gapAfter = 2f)
+            drawLine("${entry.role}, ${entry.company}", subheadingFont, 12f, gapAfter = 2f)
             drawLine(entry.dateRange, metaFont, 10f, gapAfter = 2f)
             drawWrapped(entry.description, bodyFont, 11f, gapAfter = 10f)
         }
 
         drawLine("Projects", headingFont, 15f, gapAfter = 8f)
         content.projects.forEach { project ->
-            drawLine("${project.name} - ${project.company}", subheadingFont, 12f, gapAfter = 2f)
+            drawLine("${project.name}, ${project.company}", subheadingFont, 12f, gapAfter = 2f)
             drawWrapped(project.description, bodyFont, 11f, gapAfter = 2f)
             val note = project.link ?: project.unavailableNote
             if (note != null) drawLine(note, metaFont, 10f, gapAfter = 2f)
