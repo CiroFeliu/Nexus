@@ -14,3 +14,5 @@ actual fun openUrl(url: String) {
         Desktop.getDesktop().browse(URI(url))
     }
 }
+
+actual val blogUrl: String = "https://cirofeliu.es/blog/"

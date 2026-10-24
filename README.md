@@ -9,6 +9,7 @@ Nexus is [Ciro Feliu's](https://github.com/CiroFeliu) personal portfolio (Senior
   - [`commonMain`](./shared/src/commonMain/kotlin) holds the Compose UI and section content common to all targets.
   - Other source sets (`androidMain`, `iosMain`, `jvmMain`, `jsMain`, `wasmJsMain`) hold only `expect`/`actual` platform glue (e.g. CV export, opening a URL).
 - Each platform module (`webApp`, `androidApp`, `iosApp`, `desktopApp`) wires up its own entry point and renders `:shared`'s UI — no portfolio content lives there.
+- [`/blogGenerator`](./blogGenerator) is a build-time Kotlin/JVM tool that generates the static blog from [`/blog`](./blog); it is never shipped to the browser.
 
 ### Testing
 
@@ -42,6 +43,15 @@ Use the run configurations provided by the run widget in your IDE's toolbar. You
   - Hot reload: `./gradlew :desktopApp:hotRun --auto`
   - Standard run: `./gradlew :desktopApp:run`
 - iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+
+## Blog
+
+[`/blog`](./blog) holds the posts published at [cirofeliu.es/blog/](https://cirofeliu.es/blog/), one Markdown folder per post (see [`blog/README.md`](./blog/README.md) for the authoring format). [`:blogGenerator`](./blogGenerator) is a Kotlin/JVM module that turns them into static HTML pages and an RSS feed; `:webApp`'s `generateBlog` task runs it and adds the result to the web resources, so the distribution and the dev server serve `/blog/` as plain files. The Compose navigation links to it.
+
+```bash
+./gradlew :webApp:wasmJsBrowserDevelopmentRun -Pblog.drafts=true   # preview, drafts included
+./gradlew :blogGenerator:test                                      # generator tests
+```
 
 ## Deployment
 
