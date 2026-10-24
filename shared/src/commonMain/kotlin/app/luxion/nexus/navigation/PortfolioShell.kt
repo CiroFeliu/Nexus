@@ -32,7 +32,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import app.luxion.nexus.blogUrl
 import app.luxion.nexus.i18n.Language
+import app.luxion.nexus.openUrl
 import app.luxion.nexus.theme.GrainOverlay
 import app.luxion.nexus.theme.LocalReducedMotion
 import app.luxion.nexus.theme.LocalViewportHeight
@@ -96,6 +98,12 @@ fun PortfolioShell(onLanguageSelected: (Language) -> Unit) {
                 }
             }
         }
+        val openBlog: () -> Unit = remember {
+            {
+                menuOpen = false
+                openUrl(blogUrl)
+            }
+        }
         val host = remember(navigateTo) { SectionHost(navigateTo = navigateTo, scrollOffset = { scrollState.value }) }
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -126,6 +134,7 @@ fun PortfolioShell(onLanguageSelected: (Language) -> Unit) {
                 activeSection = { activeSection },
                 onSectionSelected = navigateTo,
                 onLanguageSelected = onLanguageSelected,
+                onBlogSelected = openBlog,
                 onMenuClick = { menuOpen = true },
                 modifier = Modifier.align(Alignment.TopCenter),
             )
@@ -138,6 +147,7 @@ fun PortfolioShell(onLanguageSelected: (Language) -> Unit) {
                     activeSection = activeSection,
                     onSectionSelected = navigateTo,
                     onLanguageSelected = onLanguageSelected,
+                    onBlogSelected = openBlog,
                     onDismiss = { menuOpen = false },
                 )
             }

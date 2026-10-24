@@ -77,6 +77,7 @@ class PortfolioShellTest {
         }
         onNodeWithText("EN").assertExists()
         onNodeWithText("ES").assertExists()
+        onNode(hasText("Blog") and hasClickAction()).assertExists()
         onNodeWithContentDescription("Open menu").assertDoesNotExist()
     }
 

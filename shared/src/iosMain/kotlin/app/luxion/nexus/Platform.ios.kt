@@ -14,3 +14,5 @@ actual fun openUrl(url: String) {
     val nsUrl = NSURL.URLWithString(url) ?: return
     UIApplication.sharedApplication.openURL(nsUrl)
 }
+
+actual val blogUrl: String = "https://cirofeliu.es/blog/"

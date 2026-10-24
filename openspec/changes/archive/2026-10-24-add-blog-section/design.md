@@ -36,13 +36,7 @@ The generator is a normal module (`blogGenerator/`, plugin `kotlinJvm`, package 
 
 The front matter block (between the first two `---` lines) is split off by hand and parsed with snakeyaml-engine (YAML 1.2, so `2026-11-03` stays a string and is parsed with `LocalDate.parse`, and `no`/`yes` are not booleans). Validation maps it to a `PostMeta` data class, collecting every problem of a post into one `BlogContentException` message (`blog/posts/<slug>/index.md: missing required field 'summary'`). Unknown keys are rejected to catch typos.
 
-The body is parsed with commonmark-java plus the GFM tables and strikethrough extensions. Rendering uses `HtmlRenderer` with `escapeHtml(true)` and `sanitizeUrls(true)` (spec: untrusted markup is neutralised), plus custom node renderers:
-
-- `Image`: classify the destination as self-hosted video (`.mp4`/`.webm`), YouTube (`youtube.com`/`www.`/`m.` `watch?v=`, `youtu.be/`; id `[A-Za-z0-9_-]{11}`), or image. Videos and YouTube render `<figure>` blocks; images render `<img loading="lazy" alt>`.
-- `Paragraph`: a paragraph whose only child is a video/YouTube image renders the figure directly instead of `<p><figure>` (invalid HTML). A video image anywhere else fails the build.
-- `FencedCodeBlock`: commonmark's default already emits `class="language-<tag>"`; kept.
-
-Media references are collected during a pre-render visit of the AST, so missing files and `..` escapes fail before any output is written.
+The body is parsed with commonmark-java plus the GFM tables and strikethrough extensions. Rendering uses `HtmlRenderer` with `escapeHtml(true)` and `sanitizeUrls(true)` (spec: untrusted markup is neutralised). Before rendering, a visit of the AST classifies every image destination as self-hosted video (`.mp4`/`.webm`), YouTube (`youtube.com`/`www.`/`m.` `watch?v=`, `youtu.be/`; id `[A-Za-z0-9_-]{11}`) or image, and checks relative media (exists, stays inside the post folder, only `http`/`https` schemes). A paragraph whose only child is a video/YouTube image is replaced by a custom `EmbedBlock` node, so the figure is emitted without an invalid `<p><figure>` wrapper; a video image anywhere else fails the build. A custom node renderer emits `EmbedBlock` as `<figure>` (video or youtube-nocookie iframe plus caption) and `Image` as `<img loading="lazy" alt>`. Fenced code keeps commonmark's default `class="language-<tag>"`. All problems are collected before any output is written.
 
 - *Alternative: commonmark's YAML front matter extension.* It returns strings only and accepts invalid YAML silently.
 - *Alternative: flexmark.* Larger, and nothing here needs its extras.
@@ -70,11 +64,11 @@ Dates: `YYYY-MM-DD` in a `<time datetime>` with a human form (`3 Nov 2026` / `3 
 
 ### Drafts
 
-Production never includes drafts. `generateBlog` reads a Gradle property `blog.drafts` (default `false`); `./gradlew :webApp:wasmJsBrowserDevelopmentRun -Pblog.drafts=true` previews drafts locally, marked with a "Draft" badge. The deploy never passes it.
+Production never includes drafts. `generateBlog` reads a Gradle property `blog.drafts` (default `false`) and passes the paths and flag as plain arguments (configuration-cache safe); `./gradlew :webApp:wasmJsBrowserDevelopmentRun -Pblog.drafts=true` previews drafts locally, marked with a "Draft" badge. The deploy never passes it.
 
 ### Blog entry in the Compose navigation
 
-A `BlogLink` composable (same visual language as `NavLink`, plus the existing `ic_open_in_new` icon to signal it leaves the page) is placed after `SectionNavigation` in `PortfolioTopBar`, and a matching entry after the section links in `CompactNavigationMenu`. Both take an `onBlogSelected: () -> Unit`; `PortfolioShell` passes `{ menuOpen = false; openUrl(blogUrl) }`. `blogUrl` is an `expect val` added to `Platform.kt` with actuals in the existing `Platform.*.kt` files (`"/blog/"` on JS/Wasm, `"https://cirofeliu.es/blog/"` elsewhere). Labels stay "Blog" in both languages through the existing label-map pattern.
+A `BlogNavLink` composable (same visual language as `NavLink`, plus the existing `ic_open_in_new` icon to signal it leaves the page) is placed after `SectionNavigation` in `PortfolioTopBar`, behind a thin vertical separator; in `CompactNavigationMenu` a divider and a `MenuLink` with the same icon follow the section links. Both take an `onBlogSelected: () -> Unit`; `PortfolioShell` passes `{ menuOpen = false; openUrl(blogUrl) }`. `blogUrl` is an `expect val` added to `Platform.kt` with actuals in the existing `Platform.*.kt` files (`"/blog/"` on JS/Wasm, `"https://cirofeliu.es/blog/"` elsewhere). Labels stay "Blog" in both languages through the existing label-map pattern.
 
 On the web this opens the blog in a new tab (current `openUrl` behaviour), which keeps the portfolio and its scroll position intact.
 

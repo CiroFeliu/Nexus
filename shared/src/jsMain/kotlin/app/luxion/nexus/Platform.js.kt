@@ -19,3 +19,5 @@ actual fun getPlatform(): Platform = JsPlatform()
 actual fun openUrl(url: String) {
     window.open(url, WindowTarget._blank)
 }
+
+actual val blogUrl: String = "/blog/"

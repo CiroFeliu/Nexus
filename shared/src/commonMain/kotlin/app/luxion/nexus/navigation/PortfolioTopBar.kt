@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +17,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -58,11 +61,13 @@ import app.luxion.nexus.theme.motionSpec
 import nexus.shared.generated.resources.Res
 import nexus.shared.generated.resources.ic_close
 import nexus.shared.generated.resources.ic_menu
+import nexus.shared.generated.resources.ic_open_in_new
 import org.jetbrains.compose.resources.painterResource
 
 internal object PortfolioTopBarLabels {
     val openMenu = mapOf(Language.English to "Open menu", Language.Spanish to "Abrir menú")
     val closeMenu = mapOf(Language.English to "Close menu", Language.Spanish to "Cerrar menú")
+    val blog = mapOf(Language.English to "Blog", Language.Spanish to "Blog")
 }
 
 @Composable
@@ -71,6 +76,7 @@ fun PortfolioTopBar(
     activeSection: () -> PortfolioSection?,
     onSectionSelected: (PortfolioSection) -> Unit,
     onLanguageSelected: (Language) -> Unit,
+    onBlogSelected: () -> Unit,
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -102,6 +108,14 @@ fun PortfolioTopBar(
                     )
                 } else {
                     SectionNavigation(activeSection = activeSection(), onSectionSelected = onSectionSelected)
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = PortfolioSpacing.small)
+                            .width(1.dp)
+                            .height(PortfolioSpacing.medium)
+                            .background(colors.outlineVariant),
+                    )
+                    BlogNavLink(onClick = onBlogSelected)
                     Spacer(modifier = Modifier.width(PortfolioSpacing.medium))
                     LanguageSwitcher(onLanguageSelected = onLanguageSelected)
                 }
@@ -132,6 +146,43 @@ private fun Wordmark(onClick: () -> Unit) {
 }
 
 @Composable
+private fun BlogNavLink(onClick: () -> Unit) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val hovered by interactionSource.collectIsHoveredAsState()
+    val color by animateColorAsState(
+        targetValue = if (hovered) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+        animationSpec = motionSpec(PortfolioMotion.transition()),
+        label = "blogLinkColor",
+    )
+    Row(
+        modifier = Modifier
+            .interactive(interactionSource)
+            .clip(PortfolioShapeRoles.interactive)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current,
+                role = Role.Button,
+                onClick = onClick,
+            )
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.extraSmall),
+    ) {
+        Text(
+            text = PortfolioTopBarLabels.blog.getValue(LocalAppLanguage.current),
+            style = MaterialTheme.typography.labelLarge,
+            color = color,
+        )
+        Icon(
+            painter = painterResource(Res.drawable.ic_open_in_new),
+            contentDescription = null,
+            tint = color,
+            modifier = Modifier.size(14.dp),
+        )
+    }
+}
+
+@Composable
 private fun MenuIconButton(isOpen: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val language = LocalAppLanguage.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -157,6 +208,7 @@ fun CompactNavigationMenu(
     activeSection: PortfolioSection?,
     onSectionSelected: (PortfolioSection) -> Unit,
     onLanguageSelected: (Language) -> Unit,
+    onBlogSelected: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -202,11 +254,24 @@ fun CompactNavigationMenu(
                             modifier = Modifier.reveal(order = index, revealed = true),
                         )
                     }
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .padding(vertical = PortfolioSpacing.small)
+                            .reveal(order = PortfolioSection.entries.size, revealed = true),
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                    )
+                    MenuLink(
+                        label = PortfolioTopBarLabels.blog.getValue(language),
+                        isActive = false,
+                        opensExternally = true,
+                        onClick = onBlogSelected,
+                        modifier = Modifier.reveal(order = PortfolioSection.entries.size, revealed = true),
+                    )
                 }
                 Spacer(modifier = Modifier.height(PortfolioSpacing.extraLarge))
                 LanguageSwitcher(
                     onLanguageSelected = onLanguageSelected,
-                    modifier = Modifier.reveal(order = PortfolioSection.entries.size, revealed = true),
+                    modifier = Modifier.reveal(order = PortfolioSection.entries.size + 1, revealed = true),
                 )
             }
         }
@@ -214,9 +279,16 @@ fun CompactNavigationMenu(
 }
 
 @Composable
-private fun MenuLink(label: String, isActive: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun MenuLink(
+    label: String,
+    isActive: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    opensExternally: Boolean = false,
+) {
     val interactionSource = remember { MutableInteractionSource() }
-    Box(
+    val color = if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+    Row(
         modifier = modifier
             .fillMaxWidth()
             .interactive(interactionSource)
@@ -228,11 +300,17 @@ private fun MenuLink(label: String, isActive: Boolean, onClick: () -> Unit, modi
                 onClick = onClick,
             )
             .padding(vertical = PortfolioSpacing.small),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(PortfolioSpacing.small),
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.headlineMedium,
-            color = if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-        )
+        Text(text = label, style = MaterialTheme.typography.headlineMedium, color = color)
+        if (opensExternally) {
+            Icon(
+                painter = painterResource(Res.drawable.ic_open_in_new),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp),
+            )
+        }
     }
 }
