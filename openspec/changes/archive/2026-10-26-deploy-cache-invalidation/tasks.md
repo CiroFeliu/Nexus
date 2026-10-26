@@ -2,9 +2,9 @@
 
 ## 1. Server and Cloudflare setup (manual, Ciro)
 
-- [ ] 1.1 Create a Cloudflare API token with only the `Zone > Cache Purge > Purge` permission, restricted to the `cirofeliu.es` zone, and store it and the zone identifier as repository secrets `NEXUS_CLOUDFLARE_PURGE_TOKEN` and `NEXUS_CLOUDFLARE_ZONE_ID`; verify with `gh secret list` that both names exist
-- [ ] 1.2 Add to the server's Caddy site block for `cirofeliu.es` a `Cache-Control: public, max-age=31536000, immutable` header for `*.wasm` and `Cache-Control: no-cache` for every other path, reload Caddy and record the change in the server's private docs (never in this repo); verify with `curl -I` against the origin that `/webApp.js` and `/blog/` return `no-cache` and a `.wasm` returns the immutable value
-- [ ] 1.3 Set the `cirofeliu.es` zone's Browser Cache TTL to "Respect Existing Headers" and purge the zone once from the dashboard; verify with `curl -I https://cirofeliu.es/webApp.js` that the response through Cloudflare carries `cache-control: no-cache` and no `max-age=14400`
+- [x] 1.1 Create a Cloudflare API token with only the `Zone > Cache Purge > Purge` permission, restricted to the `cirofeliu.es` zone, and store it and the zone identifier as repository secrets `NEXUS_CLOUDFLARE_PURGE_TOKEN` and `NEXUS_CLOUDFLARE_ZONE_ID`; verify with `gh secret list` that both names exist
+- [x] 1.2 Add to the server's Caddy site block for `cirofeliu.es` a `Cache-Control: public, max-age=31536000, immutable` header for `*.wasm` and `Cache-Control: no-cache` for every other path, reload Caddy and record the change in the server's private docs (never in this repo); verify with `curl -I` against the origin that `/webApp.js` and `/blog/` return `no-cache` and a `.wasm` returns the immutable value
+- [x] 1.3 Set the `cirofeliu.es` zone's Browser Cache TTL to "Respect Existing Headers" and purge the zone once from the dashboard; verify with `curl -I https://cirofeliu.es/webApp.js` that the response through Cloudflare carries `cache-control: no-cache` and no `max-age=14400`
 
 ## 2. Atomic publication
 
