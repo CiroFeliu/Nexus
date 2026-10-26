@@ -13,3 +13,5 @@ actual fun getPlatform(): Platform = WasmPlatform()
 actual fun openUrl(url: String) {
     window.open(url, WindowTarget._blank)
 }
+
+actual val blogUrl: String = "/blog/"

@@ -21,3 +21,5 @@ actual fun openUrl(url: String) {
     }
     AndroidAppContext.context.startActivity(intent)
 }
+
+actual val blogUrl: String = "https://cirofeliu.es/blog/"
