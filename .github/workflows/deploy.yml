@@ -48,10 +48,53 @@ jobs:
           DEPLOY_PORT: ${{ secrets.NEXUS_DEPLOY_PORT }}
           DEPLOY_USER: ${{ secrets.NEXUS_DEPLOY_USER }}
         run: |
-          rsync -rlz --delete --delete-excluded --checksum --exclude '*.map' \
+          rsync -rlz --delete --delete-excluded --delete-after --delay-updates --checksum --exclude '*.map' \
             -e "ssh -i ~/.ssh/deploy_key -p $DEPLOY_PORT -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
             webApp/build/dist/wasmJs/productionExecutable/ \
             "$DEPLOY_USER@$DEPLOY_HOST:"
+
+      - name: Purge Cloudflare cache
+        env:
+          CLOUDFLARE_PURGE_TOKEN: ${{ secrets.NEXUS_CLOUDFLARE_PURGE_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.NEXUS_CLOUDFLARE_ZONE_ID }}
+        run: |
+          response=$(curl -sS --retry 3 --retry-all-errors \
+            -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CLOUDFLARE_PURGE_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}')
+          if ! jq -e '.success == true' <<<"$response" > /dev/null 2>&1; then
+            echo "::error::Cloudflare cache purge failed: $(jq -c '.errors' <<<"$response" 2>/dev/null || echo "$response")"
+            exit 1
+          fi
+          echo "Cloudflare cache purged"
+
+      - name: Verify live site
+        env:
+          SITE_URL: https://cirofeliu.es
+        run: |
+          entry_script="$RUNNER_TEMP/webApp.js"
+          headers=$(curl -sS --fail --retry 3 -D - -o "$entry_script" "$SITE_URL/webApp.js")
+          if ! grep -qiE '^cache-control:.*no-cache' <<<"$headers"; then
+            echo "::error::webApp.js is not served with Cache-Control: no-cache"
+            exit 1
+          fi
+          wasm_files=$(grep -oE '[0-9a-f]{20}\.wasm' "$entry_script" | sort -u)
+          if [ -z "$wasm_files" ]; then
+            echo "::error::webApp.js references no .wasm file"
+            exit 1
+          fi
+          failed=0
+          for wasm in $wasm_files; do
+            status=$(curl -sS -o /dev/null -w '%{http_code}' --retry 3 "$SITE_URL/$wasm")
+            if [ "$status" = "200" ]; then
+              echo "$wasm: $status"
+            else
+              echo "::error::$wasm referenced by webApp.js returned $status"
+              failed=1
+            fi
+          done
+          exit "$failed"
 
       - name: Remove SSH key
         if: always()

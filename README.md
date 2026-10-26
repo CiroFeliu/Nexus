@@ -59,7 +59,11 @@ Merging to `master` publishes the web app automatically via [`.github/workflows/
 
 1. `./gradlew test` — a failing test stops the run before anything is published.
 2. `./gradlew :webApp:wasmJsBrowserDistribution`
-3. `rsync --delete` of `webApp/build/dist/wasmJs/productionExecutable/` (source maps excluded) to the server.
+3. `rsync --delete` of `webApp/build/dist/wasmJs/productionExecutable/` (source maps excluded) to the server. Changed files are moved into place together at the end of the transfer and obsolete ones are deleted only afterwards, so a visitor never gets a `webApp.js` whose `.wasm` files are gone.
+4. Purge of the whole Cloudflare cache of the `cirofeliu.es` zone.
+5. Check of the live site: `webApp.js` must be served with `Cache-Control: no-cache` and every `.wasm` it references must load.
+
+The server sends `Cache-Control: public, max-age=31536000, immutable` for the `.wasm` files, whose names are content hashes, and `Cache-Control: no-cache` for everything else (HTML, `webApp.js`, stylesheets, resources, the blog), and Cloudflare is set to respect those headers. Only content-hashed files may be cached long.
 
 The workflow can also be triggered manually from the Actions tab (`workflow_dispatch`). It needs these repository secrets:
 
@@ -68,6 +72,8 @@ The workflow can also be triggered manually from the Actions tab (`workflow_disp
 | `NEXUS_DEPLOY_SSH_KEY` | Private half of the deploy-only SSH key |
 | `NEXUS_DEPLOY_KNOWN_HOSTS` | Pinned server host keys (strict host key checking) |
 | `NEXUS_DEPLOY_HOST` / `NEXUS_DEPLOY_PORT` / `NEXUS_DEPLOY_USER` | SSH connection details |
+| `NEXUS_CLOUDFLARE_PURGE_TOKEN` | Cloudflare API token limited to cache purge on the `cirofeliu.es` zone |
+| `NEXUS_CLOUDFLARE_ZONE_ID` | Identifier of the `cirofeliu.es` zone |
 
 The deploy key can only write into the site directory on the server (`rrsync -wo`); it cannot open a shell, read files, or forward ports. To roll back, revert the offending commit on `master` — the workflow redeploys the previous build.
 
