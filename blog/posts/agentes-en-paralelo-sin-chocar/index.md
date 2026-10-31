@@ -1,6 +1,6 @@
 ---
 title: "Tres agentes en el mismo proyecto sin que se pisen"
-date: 2026-10-26
+date: 2026-11-03
 summary: "Un worktree aísla el código de un agente, pero no su entorno. He hecho ShogunAi para que cada worktree tenga sus puertos, sus servicios y sus dispositivos, y poder tener varios agentes trabajando a la vez en la misma máquina."
 lang: es
 translationKey: shogunai-intro
