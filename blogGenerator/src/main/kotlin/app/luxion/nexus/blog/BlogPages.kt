@@ -2,7 +2,7 @@ package app.luxion.nexus.blog
 
 const val BLOG_TITLE = "Blog · Ciro Feliu"
 const val BLOG_DESCRIPTION =
-    "Writing by Ciro Feliu on Android, Kotlin Multiplatform, mobile architecture and developer tooling."
+    "Writing by Ciro Feliu on building with AI agents in parallel, from spec to real device."
 
 private const val AUTHOR = "Ciro Feliu"
 

@@ -66,6 +66,8 @@ internal data class ExperienceEntry(
     fun dateRange(language: Language): String = formatDateRange(start, end, language)
 }
 
+private const val FREELANCE_ROLE = "Contract engineer for AI-first product teams"
+
 internal val entries = listOf(
     ExperienceEntry(
         content = mapOf(
@@ -84,14 +86,17 @@ internal val entries = listOf(
     ExperienceEntry(
         content = mapOf(
             Language.English to ExperienceContent(
-                role = "Mobile Systems Architect",
-                description = "I deliver mobile projects for external clients on a freelance basis, " +
-                    "alongside my full-time role.",
+                role = FREELANCE_ROLE,
+                description = "I join product teams that build with AI agents and deliver features end to " +
+                    "end: spec, implementation verified with tests, and deployment. I prefer long-term " +
+                    "relationships with one or two clients over many small projects.",
             ),
             Language.Spanish to ExperienceContent(
-                role = "Arquitecto de Sistemas Móviles",
-                description = "Desarrollo proyectos móviles para clientes externos como freelance, " +
-                    "compaginándolo con mi empleo a tiempo completo.",
+                role = FREELANCE_ROLE,
+                description = "Me integro en equipos de producto que trabajan con agentes de IA y entrego " +
+                    "funcionalidad de principio a fin: spec, implementación verificada con tests y " +
+                    "despliegue. Busco relaciones largas con uno o dos clientes antes que muchos proyectos " +
+                    "pequeños.",
             ),
         ),
         company = "Freelance",
