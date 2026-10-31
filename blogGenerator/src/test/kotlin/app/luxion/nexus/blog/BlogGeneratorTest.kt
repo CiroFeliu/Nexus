@@ -47,9 +47,15 @@ class BlogGeneratorTest {
         assertTrue("<code class=\"language-kotlin\">" in english)
         assertTrue("href=\"/blog/hola-multiplataforma/\" hreflang=\"es\"" in english)
         val list = blog.resolve("index.html").readText()
-        assertTrue(list.indexOf("/blog/hola-multiplataforma/") < list.indexOf("/blog/hello-multiplatform/"))
+        assertEquals(1, "class=\"post-item\"".toRegex().findAll(list).count(), list)
+        assertTrue("<h2><a href=\"/blog/hello-multiplatform/\">Hello, Multiplatform</a></h2>" in list, list)
+        assertTrue("<time datetime=\"2026-11-04\">4 Nov 2026</time>" in list, list)
+        assertTrue("href=\"/blog/hola-multiplataforma/\" hreflang=\"es\"" in list, list)
         assertFalse("unfinished-notes" in list)
-        assertFalse("unfinished-notes" in blog.resolve("feed.xml").readText())
+        val feed = blog.resolve("feed.xml").readText()
+        assertEquals(1, "<item>".toRegex().findAll(feed).count(), feed)
+        assertFalse("hola-multiplataforma" in feed, feed)
+        assertFalse("unfinished-notes" in feed)
     }
 
     @Test

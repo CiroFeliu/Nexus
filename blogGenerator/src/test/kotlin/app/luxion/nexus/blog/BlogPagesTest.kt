@@ -1,10 +1,16 @@
 package app.luxion.nexus.blog
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class BlogPagesTest {
+
+    private fun versionLink(slug: String, code: String, languageName: String) =
+        "<a href=\"/blog/$slug/\" hreflang=\"$code\" lang=\"$code\" title=\"$languageName\">${code.uppercase()}</a>"
+
+    private fun entryCount(html: String) = Regex("class=\"post-item\"").findAll(html).count()
 
     private fun pagesOf(vararg posts: Post, includeDrafts: Boolean = false) =
         BlogPages(BlogCatalog.of(posts.toList(), includeDrafts), "https://cirofeliu.es/")
@@ -20,7 +26,7 @@ class BlogPagesTest {
     }
 
     @Test
-    fun listMixesLanguagesNewestFirstWithBadgesAndTags() {
+    fun listMixesLanguagesNewestFirstWithVersionLinksAndTags() {
         val html = pagesOf(
             testPost("older-english", date = "2026-11-03", tags = listOf("kotlin")),
             testPost("newer-spanish", date = "2026-12-01", lang = PostLanguage.Spanish),
@@ -28,11 +34,59 @@ class BlogPagesTest {
 
         assertTrue(html.indexOf("/blog/newer-spanish/") < html.indexOf("/blog/older-english/"), html)
         assertTrue("<li class=\"post-item\" lang=\"es\">" in html, html)
-        assertTrue("<span class=\"badge\" title=\"Español\">ES</span>" in html, html)
-        assertTrue("<span class=\"badge\" title=\"English\">EN</span>" in html, html)
+        assertTrue(versionLink("newer-spanish", "es", "Español") in html, html)
+        assertTrue(versionLink("older-english", "en", "English") in html, html)
+        assertFalse("class=\"badge\"" in html, html)
         assertTrue("<time datetime=\"2026-11-03\">3 Nov 2026</time>" in html, html)
         assertTrue("<ul class=\"tags\"><li>kotlin</li></ul>" in html, html)
         assertTrue("Summary of older-english" in html, html)
+    }
+
+    @Test
+    fun translatedArticleIsOneEntryShowingTheEnglishVersion() {
+        val html = pagesOf(
+            testPost("shogun-intro", translationKey = "intro", tags = listOf("ai")),
+            testPost("shogun-intro-es", lang = PostLanguage.Spanish, translationKey = "intro", tags = listOf("ia")),
+        ).listPage()
+
+        assertEquals(1, entryCount(html), html)
+        assertTrue("<li class=\"post-item\" lang=\"en\">" in html, html)
+        assertTrue("<h2><a href=\"/blog/shogun-intro/\">Title of shogun-intro</a></h2>" in html, html)
+        assertTrue("Summary of shogun-intro<" in html, html)
+        assertFalse("Title of shogun-intro-es" in html, html)
+        assertFalse("Summary of shogun-intro-es" in html, html)
+        assertTrue("<ul class=\"tags\"><li>ai</li></ul>" in html, html)
+        assertTrue(
+            "<span class=\"versions\">${versionLink("shogun-intro-es", "es", "Español")}" +
+                "<span aria-hidden=\"true\">·</span>${versionLink("shogun-intro", "en", "English")}</span>" in html,
+            html,
+        )
+    }
+
+    @Test
+    fun onlyPublishedSpanishVersionIsShownWhenEnglishIsADraft() {
+        val html = pagesOf(
+            testPost("shogun-intro", translationKey = "intro", draft = true),
+            testPost("shogun-intro-es", lang = PostLanguage.Spanish, translationKey = "intro"),
+        ).listPage()
+
+        assertEquals(1, entryCount(html), html)
+        assertTrue("<h2><a href=\"/blog/shogun-intro-es/\">Title of shogun-intro-es</a></h2>" in html, html)
+        assertTrue("<span class=\"versions\">${versionLink("shogun-intro-es", "es", "Español")}</span>" in html, html)
+        assertFalse("/blog/shogun-intro/" in html, html)
+    }
+
+    @Test
+    fun groupedEntryTakesTheDateOfItsMostRecentVersion() {
+        val html = pagesOf(
+            testPost("shogun-intro", date = "2026-11-03", translationKey = "intro"),
+            testPost("shogun-intro-es", date = "2026-11-10", lang = PostLanguage.Spanish, translationKey = "intro"),
+            testPost("other", date = "2026-11-05"),
+        ).listPage()
+
+        assertTrue("<time datetime=\"2026-11-10\">10 Nov 2026</time>" in html, html)
+        assertFalse("datetime=\"2026-11-03\"" in html, html)
+        assertTrue(html.indexOf("/blog/shogun-intro/\">") < html.indexOf("/blog/other/\">"), html)
     }
 
     @Test
@@ -96,6 +150,16 @@ class BlogPagesTest {
             "<link rel=\"alternate\" hreflang=\"es\" href=\"https://cirofeliu.es/blog/shogun-intro-es/\">" in englishHtml,
             englishHtml,
         )
+    }
+
+    @Test
+    fun postPageKeepsItsLanguageBadge() {
+        val english = testPost("shogun-intro", translationKey = "intro")
+        val spanish = testPost("shogun-intro-es", lang = PostLanguage.Spanish, translationKey = "intro")
+        val html = pagesOf(english, spanish).postPage(spanish)
+
+        assertTrue("<span class=\"badge\" title=\"Español\">ES</span>" in html, html)
+        assertFalse("class=\"versions\"" in html, html)
     }
 
     @Test

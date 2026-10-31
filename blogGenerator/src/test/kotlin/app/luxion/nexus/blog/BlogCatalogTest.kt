@@ -1,9 +1,11 @@
 package app.luxion.nexus.blog
 
+import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
 class BlogCatalogTest {
 
@@ -65,5 +67,39 @@ class BlogCatalogTest {
                 includeDrafts = false,
             )
         }
+    }
+
+    @Test
+    fun translatedPostsFormOneEntryWithTheEnglishVersionFirst() {
+        val english = testPost("shogun-intro", date = "2026-11-03", translationKey = "intro")
+        val spanish = testPost("shogun-intro-es", date = "2026-11-10", lang = PostLanguage.Spanish, translationKey = "intro")
+        val other = testPost("other", date = "2026-11-05")
+        val entries = BlogCatalog.of(listOf(spanish, other, english), includeDrafts = false).entries
+
+        assertEquals(listOf("shogun-intro", "other"), entries.map { it.primary.slug })
+        assertEquals(setOf("shogun-intro", "shogun-intro-es"), entries.first().versions.map { it.slug }.toSet())
+        assertEquals(LocalDate.parse("2026-11-10"), entries.first().date)
+    }
+
+    @Test
+    fun entryWithoutPublishedEnglishShowsItsOnlyVersion() {
+        val english = testPost("shogun-intro", translationKey = "intro", draft = true)
+        val spanish = testPost("shogun-intro-es", lang = PostLanguage.Spanish, translationKey = "intro")
+        val entries = BlogCatalog.of(listOf(english, spanish), includeDrafts = false).entries
+
+        assertEquals(1, entries.size)
+        assertSame(spanish, entries.single().primary)
+        assertEquals(listOf(spanish), entries.single().versions)
+    }
+
+    @Test
+    fun untranslatedPostsAreSeparateEntries() {
+        val entries = BlogCatalog.of(
+            listOf(testPost("english"), testPost("spanish", lang = PostLanguage.Spanish)),
+            includeDrafts = false,
+        ).entries
+
+        assertEquals(listOf("english", "spanish"), entries.map { it.primary.slug })
+        assertTrue(entries.all { it.versions.size == 1 })
     }
 }

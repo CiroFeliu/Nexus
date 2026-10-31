@@ -6,6 +6,8 @@ const val BLOG_DESCRIPTION =
 
 private const val AUTHOR = "Ciro Feliu"
 
+private val VERSION_LINK_ORDER = listOf(PostLanguage.Spanish, PostLanguage.English)
+
 class BlogPages(private val catalog: BlogCatalog, baseUrl: String) {
     private val baseUrl = baseUrl.trimEnd('/')
     val blogUrl: String get() = "$baseUrl/blog/"
@@ -24,14 +26,14 @@ class BlogPages(private val catalog: BlogCatalog, baseUrl: String) {
     ) {
         append("<h1 class=\"page-title\">Blog</h1>\n")
         append("<p class=\"page-intro\">${escapeMarkup(BLOG_DESCRIPTION)}</p>\n")
-        if (catalog.posts.isEmpty()) {
+        if (catalog.entries.isEmpty()) {
             append("<div class=\"empty-state\">\n")
             append("<p>No posts yet. The first one is on its way.</p>\n")
             append("<p><a href=\"/\">Back to the portfolio</a></p>\n")
             append("</div>\n")
         } else {
             append("<ol class=\"post-list\">\n")
-            catalog.posts.forEach { post -> append(listItem(post)) }
+            catalog.entries.forEach { entry -> append(listItem(entry)) }
             append("</ol>\n")
         }
     }
@@ -75,15 +77,34 @@ class BlogPages(private val catalog: BlogCatalog, baseUrl: String) {
         }
     }
 
-    private fun listItem(post: Post): String = buildString {
-        val meta = post.meta
+    private fun listItem(entry: BlogEntry): String = buildString {
+        val meta = entry.primary.meta
         append("<li class=\"post-item\" lang=\"${meta.lang.code}\">\n")
-        append(metaLine(post, PostLanguage.English))
-        append("<h2><a href=\"${postPath(post)}\">${escapeMarkup(meta.title)}</a></h2>\n")
+        append(entryMetaLine(entry))
+        append("<h2><a href=\"${postPath(entry.primary)}\">${escapeMarkup(meta.title)}</a></h2>\n")
         append("<p class=\"post-summary\">${escapeMarkup(meta.summary)}</p>\n")
         append(tagList(meta.tags))
         append("</li>\n")
     }
+
+    private fun entryMetaLine(entry: BlogEntry): String = buildString {
+        append("<div class=\"post-meta\">")
+        append("<time datetime=\"${entry.date}\">${formatDisplayDate(entry.date, PostLanguage.English)}</time>")
+        append(versionLinks(entry.versions))
+        if (entry.versions.any { it.meta.draft }) append(draftBadge(PostLanguage.English))
+        append("</div>\n")
+    }
+
+    private fun versionLinks(versions: List<Post>): String =
+        versions.sortedBy { VERSION_LINK_ORDER.indexOf(it.meta.lang) }.joinToString(
+            separator = "<span aria-hidden=\"true\">·</span>",
+            prefix = "<span class=\"versions\">",
+            postfix = "</span>",
+        ) { version ->
+            val language = version.meta.lang
+            "<a href=\"${postPath(version)}\" hreflang=\"${language.code}\" lang=\"${language.code}\" " +
+                "title=\"${escapeMarkup(language.labels.languageName)}\">${language.code.uppercase()}</a>"
+        }
 
     private fun metaLine(post: Post, dateLanguage: PostLanguage): String = buildString {
         val meta = post.meta
@@ -93,9 +114,12 @@ class BlogPages(private val catalog: BlogCatalog, baseUrl: String) {
             "<span class=\"badge\" title=\"${escapeMarkup(meta.lang.labels.languageName)}\">" +
                 "${meta.lang.code.uppercase()}</span>",
         )
-        if (meta.draft) append("<span class=\"badge badge-draft\">${escapeMarkup(meta.lang.labels.draft)}</span>")
+        if (meta.draft) append(draftBadge(meta.lang))
         append("</div>\n")
     }
+
+    private fun draftBadge(language: PostLanguage): String =
+        "<span class=\"badge badge-draft\">${escapeMarkup(language.labels.draft)}</span>"
 
     private fun tagList(tags: List<String>): String =
         if (tags.isEmpty()) {
