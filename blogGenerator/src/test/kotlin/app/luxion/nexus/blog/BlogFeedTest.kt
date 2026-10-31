@@ -48,4 +48,22 @@ class BlogFeedTest {
         assertEquals("ai", second.child("category"))
         assertTrue("<lastBuildDate>Tue, 1 Dec 2026 00:00:00 GMT</lastBuildDate>" in xml, xml)
     }
+
+    @Test
+    fun translatedArticleIsOneItemDatedByItsMostRecentVersion() {
+        val xml = feedOf(
+            testPost("shogun-intro", date = "2026-11-03", translationKey = "intro"),
+            testPost("shogun-intro-es", date = "2026-11-10", lang = PostLanguage.Spanish, translationKey = "intro"),
+        )
+        val items = parse(xml).getElementsByTagName("item")
+
+        assertEquals(1, items.length)
+        val item = items.item(0) as Element
+        fun child(name: String) = item.getElementsByTagName(name).item(0).textContent
+        assertEquals("Title of shogun-intro", child("title"))
+        assertEquals("https://cirofeliu.es/blog/shogun-intro/", child("link"))
+        assertEquals("https://cirofeliu.es/blog/shogun-intro/", child("guid"))
+        assertEquals("Tue, 10 Nov 2026 00:00:00 GMT", child("pubDate"))
+        assertFalse("shogun-intro-es" in xml, xml)
+    }
 }

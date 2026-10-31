@@ -10,3 +10,8 @@ updates:
     target-branch: develop
     schedule:
       interval: weekly
+    ignore:
+      - dependency-name: org.jetbrains.compose.material3:material3
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor

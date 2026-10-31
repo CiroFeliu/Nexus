@@ -1,7 +1,7 @@
 schema: spec-driven
 
 context: |
-  Nexus: Ciro Feliu's personal portfolio (Senior Android Developer / Mobile Systems Architect).
+  Nexus: Ciro Feliu's personal portfolio (product engineer building with AI agents in parallel, from spec to real device).
   Stack: Kotlin Multiplatform + Compose Multiplatform, package app.luxion.nexus.
   Targets in scope for v1: :webApp (Wasm + JS), :androidApp, :iosApp, :desktopApp, all sharing UI/content from :shared.
   Design tone: clean, technical, structured, modern; native Dark Mode support via MaterialTheme.

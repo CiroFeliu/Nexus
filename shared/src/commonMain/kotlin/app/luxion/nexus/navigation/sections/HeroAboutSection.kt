@@ -61,22 +61,21 @@ object HeroAboutSection {
     internal val content = mapOf(
         Language.English to HeroAboutContent(
             name = "Ciro Feliu",
-            role = "Senior Developer & Mobile Systems Architect",
-            intro = "I design and build mobile systems that stay maintainable as they grow, " +
-                "from Android architecture to Kotlin Multiplatform.",
-            bio = "I design and build mobile systems that stay maintainable as they " +
-                "grow, with a focus on Android architecture, Kotlin Multiplatform, and the tooling " +
-                "that keeps a codebase easy to work in years after it ships.",
+            role = "Product engineer",
+            intro = "I build with AI agents in parallel, from spec to real device.",
+            bio = "I've spent seven years building mobile apps, lately at a hardware company with devices " +
+                "and firmware next to me. Today I build with AI agents in parallel: specs before code, " +
+                "tests alongside it and one worktree per change, all run with ShogunAi, a tool I built " +
+                "for exactly that. On my blog I publish what I measure along the way.",
         ),
         Language.Spanish to HeroAboutContent(
             name = "Ciro Feliu",
-            role = "Desarrollador Senior y Arquitecto de Sistemas Móviles",
-            intro = "Diseño y construyo sistemas móviles que siguen siendo fáciles de mantener al crecer, " +
-                "de la arquitectura Android a Kotlin Multiplatform.",
-            bio = "Diseño y construyo sistemas móviles que se mantienen fáciles de mantener a " +
-                "medida que crecen, centrado en arquitectura Android, Kotlin Multiplatform y las " +
-                "herramientas que hacen que un código siga siendo cómodo de tocar años después de " +
-                "publicarse.",
+            role = "Ingeniero de producto",
+            intro = "Desarrollo con agentes de IA en paralelo, de la spec al dispositivo real.",
+            bio = "Llevo siete años construyendo apps móviles, los últimos en una empresa de hardware, con " +
+                "dispositivos y firmware al lado. Hoy desarrollo con agentes de IA en paralelo: specs antes " +
+                "que código, tests a la par y un worktree por cambio, todo operado con ShogunAi, una " +
+                "herramienta que he construido para eso. En el blog publico lo que mido por el camino.",
         ),
     )
 

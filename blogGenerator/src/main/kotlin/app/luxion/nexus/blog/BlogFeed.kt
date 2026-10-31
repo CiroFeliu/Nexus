@@ -9,14 +9,15 @@ fun blogFeed(catalog: BlogCatalog, pages: BlogPages): String = buildString {
     append("<description>${escapeMarkup(BLOG_DESCRIPTION)}</description>\n")
     append("<language>en</language>\n")
     append("<atom:link href=\"${escapeMarkup(pages.blogUrl)}feed.xml\" rel=\"self\" type=\"application/rss+xml\"/>\n")
-    catalog.posts.maxOfOrNull { it.meta.date }?.let { append("<lastBuildDate>${formatFeedDate(it)}</lastBuildDate>\n") }
-    catalog.posts.forEach { post ->
+    catalog.entries.maxOfOrNull { it.date }?.let { append("<lastBuildDate>${formatFeedDate(it)}</lastBuildDate>\n") }
+    catalog.entries.forEach { entry ->
+        val post = entry.primary
         val url = escapeMarkup(pages.postUrl(post))
         append("<item>\n")
         append("<title>${escapeMarkup(post.meta.title)}</title>\n")
         append("<link>$url</link>\n")
         append("<guid isPermaLink=\"true\">$url</guid>\n")
-        append("<pubDate>${formatFeedDate(post.meta.date)}</pubDate>\n")
+        append("<pubDate>${formatFeedDate(entry.date)}</pubDate>\n")
         append("<description>${escapeMarkup(post.meta.summary)}</description>\n")
         post.meta.tags.forEach { append("<category>${escapeMarkup(it)}</category>\n") }
         append("</item>\n")
