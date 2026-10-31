@@ -233,6 +233,22 @@ main.container {
     line-height: 18px;
 }
 
+.versions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.versions a {
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+}
+
+.versions a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
 .badge-draft {
     border-color: transparent;
     background: var(--color-primary-container);
