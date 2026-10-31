@@ -14,3 +14,10 @@ The Experience/Timeline section SHALL render each entry's role title and descrip
 #### Scenario: Freelance title kept in English
 - **WHEN** the Freelance entry renders in Spanish
 - **THEN** its role title reads "Contract engineer for AI-first product teams" and its description is in Spanish
+
+### Requirement: Each entry includes a short description
+Each timeline entry SHALL include a short description of the role of at most two sentences.
+
+#### Scenario: Entry description is concise
+- **WHEN** a timeline entry is rendered
+- **THEN** its description has at most two sentences and does not exceed roughly 4 lines of themed body text on a 1280px-wide layout

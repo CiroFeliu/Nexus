@@ -1,4 +1,4 @@
-Nexus is [Ciro Feliu's](https://github.com/CiroFeliu) personal portfolio (Senior Android Developer / Mobile Systems Architect), built as a Kotlin Multiplatform + Compose Multiplatform single-page app (package `app.luxion.nexus`). One shared UI drives four targets so the portfolio behaves consistently everywhere:
+Nexus is [Ciro Feliu's](https://github.com/CiroFeliu) personal portfolio (product engineer building with AI agents in parallel, from spec to real device), built as a Kotlin Multiplatform + Compose Multiplatform single-page app (package `app.luxion.nexus`). One shared UI drives four targets so the portfolio behaves consistently everywhere:
 
 - **[`:webApp`](./webApp)** — the primary target: Kotlin/Wasm, with a JS fallback for browsers without WasmGC. Live at [cirofeliu.es](https://cirofeliu.es), auto-published on push to `master`.
 - **[`:androidApp`](./androidApp)**, **[`:iosApp`](./iosApp)**, **[`:desktopApp`](./desktopApp)** — demonstrate the same portfolio's multiplatform reach.
