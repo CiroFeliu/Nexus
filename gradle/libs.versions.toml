@@ -16,7 +16,7 @@ kotlin-wrappers = "2026.7.2"
 kotlinx-coroutines = "1.11.0"
 material3 = "1.11.0-alpha07"
 pdfbox = "3.0.8"
-commonmark = "0.30.1"
+commonmark = "0.31.0"
 snakeyaml-engine = "3.2"
 
 [libraries]
