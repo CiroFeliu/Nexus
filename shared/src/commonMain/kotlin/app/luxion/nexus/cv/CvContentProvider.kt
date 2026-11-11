@@ -33,7 +33,7 @@ fun buildCvContent(language: Language): CvContent {
                 name = content.name,
                 description = content.description,
                 techStack = it.techStack,
-                link = it.link,
+                link = it.linkFor(language),
                 unavailableNote = content.unavailableNote,
             )
         },
