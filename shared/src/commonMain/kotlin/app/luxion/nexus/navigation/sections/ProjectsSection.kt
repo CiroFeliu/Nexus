@@ -84,6 +84,7 @@ object ProjectsSection {
         val name: String,
         val description: String,
         val unavailableNote: String? = null,
+        val link: String? = null,
     )
 
     internal data class Project(
@@ -93,7 +94,9 @@ object ProjectsSection {
         val link: String? = null,
         val featured: Boolean = false,
         val image: DrawableResource? = null,
-    )
+    ) {
+        fun linkFor(language: Language): String? = content.getValue(language).link ?: link
+    }
 
     private val excludedFilterTags = setOf("Android", "iOS")
 
@@ -374,7 +377,7 @@ object ProjectsSection {
                     description = "A hardware side project outside my usual software work: built a " +
                         "Digital FPV racing drone from scratch, from the frame build to the " +
                         "electronics and flight-controller setup.",
-                    unavailableNote = "Personal hardware build, no public repo",
+                    link = "https://cirofeliu.es/blog/an-fpv-drone-from-scratch/",
                 ),
                 Language.Spanish to ProjectContent(
                     name = "Zenith",
@@ -382,7 +385,7 @@ object ProjectsSection {
                         "software: construí un dron de carreras FPV digital desde cero, desde el " +
                         "montaje del chasis hasta la electrónica y la configuración del controlador " +
                         "de vuelo.",
-                    unavailableNote = "Proyecto personal de hardware, sin repositorio público",
+                    link = "https://cirofeliu.es/blog/un-dron-fpv-desde-cero/",
                 ),
             ),
             techStack = listOf("Hardware", "FPV"),
@@ -451,7 +454,7 @@ object ProjectsSection {
         val shape = PortfolioShapeRoles.container
         val colors = MaterialTheme.colorScheme
         val interactionSource = remember { MutableInteractionSource() }
-        val link = project.link
+        val link = project.linkFor(language)
         val interaction = if (link != null) {
             Modifier
                 .interactive(interactionSource, focusShape = shape)
@@ -502,7 +505,7 @@ object ProjectsSection {
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
-            val meta = if (project.link == null) {
+            val meta = if (project.linkFor(language) == null) {
                 content.unavailableNote ?: defaultUnavailableNote.getValue(language)
             } else {
                 project.techStack.joinToString(", ")
@@ -543,7 +546,7 @@ object ProjectsSection {
                 color = onContainer.copy(alpha = 0.75f),
                 modifier = Modifier.align(Alignment.TopStart),
             )
-            if (project.link != null) {
+            if (content.link ?: project.link != null) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_open_in_new),
                     contentDescription = null,
@@ -658,7 +661,7 @@ object ProjectsSection {
                     modifier = Modifier.weight(1f),
                 )
             }
-            val link = project.link
+            val link = project.linkFor(language)
             if (link != null) {
                 val interactionSource = remember { MutableInteractionSource() }
                 IconButton(

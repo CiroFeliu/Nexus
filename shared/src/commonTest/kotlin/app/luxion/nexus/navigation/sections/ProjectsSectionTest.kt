@@ -118,4 +118,11 @@ class ProjectsSectionTest {
         assertTrue(ProjectsSection.matchesFilter(cyberProject, "Cybersecurity"))
         assertFalse(ProjectsSection.matchesFilter(otherProject, "Cybersecurity"))
     }
+
+    @Test
+    fun droneProjectLinksToItsBlogPostInEachLanguage() {
+        val zenith = ProjectsSection.projects.single { it.content.getValue(Language.English).name == "Zenith" }
+        assertEquals("https://cirofeliu.es/blog/an-fpv-drone-from-scratch/", zenith.linkFor(Language.English))
+        assertEquals("https://cirofeliu.es/blog/un-dron-fpv-desde-cero/", zenith.linkFor(Language.Spanish))
+    }
 }
